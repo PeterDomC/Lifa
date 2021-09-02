@@ -1,4 +1,5 @@
 package automata;
+
 import java.util.Objects;
 
 /**
@@ -13,7 +14,7 @@ public class Letter{
     /*
      * Constructor
      */
-    Letter(String symb){
+    public Letter(String symb){
         this.symb = symb;
         this.index = 0;
     }

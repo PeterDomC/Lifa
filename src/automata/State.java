@@ -1,9 +1,10 @@
 package automata;
+
 import java.util.Objects;
 
 /**
  * State of a finite automaton.
- * Consists of a name, flags for initial or final state, an index, and an enumerator.
+ * Consists of a name, flags for initial or final state, an index.
  */
 public class State{
 	
@@ -11,12 +12,11 @@ public class State{
     private boolean init;
     private boolean fin;
     private int index;
-    private int enumerator;
 
     /*
      * Constructor
      */
-    State(String name, boolean init, boolean fin){
+    public State(String name, boolean init, boolean fin){
         this.name = name;
         this.init = init;
         this.fin = fin;
@@ -52,13 +52,6 @@ public class State{
     }
 
     /*
-     * Getter: Enumerator
-     */
-    public int getEnumerator(){
-        return enumerator;
-    }
-
-    /*
      * Setter: Initial state
      */
     public void setInit(){
@@ -77,13 +70,6 @@ public class State{
      */
     public void setIndex(int index){
         this.index = index;
-    }
-    
-    /*
-     * Setter: Enumerator
-     */
-    public void setEnumerator(int enumerator){
-        this.enumerator = enumerator;
     }
     
     /*

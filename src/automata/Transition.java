@@ -16,7 +16,7 @@ public class Transition{
     /*
      * Constructor
      */
-    Transition(State source, State target, Letter label){
+    public Transition(State source, State target, Letter label){
         this.source = source;
         this.target = target;
         this.label = label;
