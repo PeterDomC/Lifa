@@ -1,7 +1,6 @@
 package automata;
 
 import java.util.HashSet;
-import java.util.Iterator;
 
 /**
  * Automaton class.
@@ -136,45 +135,133 @@ public class Autom{
     	}
     }
     
-    
-
-    public void setFinal(State P){
-        // Set the given state to be final
-        for (State Q : Stateset) {
-            if (Q.equals(P)) Q.setFinal();
-        }
-    }
-
-    public void setInit(State P){
-        // Set the given state to be initial
-        for (State Q : Stateset) {
-            if (Q.equals(P)) Q.setInit();
+    /*
+     * Set the given state to be final if it exists in the automaton
+     */
+    public void setFinal(State q){
+        for (State p : Stateset) {
+            if (p.equals(q))p.setFinal(true);
         }
     }
     
+    /*
+     * Removes "being final" from the given state
+     */
+    public void unsetFinal(State q){
+        for (State p : Stateset) {
+            if (p.equals(q))p.setFinal(false);
+        }
+    }
+    
+    /*
+     * Getter for the set of final states
+     * Note that it returns an empty set if there is no final state, but never null
+     */
+    public HashSet<State> getFinal() {
+    	HashSet<State> finals = new HashSet<State>();
+    	for (State q : Stateset) {
+    		if (q.isFinal()) finals.add(q);
+    	}
+    	
+    	return finals;
+    }
+    
+    /*
+     * Removes "being final" from all states of the automaton
+     */
+    public void clearFinal() {
+    	for (State q : Stateset) {
+    		q.setFinal(false);
+    	}
+    }
+    
+    /*
+     * Checks if the automaton has a final state
+     */
+    public boolean hasFinal() {
+    	for (State q : Stateset) {
+    		if (q.isFinal()) return true;
+    	}
+    	
+    	return false;
+    }
+    
+    /*
+     * Sets an initial state
+     * Note that an automaton can have arbitrarily many initial states
+     */
+    public void setInit(State q) {
+        for (State p : Stateset) {
+            if (p.equals(q)) p.setInit(true);
+        }
+    }
+    
+    /*
+     * Removes "being initial" from the given state
+     */
+    public void unsetInit(State q) {
+    	for (State p : Stateset) {
+    		if (p.equals(q)) p.setInit(false);
+    	}
+    }
+    
+    /*
+     * Getter for the set of initial states
+     * Note that it returns an empty set if there is no initial state, but never null
+     */
+    public HashSet<State> getInit() {
+    	HashSet<State> init = new HashSet<State>();
+    	for (State q : Stateset) {
+    		if (q.isInit()) init.add(q);
+    	}
+    	
+    	return init;
+    }
+    
+    /*
+     * Removes "being initial" from all states of the automaton
+     */
+    public void clearInit() {
+    	for (State q : Stateset) {
+    		q.setInit(false);
+    	}
+    }
+    
+    /*
+     * Checks if the automaton has an in initial state
+     */
+    public boolean hasInit() {
+    	for (State q : Stateset) {
+    		if (q.isInit()) return true;
+    	}
+    	
+    	return false;
+    }
+    
+    /*
+     * Method for simple print on the console
+     */
     public void print(){
-        String out = String.format("%-5s", "");
+        String out = String.format("%-5s","");
         String out_row = "";
         String out_initFin = "";
         int N = 5*Sigma.size() + 1;
 
-        for (State Q : Stateset) {
+        for (State q : Stateset) {
             out_initFin = "";
-            if (Q.isInit()) out_initFin = "(I)";
-            if (Q.isFinal()) out_initFin = out_initFin + "(F)";
-            out = out + String.format("%-" + N + "s", Q.getName() + out_initFin);
+            if (q.isInit()) out_initFin = "(I)";
+            if (q.isFinal()) out_initFin = out_initFin + "(F)";
+            out = out + String.format("%-" + N + "s", q.getName() + out_initFin);
         }
 
         out = out + "\n";
 
-        for (State Q : Stateset) {
-
-            out = out + String.format("%-5s", Q.getName());
-
-            for (State P : Stateset) {
-
-                for (Transition T : Trans) {
-                    if (T.getSource().equals(Q) && T.getTarget().equals(P)) out_row = out_row  + T.getLabel().getSymb() + " ";
+        for (State q : Stateset) {
+            out = out + String.format("%-5s", q.getName());
+            
+            for (State p : Stateset) {
+                for (Transition t : Trans) {
+                    if (t.getSource().equals(q) && t.getTarget().equals(p)) out_row = out_row  + t.getLabel().getSymb() + " ";
                 }
 
                 out_row = String.format("%-" + N + "s", out_row);
@@ -184,10 +271,11 @@ public class Autom{
 
             out = out + "\n";
         }
-
+        
         System.out.println(out);
     }
-
+    
+    /* TODO
     public Autom copy(){
         // Creates a copy of the automaton
         HashSet<Letter> Gamma = new HashSet<Letter>(Sigma);
@@ -199,14 +287,5 @@ public class Autom{
 
         return B;
     }
-    
-    /* Maybe change input to HashMap(State,Integer) to avoid confusion
-    public void permuteStates(ArrayList<Integer> Perm){
-        // Permutes the states by the given encoding
-        int i = 0;
-        for (State Q : Stateset) {
-            Q.setIndex(Perm.get(i));
-            i++;
-        }
-    } */
+    */
 }

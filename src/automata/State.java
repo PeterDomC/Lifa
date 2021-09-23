@@ -54,15 +54,15 @@ public class State{
     /*
      * Setter: Initial state
      */
-    public void setInit(){
-        this.init = true;
+    public void setInit(boolean init){
+        this.init = init;
     }
 
     /*
      * Setter: Final state
      */
-    public void setFinal(){
-        this.fin = true;
+    public void setFinal(boolean fin){
+        this.fin = fin;
     }
 
     /*
