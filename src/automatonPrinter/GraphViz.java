@@ -1,5 +1,11 @@
 package automatonPrinter;
 
+/*
+ * An API between Java and GraphViz
+ * Taken from the repository
+ * https://github.com/jabbalaci/graphviz-java-api
+ */
+
 //GraphViz.java - a simple API to call dot from Java programs
 
 /*$Id$*/

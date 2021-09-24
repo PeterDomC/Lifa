@@ -46,8 +46,8 @@ public class main {
 		gv.addln("A -> B;");
 		gv.addln("A -> C;");
 		gv.addln(gv.end_graph());
-		System.out.println(gv.getDotSource());
-		 
+		//System.out.println(gv.getDotSource());
+		
 		String type = "gif";
 		String representationType = "dot";
 		File out = new File("out." + type);   // out.gif in this example

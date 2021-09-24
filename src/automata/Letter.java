@@ -2,7 +2,7 @@ package automata;
 
 import java.util.Objects;
 
-/**
+/*
  * Letter class. 
  * Combination of a symbol and an index
  */
@@ -11,7 +11,7 @@ public class Letter{
     private final String symb;
     private int index;
 
-    /*
+    /**
      * Constructor
      */
     public Letter(String symb){
@@ -19,28 +19,28 @@ public class Letter{
         this.index = 0;
     }
     
-    /*
+    /**
      * Getter: Symbol
      */
     public String getSymb(){
         return symb;
     }
 
-    /*
+    /**
      * Getter: Index
      */
     public int getIndex(){
         return index;
     }
     
-    /*
+    /**
      * Setter: Index
      */
     public void setIndex(int index){
         this.index = index;
     }
     
-    /*
+    /**
      * Override of equals
      */
     @Override
@@ -53,7 +53,7 @@ public class Letter{
         return symb.equals(C.getSymb());
     }
 
-    /*
+    /**
      * Override of hashCode
      */
     @Override

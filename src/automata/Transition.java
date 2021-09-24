@@ -2,7 +2,7 @@ package automata;
 
 import java.util.Objects;
 
-/**
+/*
  * Class for transitions of a (finite) automaton.
  * Consists of a source state, a target state, a label, and an index.
  */
@@ -13,7 +13,7 @@ public class Transition{
     private final Letter label;
     int index;
     
-    /*
+    /**
      * Constructor
      */
     public Transition(State source, State target, Letter label){
@@ -23,42 +23,42 @@ public class Transition{
         this.index = 0;
     }
     
-    /*
+    /**
      * Getter: Source State
      */
     public State getSource(){
         return source;
     }
     
-    /*
+    /**
      * Getter: Target State
      */
     State getTarget(){
         return target;
     }
     
-    /*
+    /**
      * Getter: Label
      */
     Letter getLabel(){
         return label;
     }
 
-    /*
+    /**
      * Getter: Index
      */
     int getIndex(){
         return index;
     }
     
-    /*
+    /**
      * Setter: Index
      */
     void setIndex(int in_index){
         index = in_index;
     }
 
-    /*
+    /**
      * Override of equals
      */
     @Override
@@ -71,7 +71,7 @@ public class Transition{
         return source.equals(T.getSource()) && target.equals(T.getTarget()) && label.equals(T.getLabel());
     }
 
-    /*
+    /**
      * Override of hashCode
      */
     @Override
