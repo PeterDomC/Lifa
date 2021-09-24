@@ -1,4 +1,7 @@
-package automata;
+import java.io.File;
+
+import automata.*;
+import automatonPrinter.GraphViz;
 
 public class main {
 
@@ -37,5 +40,17 @@ public class main {
 		A.addTransition(t6);
 		
 		A.print();
+		
+		GraphViz gv = new GraphViz();
+		gv.addln(gv.start_graph());
+		gv.addln("A -> B;");
+		gv.addln("A -> C;");
+		gv.addln(gv.end_graph());
+		System.out.println(gv.getDotSource());
+		 
+		String type = "gif";
+		String representationType = "dot";
+		File out = new File("out." + type);   // out.gif in this example
+		gv.writeGraphToFile( gv.getGraph(gv.getDotSource(), type, representationType), out );
 	}
 }

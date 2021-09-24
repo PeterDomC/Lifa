@@ -2,7 +2,7 @@ package automata;
 
 import java.util.HashSet;
 
-/**
+/*
  * Automaton class.
  * Automata consist of an alphabet Sigma, a set of states Stateset, and a set of Transitions Trans.
  */
@@ -12,7 +12,7 @@ public class Autom{
     private HashSet<State> Stateset;
     private HashSet<Transition> Trans;
     
-    /*
+    /**
      * Constructor - generates an empty NFA
      */
     public Autom() {
@@ -21,7 +21,7 @@ public class Autom{
         this.Trans = new HashSet<Transition>();
     }
     
-    /*
+    /**
      * Constructor with given alphabet
      */
     public Autom(HashSet<Letter> Sigma){
@@ -30,7 +30,7 @@ public class Autom{
         this.Trans = new HashSet<Transition>();
     }
     
-    /*
+    /**
      * Constructor with given alphabet and set of states
      */
     public Autom(HashSet<Letter> Sigma, HashSet<State> Stateset){
@@ -39,42 +39,42 @@ public class Autom{
         this.Trans = new HashSet<Transition>();
     }
     
-    /*
+    /**
      * Getter: Alphabet
      */
     public HashSet<Letter> getAlphabet(){
         return Sigma;
     }
 
-    /*
+    /**
      * Getter: Set of states
      */
     public HashSet<State> getStates(){
         return Stateset;
     }
 
-    /*
+    /**
      * Getter: Set of Transitions
      */
     public HashSet<Transition> getTransitions(){
         return Trans;
     }
 
-    /*
+    /**
      * Method adds a letter to the underlying alphabet
      */
     public void addLetter(Letter a){
         Sigma.add(a);
     }
     
-    /*
+    /**
      * Method adds a given state to the set of states
      */
     public void addState(State q){
         Stateset.add(q);
     }
     
-    /*
+    /**
      * Method adds a given transition to the automaton if
      * the source, the target state, and the label of the transition are already stored in the automaton
      */
@@ -87,7 +87,7 @@ public class Autom{
         }
     }
     
-    /*
+    /**
      * Method adds a given transition to the automaton.
      * If source state or target state are not in the current set of states, they get added.
      * If the label is not in the current alphabet, it gets added.
@@ -100,14 +100,14 @@ public class Autom{
     	Trans.add(T);
     }
     
-    /*
+    /**
      * Method that removes the given transition
      */
     public void removeTransition(Transition T){
         Trans.remove(T);
     }
     
-    /*
+    /**
      * Method that removes a given state q.
      * Note that then also all transitions involving q, as source or target, vanish.
      */
@@ -121,7 +121,7 @@ public class Autom{
     	}
     }
     
-    /*
+    /**
      * Method that removes a given letter a.
      * Note that then also all transitions involving a as label vanish.
      */
@@ -135,7 +135,7 @@ public class Autom{
     	}
     }
     
-    /*
+    /**
      * Set the given state to be final if it exists in the automaton
      */
     public void setFinal(State q){
@@ -144,7 +144,7 @@ public class Autom{
         }
     }
     
-    /*
+    /**
      * Removes "being final" from the given state
      */
     public void unsetFinal(State q){
@@ -153,7 +153,7 @@ public class Autom{
         }
     }
     
-    /*
+    /**
      * Getter for the set of final states
      * Note that it returns an empty set if there is no final state, but never null
      */
@@ -166,7 +166,7 @@ public class Autom{
     	return finals;
     }
     
-    /*
+    /**
      * Removes "being final" from all states of the automaton
      */
     public void clearFinal() {
@@ -175,7 +175,7 @@ public class Autom{
     	}
     }
     
-    /*
+    /**
      * Checks if the automaton has a final state
      */
     public boolean hasFinal() {
@@ -186,7 +186,7 @@ public class Autom{
     	return false;
     }
     
-    /*
+    /**
      * Sets an initial state
      * Note that an automaton can have ONLY ONE initial state
      */
@@ -199,7 +199,7 @@ public class Autom{
         }
     }
     
-    /*
+    /**
      * Getter for the initial state
      * Note that it returns null if there is no initial state 
      * Note that it returns some initial state if the automaton has more than one initial state
@@ -218,7 +218,7 @@ public class Autom{
     	return init;
     }
     
-    /*
+    /**
      * Removes the property of "being initial" from all states of the automaton
      * The effect is that the automaton does not have any initial state any more
      */
@@ -228,7 +228,7 @@ public class Autom{
     	}
     }
     
-    /*
+    /**
      * Checks if the automaton has a SINGLE initial state
      */
     public boolean hasInit() {
@@ -247,7 +247,7 @@ public class Autom{
     	return singleInit;
     }
     
-    /*
+    /**
      * Method for simple print on the console
      */
     public void print(){
