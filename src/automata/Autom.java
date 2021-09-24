@@ -188,38 +188,39 @@ public class Autom{
     
     /*
      * Sets an initial state
-     * Note that an automaton can have arbitrarily many initial states
+     * Note that an automaton can have ONLY ONE initial state
      */
     public void setInit(State q) {
+    	// We clear the initial state and then set the given one to be initial
+    	// So we obtain exactly one initial state
+    	this.clearInit();
         for (State p : Stateset) {
             if (p.equals(q)) p.setInit(true);
         }
     }
     
     /*
-     * Removes "being initial" from the given state
+     * Getter for the initial state
+     * Note that it returns null if there is no initial state 
+     * Note that it returns some initial state if the automaton has more than one initial state
+     * Use hasInit() before invoking this method to check if the automaton has exactly one initial state
      */
-    public void unsetInit(State q) {
-    	for (State p : Stateset) {
-    		if (p.equals(q)) p.setInit(false);
-    	}
-    }
-    
-    /*
-     * Getter for the set of initial states
-     * Note that it returns an empty set if there is no initial state, but never null
-     */
-    public HashSet<State> getInit() {
-    	HashSet<State> init = new HashSet<State>();
+    public State getInit() {
+    	State init = null;
+    	
     	for (State q : Stateset) {
-    		if (q.isInit()) init.add(q);
+    		if (q.isInit()) {
+    			init = q;
+    			break;
+    		}
     	}
     	
     	return init;
     }
     
     /*
-     * Removes "being initial" from all states of the automaton
+     * Removes the property of "being initial" from all states of the automaton
+     * The effect is that the automaton does not have any initial state any more
      */
     public void clearInit() {
     	for (State q : Stateset) {
@@ -228,14 +229,22 @@ public class Autom{
     }
     
     /*
-     * Checks if the automaton has an in initial state
+     * Checks if the automaton has a SINGLE initial state
      */
     public boolean hasInit() {
+    	boolean singleInit = false;
+    	
     	for (State q : Stateset) {
-    		if (q.isInit()) return true;
+    		if (q.isInit()) {
+    			if (!singleInit) {
+    				singleInit = true;
+    			} else {
+    				singleInit = false;
+    			}
+    		}
     	}
     	
-    	return false;
+    	return singleInit;
     }
     
     /*

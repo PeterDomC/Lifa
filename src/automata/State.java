@@ -14,7 +14,17 @@ public class State{
     private int index;
 
     /*
-     * Constructor
+     * Constructor which sets fin and init to false
+     */
+    public State(String name) {
+    	this.name = name;
+    	this.init = false;
+    	this.fin = false;
+    	this.index = 0;
+    }
+    
+    /*
+     * Constructor with booleans for being initial and final
      */
     public State(String name, boolean init, boolean fin){
         this.name = name;

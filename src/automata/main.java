@@ -38,5 +38,4 @@ public class main {
 		
 		A.print();
 	}
-
 }
