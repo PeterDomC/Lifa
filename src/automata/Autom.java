@@ -248,6 +248,27 @@ public class Autom{
     }
     
     /**
+     * Returns the set of isolated states (states not incident to a transition)
+     * Returns an empty set if no such state exists
+     * Does never return null
+     */
+    public HashSet<State> getIsolated() {
+    	
+    	HashSet<State> conn = new HashSet<State>();
+    	
+    	// Collect all states that are incident to a transition 
+    	for (Transition t : Trans) {
+    		conn.add(t.getSource());
+    		conn.add(t.getTarget());
+    	}
+    	
+    	// Subtract the states that are incident to a transition from the set of all states
+    	HashSet<State> isol = new HashSet<State>(Stateset);
+    	isol.removeAll(conn);
+    	return isol;
+    }
+    
+    /**
      * Method for simple print on the console
      */
     public void print(){

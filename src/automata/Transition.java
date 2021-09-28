@@ -33,28 +33,28 @@ public class Transition{
     /**
      * Getter: Target State
      */
-    State getTarget(){
+    public State getTarget(){
         return target;
     }
     
     /**
      * Getter: Label
      */
-    Letter getLabel(){
+    public Letter getLabel(){
         return label;
     }
 
     /**
      * Getter: Index
      */
-    int getIndex(){
+    public int getIndex(){
         return index;
     }
     
     /**
      * Setter: Index
      */
-    void setIndex(int in_index){
+    public void setIndex(int in_index){
         index = in_index;
     }
 

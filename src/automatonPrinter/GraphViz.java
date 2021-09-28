@@ -143,7 +143,7 @@ public class GraphViz {
 	 * executable = /usr/bin/dot
 	 * tempDir = /tmp
 	 */
-	public GraphViz() {
+	protected GraphViz() {
 	    if (GraphViz.osName.contains("Windows")) {
 	        this.tempDir = "c:/temp";
 	        this.executable = "c:/Program Files (x86)/Graphviz 2.28/bin/dot.exe";
