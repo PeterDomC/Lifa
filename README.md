@@ -18,7 +18,6 @@ Letter b = new Letter("b");
 ```
 
 Now you need to construct the set of states.
-Currently, this is a bit clumsy - in the future, we will add more handsome constructors.
 We construct the states 'p0', 'p1', 'p2', and 'p3'.
 ```
 State p0 = new State("p0", true, true);
