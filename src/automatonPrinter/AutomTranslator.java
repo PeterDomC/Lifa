@@ -12,7 +12,7 @@ import automata.Transition;
  * It has methods for translating an Autom object 
  * into the language DOT (https://graphviz.org/doc/info/lang.html)
  * which is supported by GraphViz - then it creates the corresponding output picture.
- * Standard format is .gif
+ * Standard format is gif
  */
 public class AutomTranslator {
 	
@@ -22,14 +22,13 @@ public class AutomTranslator {
 	private static final String file_format = "gif";
 	
 	/**
-	 * Automation is formulates in terms of language DOT
+	 * Automaton is formulated in terms of language DOT
 	 */
 	private static final String repr_type = "dot";
 	
 	/**
 	 * Prints the given automaton into a file with the given filename
 	 * The file format is taken from file_format
-	 * Standard is .gif
 	 */
 	public static void createVisual(Autom A, String filename) {
 		

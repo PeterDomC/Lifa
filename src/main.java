@@ -1,6 +1,7 @@
 import java.io.File;
 
 import automata.*;
+import automataAlgorithms.*;
 import automatonPrinter.*;
 
 public class main {
@@ -77,7 +78,7 @@ public class main {
 		
 		
 		Autom A = new Autom();
-
+/*
 		A.addLetter(a);
 		A.addLetter(b);
 
@@ -89,8 +90,11 @@ public class main {
 		A.addTransition(t1);
 		A.addTransition(t2);
 		A.addTransition(t3);
-		A.addTransition(t4);
+		A.addTransition(t4); */
 		
-		AutomTranslator.createVisual(A, "exampleRM");
+		Postmap map = new Postmap(A);
+		map.print();
+		
+		//AutomTranslator.createVisual(A, "exampleRM");
 	}
 }

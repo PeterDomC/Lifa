@@ -269,6 +269,13 @@ public class Autom{
     }
     
     /**
+     * TODO: Method that cuts away the isolated states of the automaton
+     */
+    public void cutIsolated() {
+    	
+    }
+    
+    /**
      * Method for simple print on the console
      */
     public void print(){
