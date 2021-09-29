@@ -276,6 +276,13 @@ public class Autom{
     }
     
     /**
+     * TODO: Method that renews the names of the states of the automaton to something simple
+     */
+    public void renewStateNames() {
+    	
+    }
+    
+    /**
      * Method for simple print on the console
      */
     public void print(){

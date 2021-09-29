@@ -19,7 +19,10 @@ public class Postmap {
 	
 	private final HashMap<State,HashMap<Letter,HashSet<State>>> postmap;
 	
-	public Postmap (Autom A) {
+	/**
+	 * Constructor for the hash map.
+	 */
+	protected Postmap (Autom A) {
 		
 		// Initialize the postmap
 		this.postmap = new HashMap<State,HashMap<Letter,HashSet<State>>>();
@@ -65,11 +68,17 @@ public class Postmap {
 	
 	/**
 	 * Returns the set of post states of q under the letter a
+	 * Returns null if the entry is not set
+	 * NOTE: It returns null if the corresponding post is empty
 	 */
 	public HashSet<State> get(State q, Letter a) {
-		return postmap.get(q).get(a);
+		if (postmap.get(q) != null) {
+			return postmap.get(q).get(a);
+		} else {
+			return null;
+		}
 	}
-	
+
 	/**
 	 * DEBUG print method
 	 */

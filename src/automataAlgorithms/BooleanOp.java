@@ -1,10 +1,13 @@
 package automataAlgorithms;
 
 import java.util.ArrayDeque;
+import java.util.HashSet;
 import java.util.Queue;
 
 import automata.Autom;
+import automata.Letter;
 import automata.State;
+import automata.Transition;
 
 /*
  * Class which holds methods around Boolean operations on automata
@@ -16,6 +19,7 @@ public class BooleanOp {
 	 * Takes two automata and computes their cross product
 	 * The cross product generates the intersection of the languages 
 	 * @param A, B are the given automata
+	 * They need to have distinct sets of states
 	 * @return Cross, the cross product of A and B
 	 * It generates the language L(A) intersected L(B)
 	 * 
@@ -24,6 +28,8 @@ public class BooleanOp {
 	 * the method returns the empty automaton
 	 * NOTE: For better performance, we recommend to cut isolated states of A and B
 	 * before computing the intersection
+	 * 
+	 * Details on the algorithm can be found in the readme
 	 */
 	public static Autom intersect(Autom A, Autom B) {
 		
@@ -34,15 +40,75 @@ public class BooleanOp {
 			return Cross;
 		}
 		
-		Queue<Statepair> blubb = new ArrayDeque<Statepair>();
-		// TODO
+		// Prepare the postmaps of A and B
+		Postmap postA = new Postmap(A);
+		Postmap postB = new Postmap(B);
 		
-		return null;
+		// The underlying alphabet of Cross - the intersection of both alphabets
+		HashSet<Letter> Sigma = new HashSet<Letter>(A.getAlphabet());
+		Sigma.retainAll(B.getAlphabet());
+		
+		// A queue to store the statepairs that need to be investigated
+		// A set to store the statepairs that have already been investigated
+		Queue<Statepair> workQ = new ArrayDeque<Statepair>();
+		HashSet<Statepair> consSet = new HashSet<Statepair>();
+		
+		// First add the pair of initial states to Cross and to the queue
+		Statepair init = new Statepair(A.getInit(),B.getInit());
+		State init_state = init.toState();
+		init_state.setInit(true);
+		if (A.getInit().isFinal() && B.getInit().isFinal()) init_state.setFinal(true);
+		
+		Cross.addState(init_state);
+		workQ.add(init);
+		
+		Statepair cur;
+		State left,right;
+		HashSet<State> leftPost,rightPost;
+		while(!workQ.isEmpty()) {
+			
+			// Take current statepair off the queue and add it to the set of considered pairs
+			cur = workQ.poll();
+			consSet.add(cur);
+			
+			// For each letter a, go over all states of Post_a(left) and Post_a(right),
+			// add the correpsonding transition to Cross,
+			// and add the resulting statepairs to the queue
+			left = cur.getLeft();
+			right = cur.getRight();
+			
+			for (Letter a : Sigma) {
+				// Determine the post sets - can be null
+				leftPost = postA.get(left,a);
+				rightPost = postB.get(right,a);
+				
+				if (leftPost != null && rightPost != null) {
+					// Continue only if both sets are not null (means non-empty)
+					
+					for (State q : leftPost) {
+						for (State p : rightPost) {
+							Statepair prod = new Statepair(q,p);
+							
+							// Construct the transition to prod and add to cross product
+							// Note that equivalent transitions are ignored automatically
+							State prod_state = prod.toState();
+							if (q.isFinal() && p.isFinal()) prod_state.setFinal(true);
+							
+							// Add transition (and label + states)
+							Transition prod_trans = new Transition(cur.toState(),prod_state,a);
+							Cross.forceAddTransition(prod_trans);
+							
+							// Add the pair (q,p) to the worklist to go on with the exploration from there
+							// But only if it has not already been considered!
+							if (!consSet.contains(prod)) { 
+								workQ.add(prod);
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return Cross;
 	}
-	
-	
-	
-	
-	
-	
 }

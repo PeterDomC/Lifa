@@ -13,7 +13,7 @@ public class Statepair {
 	private final State right;
 	
 	/**
-	 * Constructor that builds the statepair (left,right)
+	 * Constructor that builds the pair of states (left,right)
 	 */
 	protected Statepair (State left, State right) {
 		this.left = left;
@@ -34,28 +34,33 @@ public class Statepair {
 		return right;
 	}
 	
+	/**
+	 * Turns the statepair into a single state by combining the names
+	 * TODO: Remove the \" \" once it is settled in AutomTranslator
+	 */
+	public State toState() {
+		State prod = new State("\"(" + left.getName() + "," + right.getName() + ")\"");
+		return prod;
+	}
 	
 	/**
-     * TODO: Override of equals
+     * Override of equals
      */
-	/*
     @Override
     public boolean equals(Object o){
         if (o == null) return false;
         if (o == this) return true;
-        if (!(o instanceof State)) return false;
-
-        State Q = (State) o;
-        return name.equals(Q.getName());
+        if (!(o instanceof Statepair)) return false;
+        
+        Statepair q = (Statepair) o;
+        return (this.left.equals(q.getLeft()) && this.right.equals(q.getRight()));
     }
-    */
+    
     /**
-     * TODO: Override of hashCode
+     * Override of hashCode
      */
-	/*
     @Override
     public int hashCode(){
-        return Objects.hash(name);
+        return Objects.hash(left,right);
     }
-    */
 }

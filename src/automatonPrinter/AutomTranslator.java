@@ -29,6 +29,7 @@ public class AutomTranslator {
 	/**
 	 * Prints the given automaton into a file with the given filename
 	 * The file format is taken from file_format
+	 * TODO: put the node names in \"\" to avoid a bug with GraphViz when the state names are like (q0,q1)
 	 */
 	public static void createVisual(Autom A, String filename) {
 		
