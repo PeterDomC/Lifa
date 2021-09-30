@@ -15,10 +15,10 @@ public class ExampleCollection {
 		Letter a = new Letter("a");
 		Letter b = new Letter("b");
 		
-		State p0 = new State("p0", true, true);
-		State p1 = new State("p1", false, false);
-		State p2 = new State("p2", false, true);
-		State p3 = new State("p3", false, false);
+		State p0 = new State("p0");
+		State p1 = new State("p1");
+		State p2 = new State("p2");
+		State p3 = new State("p3");
 		
 		Transition t1 = new Transition(p0,p1,a);
 		Transition t2 = new Transition(p1,p2,b);
@@ -40,6 +40,11 @@ public class ExampleCollection {
 		A.addTransition(t3);
 		A.addTransition(t4);
 		
+		A.addFinal(p0);
+		A.addFinal(p2);
+		
+		A.setInit(p0);
+		
 		return A;
 	}
 	
@@ -51,9 +56,9 @@ public class ExampleCollection {
 		Letter a = new Letter("a");
 		Letter b = new Letter("b");
 		
-		State p0 = new State("p0", true, true);
-		State p1 = new State("p1", false, false);
-		State p2 = new State("p2", false, true);
+		State p0 = new State("p0");
+		State p1 = new State("p1");
+		State p2 = new State("p2");
 		
 		Transition t1 = new Transition(p0,p1,a);
 		Transition t2 = new Transition(p1,p2,b);
@@ -67,6 +72,11 @@ public class ExampleCollection {
 		A.forceAddTransition(t3);
 		A.forceAddTransition(t4);
 		
+		A.addFinal(p0);
+		A.addFinal(p2);
+		
+		A.setInit(p0);
+		
 		return A;
 	}
 	
@@ -78,11 +88,11 @@ public class ExampleCollection {
 		Letter a = new Letter("a");
 		Letter b = new Letter("b");
 		
-		State q0 = new State("q0", true, true);
-		State q1 = new State("q1", false, false);
-		State q2 = new State("q2", false, false);
-		State q3 = new State("q3", false, false);
-		State q4 = new State("q4", false, true);
+		State q0 = new State("q0");
+		State q1 = new State("q1");
+		State q2 = new State("q2");
+		State q3 = new State("q3");
+		State q4 = new State("q4");
 		
 		Transition z1 = new Transition(q0,q0,b);
 		Transition z2 = new Transition(q0,q1,a);
@@ -104,6 +114,11 @@ public class ExampleCollection {
 		A.forceAddTransition(z7);
 		A.forceAddTransition(z8);
 		
+		A.addFinal(q0);
+		A.addFinal(q4);
+		
+		A.setInit(q0);
+		
 		return A;
 	}
 	
@@ -115,14 +130,14 @@ public class ExampleCollection {
 		Letter a = new Letter("a");
 		Letter b = new Letter("b");
 		
-		State p0 = new State("p0", true, true);
-		State p1 = new State("p1", false, false);
-		State p2 = new State("p2", false, true);
-		State p3 = new State("p3", false, false);
-		State p4 = new State("p4", false, false);
-		State p5 = new State("p5", false, false);
-		State p6 = new State("p6", false, true);
-		State p7 = new State("p7", false, false);
+		State p0 = new State("p0");
+		State p1 = new State("p1");
+		State p2 = new State("p2");
+		State p3 = new State("p3");
+		State p4 = new State("p4");
+		State p5 = new State("p5");
+		State p6 = new State("p6");
+		State p7 = new State("p7");
 		
 		Transition t1 = new Transition(p0,p1,a);
 		Transition t2 = new Transition(p1,p2,b);
@@ -163,6 +178,12 @@ public class ExampleCollection {
 		A.addTransition(t10);
 		A.addTransition(t11);
 		A.addTransition(t12);
+		
+		A.addFinal(p0);
+		A.addFinal(p2);
+		A.addFinal(p6);
+		
+		A.setInit(p0);
 		
 		return A;
 	}

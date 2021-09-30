@@ -4,31 +4,18 @@ import java.util.Objects;
 
 /*
  * State of a finite automaton
- * Consists of a name and flags for initial or final state
+ * Basically a wrapper of a String
  * @Immutable
  */
 public class State{
 	
     private final String name;
-    private final boolean init;
-    private final boolean fin;
 
     /**
-     * Constructor which sets fin and init to false
+     * Constructor generating a state with the given name
      */
     public State(String name) {
     	this.name = name;
-    	this.init = false;
-    	this.fin = false;
-    }
-    
-    /**
-     * Constructor with booleans for being initial and final
-     */
-    public State(String name, boolean init, boolean fin){
-        this.name = name;
-        this.init = init;
-        this.fin = fin;
     }
     
     /**
@@ -36,20 +23,6 @@ public class State{
      */
     public String getName(){
         return name;
-    }
-
-    /**
-     * Getter: Initial state
-     */
-    public boolean isInit(){
-        return init;
-    }
-
-    /**
-     * Getter: Final State
-     */
-    public boolean isFinal(){
-        return fin;
     }
     
     /**

@@ -53,9 +53,11 @@ public class Operations {
 		
 		// First add the pair of initial states to Cross and to the queue
 		Statepair init = new Statepair(A.getInit(),B.getInit());
-		State init_state = init.toState(true, A.getInit().isFinal() && B.getInit().isFinal());
+		State init_state = init.toState();
 		
 		Cross.addState(init_state);
+		Cross.setInit(init_state);
+		if (A.isFinal(A.getInit()) && B.isFinal(B.getInit())) Cross.addFinal(init_state);
 		workQ.add(init);
 		
 		Statepair cur;
@@ -87,11 +89,11 @@ public class Operations {
 							
 							// Construct the transition to prod and add to cross product
 							// Note that equivalent transitions are ignored automatically
-							State prod_state = prod.toState(false,q.isFinal() && p.isFinal());
-							
 							// Add transition (and label + states)
-							Transition prod_trans = new Transition(cur.toClearState(),prod_state,a);
+							State prod_state = prod.toState();
+							Transition prod_trans = new Transition(cur.toState(),prod_state,a);
 							Cross.forceAddTransition(prod_trans);
+							if (A.isFinal(q) && B.isFinal(p)) Cross.addFinal(prod_state);
 							
 							// Add the pair (q,p) to the worklist to go on with the exploration from there
 							// But only if it has not already been considered!
@@ -134,14 +136,17 @@ public class Operations {
 		// If A and B have a unique initial state
 		State A_init_state = A.getInit();
 		State B_init_state = B.getInit();
-		State new_init_state = new Statepair(A_init_state,B_init_state).toState(true, A_init_state.isFinal() || B_init_state.isFinal());
+		State new_init_state = new Statepair(A_init_state,B_init_state).toState();
 		Union.addState(new_init_state);
+		Union.setInit(new_init_state);
+		if (A.isFinal(A_init_state) || B.isFinal(B_init_state)) Union.addFinal(new_init_state);
 		
 		// Add the transitions of A and the additional transitions from the new initial state
 		// to the post initial states of A
 		HashSet<Transition> Trans = A.getTransitions();
 		for (Transition t : Trans) {
 			Union.forceAddTransition(t);
+			
 			if (t.getSource().equals(A_init_state)) {
 				Transition t_add = new Transition(new_init_state, t.getTarget(), t.getLabel());
 				Union.addTransition(t_add);
@@ -158,6 +163,10 @@ public class Operations {
 				Union.addTransition(t_add);
 			}
 		}
+		
+		// Add final states to the union
+		Union.forceAddFinal(A.getFinal());
+		Union.forceAddFinal(B.getFinal());
 		
 		return Union;
 	}

@@ -4,13 +4,16 @@ import java.util.HashSet;
 
 /*
  * Automaton class.
- * Automata consist of an alphabet Sigma, a set of states Stateset, and a set of Transitions Trans.
+ * Automata consist of an alphabet Sigma, a set of states Stateset, a set of Transitions Trans,
+ * an initial state, and a set of final states.
  */
 public class Autom{
 	
     private HashSet<Letter> Sigma;
     private HashSet<State> Stateset;
     private HashSet<Transition> Trans;
+    private State init;
+    private HashSet<State> Final;
     
     /**
      * Constructor - generates an empty NFA
@@ -19,6 +22,8 @@ public class Autom{
     	this.Sigma = new HashSet<Letter>();
     	this.Stateset = new HashSet<State>();
         this.Trans = new HashSet<Transition>();
+        this.init = null;
+        this.Final = new HashSet<State>();
     }
     
     /**
@@ -28,6 +33,8 @@ public class Autom{
         this.Sigma = Sigma;
         this.Stateset = new HashSet<State>();
         this.Trans = new HashSet<Transition>();
+        this.init = null;
+        this.Final = new HashSet<State>();
     }
     
     /**
@@ -37,6 +44,8 @@ public class Autom{
         this.Sigma = Sigma;
         this.Stateset = Stateset;
         this.Trans = new HashSet<Transition>();
+        this.init = null;
+        this.Final = new HashSet<State>();
     }
     
     /**
@@ -54,10 +63,27 @@ public class Autom{
     }
 
     /**
-     * Getter: Set of Transitions
+     * Getter: Set of transitions
      */
     public HashSet<Transition> getTransitions(){
         return Trans;
+    }
+    
+    /**
+     * Getter: Set of final states
+     */
+    public HashSet<State> getFinal() {
+    	return Final;
+    }
+    
+    /**
+     * Getter: Initial state
+     * NOTE: Our automata need to have a unique initial state
+     * The method returns null if there is no initial state
+     * Use hasInit() before invoking this method to check if the automaton has a unique initial state
+     */
+    public State getInit() {
+    	return init;
     }
 
     /**
@@ -101,6 +127,60 @@ public class Autom{
     }
     
     /**
+     * Method adds a given state to the final states.
+     * If it is not in the current set of states, it does not get added.
+     */
+    public void addFinal(State q) {
+    	if (!Stateset.contains(q)) {
+    		System.out.println("State is not in the current set of states.");
+    		System.out.println("You may consider using the method 'forceAdFinal' instead.");
+    	} else {
+    		Final.add(q);
+    	}
+    }
+    
+    /**
+     * Method adds a given state as final state.
+     * If the state is not in the current stateset of the automaton, if gets added.
+     * Only use this method if you know what you are doing!
+     */
+    public void forceAddFinal(State q) {
+    	Stateset.add(q);
+    	Final.add(q);
+    }
+    
+    /**
+     * Method that adds the given states to the final states.
+     * NOTE: The method does not check whether these states are in Stateset - it adds them
+     */
+    public void forceAddFinal(HashSet<State> Final) {
+    	this.Stateset.addAll(Final);
+    	this.Final.addAll(Final);
+    }
+    
+    /**
+     * Method that sets the given state to be initial.
+     * This is only possible if the state is in the set of states.
+     */
+    public void setInit(State q) {
+    	if (Stateset.contains(q)) init = q;
+    }
+    
+    /**
+     * Returns whether the given state is a final state of this automaton
+     */
+    public boolean isFinal(State q) {
+    	return Final.contains(q);
+    }
+    
+    /**
+     * Returns whether the given state is the initial state of this automaton
+     */
+    public boolean isInit(State q) {
+    	return (init.equals(q));
+    }
+ 
+    /**
      * Method that removes the given transition
      */
     public void removeTransition(Transition T){
@@ -136,66 +216,17 @@ public class Autom{
     }
     
     /**
-     * Getter for the set of final states
-     * Note that it returns an empty set if there is no final state, but never null
-     */
-    public HashSet<State> getFinal() {
-    	HashSet<State> finals = new HashSet<State>();
-    	for (State q : Stateset) {
-    		if (q.isFinal()) finals.add(q);
-    	}
-    	
-    	return finals;
-    }
-    
-    /**
      * Checks if the automaton has a final state
      */
     public boolean hasFinal() {
-    	for (State q : Stateset) {
-    		if (q.isFinal()) return true;
-    	}
-    	
-    	return false;
-    }
-    
-    /**
-     * Getter for the initial state
-     * NOTE: We typically assume that automata have a unique initial state
-     * NOTE: It returns null if there is no initial state 
-     * NOTE: It returns some initial state if the automaton has more than one initial state
-     * Use hasInit() before invoking this method to check if the automaton has exactly one initial state
-     */
-    public State getInit() {
-    	State init = null;
-    	
-    	for (State q : Stateset) {
-    		if (q.isInit()) {
-    			init = q;
-    			break;
-    		}
-    	}
-    	
-    	return init;
+    	return !Final.isEmpty();
     }
     
     /**
      * Checks if the automaton has a unique initial state
      */
     public boolean hasInit() {
-    	boolean singleInit = false;
-    	
-    	for (State q : Stateset) {
-    		if (q.isInit()) {
-    			if (!singleInit) {
-    				singleInit = true;
-    			} else {
-    				singleInit = false;
-    			}
-    		}
-    	}
-    	
-    	return singleInit;
+    	return (init != null);
     }
     
     /**
@@ -244,8 +275,8 @@ public class Autom{
 
         for (State q : Stateset) {
             out_initFin = "";
-            if (q.isInit()) out_initFin = "(I)";
-            if (q.isFinal()) out_initFin = out_initFin + "(F)";
+            if (q.equals(init)) out_initFin = "(I)";
+            if (Final.contains(q)) out_initFin = out_initFin + "(F)";
             out = out + String.format("%-" + N + "s", q.getName() + out_initFin);
         }
 

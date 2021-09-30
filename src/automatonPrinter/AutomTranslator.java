@@ -29,7 +29,6 @@ public class AutomTranslator {
 	/**
 	 * Prints the given automaton into a file with the given filename
 	 * The file format is taken from file_format
-	 * TODO: put the node names in \"\" to avoid a bug with GraphViz when the state names are like (q0,q1)
 	 */
 	public static void createVisual(Autom A, String filename) {
 		
@@ -42,32 +41,32 @@ public class AutomTranslator {
 		// Go over all states and add as circle node
 		Set<State> Stateset = A.getStates();
 		for (State q : Stateset) {
-			viz.addln(q.getName() + "[shape = circle];");
+			viz.addln("\"" + q.getName() + "\"" + "[shape = circle];");
 		}
 		
 		// Add the isolated states in red
 		Set<State> isol = A.getIsolated();
 		for (State q : isol) {
-			viz.addln(q.getName() + " [color = \"red\"];");
+			viz.addln("\"" + q.getName() + "\"" + " [color = \"red\"];");
 		}
 		
 		// Add the final states as double circles
 		Set<State> fin = A.getFinal();
 		for (State q : fin) {
-			viz.addln(q.getName() + " [shape = doublecircle];");
+			viz.addln("\"" + q.getName() + "\"" + " [shape = doublecircle];");
 		}
 		
 		// Add the initial transition
 		if (A.hasInit()) {
 			State initial = A.getInit();
 			viz.addln("init [shape = point];");
-			viz.addln("init -> " + initial.getName() + ";");
+			viz.addln("init -> " + "\"" + initial.getName() + "\"" + ";");
 		}
 		
 		// Go over each transition of the automaton, formulate it as a string, and add it to the output graph
 		Set<Transition> Trans = A.getTransitions();
 		for (Transition t : Trans) {
-			viz.addln(t.getSource().getName() + " -> " + t.getTarget().getName() + " [label = \"" + t.getLabel().getSymb() + "\"];");
+			viz.addln("\"" + t.getSource().getName() + "\"" + " -> " + "\"" + t.getTarget().getName() + "\"" + " [label = \"" + t.getLabel().getSymb() + "\"];");
 		}
 		
 		// Create the file

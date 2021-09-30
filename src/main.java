@@ -7,6 +7,8 @@ public class main {
 
 	public static void main(String[] args) {
 		
+		//TODO: Adjust the readme
+		
 		/* Readme Example */
 		Autom A = ExampleCollection.exampleRM();
 		AutomTranslator.createVisual(A, "exampleRM");
