@@ -220,7 +220,7 @@ public class Autom{
     }
     
     /**
-     * TODO: Method that cuts away the isolated states of the automaton
+     * Method that cuts away the isolated states of the automaton
      */
     public void cutIsolated() {
     	

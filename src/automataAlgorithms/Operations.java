@@ -10,10 +10,10 @@ import automata.State;
 import automata.Transition;
 
 /*
- * Class which holds methods around Boolean operations on automata
- * such as intersection, union, determinization, and complement.
+ * Class which holds methods around basic operations on automata
+ * such as intersection, union, determinization, complement, concatenation, and Kleene star.
  */
-public class BooleanOp {
+public class Operations {
 	
 	/**
 	 * Takes two automata and computes their cross product
@@ -28,8 +28,6 @@ public class BooleanOp {
 	 * the method returns the empty automaton
 	 * NOTE: For better performance, we recommend to cut isolated states of A and B
 	 * before computing the intersection
-	 * 
-	 * Details on the algorithm can be found in the readme
 	 */
 	public static Autom intersect(Autom A, Autom B) {
 		
@@ -119,7 +117,6 @@ public class BooleanOp {
 	 * NOTE: If A and B do not have exactly one initial state, the method returns the empty automaton
 	 * NOTE: The method ignores isolated states
 	 */
-	/*
 	public static Autom union(Autom A, Autom B) {
 		
 		Autom Union = new Autom();
@@ -137,14 +134,13 @@ public class BooleanOp {
 		// If A and B have a unique initial state
 		State A_init_state = A.getInit();
 		State B_init_state = B.getInit();
-		State new_init_state = new Statepair(A_init_state,B_init_state).toState();
-		new_init_state.setInit(true);
+		State new_init_state = new Statepair(A_init_state,B_init_state).toState(true, A_init_state.isFinal() || B_init_state.isFinal());
 		Union.addState(new_init_state);
 		
 		// Add the transitions of A and the additional transitions from the new initial state
 		// to the post initial states of A
-		HashSet<Transition> A_trans = A.getTransitions();
-		for (Transition t : A_trans) {
+		HashSet<Transition> Trans = A.getTransitions();
+		for (Transition t : Trans) {
 			Union.forceAddTransition(t);
 			if (t.getSource().equals(A_init_state)) {
 				Transition t_add = new Transition(new_init_state, t.getTarget(), t.getLabel());
@@ -152,17 +148,33 @@ public class BooleanOp {
 			}
 		}
 		
-		// Add the transitions of A and the additional transitions from the new initial state
-		// to the post initial states of A
-		HashSet<Transition> A_trans = A.getTransitions();
-		for (Transition t : A_trans) {
+		// Add the transitions of B and the additional transitions from the new initial state
+		// to the post initial states of B
+		Trans = B.getTransitions();
+		for (Transition t : Trans) {
 			Union.forceAddTransition(t);
-			if (t.getSource().equals(A_init_state)) {
+			if (t.getSource().equals(B_init_state)) {
 				Transition t_add = new Transition(new_init_state, t.getTarget(), t.getLabel());
 				Union.addTransition(t_add);
 			}
 		}
 		
 		return Union;
-	} */
+	}
+	
+	public static Autom concat(Autom A, Autom B) {
+		return null;
+	}
+	
+	public static Autom kleene(Autom A) {
+		return null;
+	}
+	
+	public static Autom determinize(Autom A) {
+		return null;
+	}
+	
+	public static Autom complement(Autom A) {
+		return null;
+	}
 }
