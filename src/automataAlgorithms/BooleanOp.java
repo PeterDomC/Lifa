@@ -55,9 +55,7 @@ public class BooleanOp {
 		
 		// First add the pair of initial states to Cross and to the queue
 		Statepair init = new Statepair(A.getInit(),B.getInit());
-		State init_state = init.toState();
-		init_state.setInit(true);
-		if (A.getInit().isFinal() && B.getInit().isFinal()) init_state.setFinal(true);
+		State init_state = init.toState(true, A.getInit().isFinal() && B.getInit().isFinal());
 		
 		Cross.addState(init_state);
 		workQ.add(init);
@@ -91,11 +89,10 @@ public class BooleanOp {
 							
 							// Construct the transition to prod and add to cross product
 							// Note that equivalent transitions are ignored automatically
-							State prod_state = prod.toState();
-							if (q.isFinal() && p.isFinal()) prod_state.setFinal(true);
+							State prod_state = prod.toState(false,q.isFinal() && p.isFinal());
 							
 							// Add transition (and label + states)
-							Transition prod_trans = new Transition(cur.toState(),prod_state,a);
+							Transition prod_trans = new Transition(cur.toClearState(),prod_state,a);
 							Cross.forceAddTransition(prod_trans);
 							
 							// Add the pair (q,p) to the worklist to go on with the exploration from there
@@ -122,6 +119,7 @@ public class BooleanOp {
 	 * NOTE: If A and B do not have exactly one initial state, the method returns the empty automaton
 	 * NOTE: The method ignores isolated states
 	 */
+	/*
 	public static Autom union(Autom A, Autom B) {
 		
 		Autom Union = new Autom();
@@ -166,5 +164,5 @@ public class BooleanOp {
 		}
 		
 		return Union;
-	}
+	} */
 }
