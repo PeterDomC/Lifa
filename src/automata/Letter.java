@@ -3,20 +3,19 @@ package automata;
 import java.util.Objects;
 
 /*
- * Letter class. 
- * Combination of a symbol and an index
+ * Letter class
+ * This is just a wrapped String
+ * @Immutable
  */
 public class Letter{
     
     private final String symb;
-    private int index;
 
     /**
      * Constructor
      */
     public Letter(String symb){
         this.symb = symb;
-        this.index = 0;
     }
     
     /**
@@ -24,20 +23,6 @@ public class Letter{
      */
     public String getSymb(){
         return symb;
-    }
-
-    /**
-     * Getter: Index
-     */
-    public int getIndex(){
-        return index;
-    }
-    
-    /**
-     * Setter: Index
-     */
-    public void setIndex(int index){
-        this.index = index;
     }
     
     /**
@@ -58,6 +43,6 @@ public class Letter{
      */
     @Override
     public int hashCode(){
-        return Objects.hash(symb) + 13*index;
+        return Objects.hash(symb);
     }
 }

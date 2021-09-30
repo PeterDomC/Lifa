@@ -111,4 +111,60 @@ public class BooleanOp {
 		
 		return Cross;
 	}
+	
+	/**
+	 * Takes two automata and returns an automaton that accepts the union of their languages
+	 * @param A, B are the given automata
+	 * @return Union, the automaton that accepts L(A) union L(B)
+	 * 
+	 * NOTE: The union is constructed by adding a new initial state
+	 * and without epsilon transitions.
+	 * NOTE: If A and B do not have exactly one initial state, the method returns the empty automaton
+	 * NOTE: The method ignores isolated states
+	 */
+	public static Autom union(Autom A, Autom B) {
+		
+		Autom Union = new Autom();
+		
+		boolean A_init = A.hasInit();
+		boolean B_init = B.hasInit();
+		
+		// If A and B do not have an initial state - union is empty
+		if (!A_init && !B_init) return Union;
+		// If A does not have an initial state but B has - union is L(B)
+		if (!A_init && B_init) return B;
+		// If A has an initial state but B does not - union is L(A)
+		if (A_init && !B_init) return A;
+		
+		// If A and B have a unique initial state
+		State A_init_state = A.getInit();
+		State B_init_state = B.getInit();
+		State new_init_state = new Statepair(A_init_state,B_init_state).toState();
+		new_init_state.setInit(true);
+		Union.addState(new_init_state);
+		
+		// Add the transitions of A and the additional transitions from the new initial state
+		// to the post initial states of A
+		HashSet<Transition> A_trans = A.getTransitions();
+		for (Transition t : A_trans) {
+			Union.forceAddTransition(t);
+			if (t.getSource().equals(A_init_state)) {
+				Transition t_add = new Transition(new_init_state, t.getTarget(), t.getLabel());
+				Union.addTransition(t_add);
+			}
+		}
+		
+		// Add the transitions of A and the additional transitions from the new initial state
+		// to the post initial states of A
+		HashSet<Transition> A_trans = A.getTransitions();
+		for (Transition t : A_trans) {
+			Union.forceAddTransition(t);
+			if (t.getSource().equals(A_init_state)) {
+				Transition t_add = new Transition(new_init_state, t.getTarget(), t.getLabel());
+				Union.addTransition(t_add);
+			}
+		}
+		
+		return Union;
+	}
 }

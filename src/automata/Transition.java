@@ -3,15 +3,15 @@ package automata;
 import java.util.Objects;
 
 /*
- * Class for transitions of a (finite) automaton.
- * Consists of a source state, a target state, a label, and an index.
+ * Class for transitions of a (finite) automaton
+ * Consists of a source state, a target state, a label, and an index
+ * @Immutable
  */
 public class Transition{
 	
     private final State source;
     private final State target;
     private final Letter label;
-    int index;
     
     /**
      * Constructor
@@ -20,7 +20,6 @@ public class Transition{
         this.source = source;
         this.target = target;
         this.label = label;
-        this.index = 0;
     }
     
     /**
@@ -43,21 +42,7 @@ public class Transition{
     public Letter getLabel(){
         return label;
     }
-
-    /**
-     * Getter: Index
-     */
-    public int getIndex(){
-        return index;
-    }
     
-    /**
-     * Setter: Index
-     */
-    public void setIndex(int in_index){
-        index = in_index;
-    }
-
     /**
      * Override of equals
      */
@@ -70,7 +55,7 @@ public class Transition{
         Transition T = (Transition) o;
         return source.equals(T.getSource()) && target.equals(T.getTarget()) && label.equals(T.getLabel());
     }
-
+    
     /**
      * Override of hashCode
      */

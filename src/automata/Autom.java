@@ -136,24 +136,6 @@ public class Autom{
     }
     
     /**
-     * Set the given state to be final if it exists in the automaton
-     */
-    public void setFinal(State q){
-        for (State p : Stateset) {
-            if (p.equals(q))p.setFinal(true);
-        }
-    }
-    
-    /**
-     * Removes "being final" from the given state
-     */
-    public void unsetFinal(State q){
-        for (State p : Stateset) {
-            if (p.equals(q))p.setFinal(false);
-        }
-    }
-    
-    /**
      * Getter for the set of final states
      * Note that it returns an empty set if there is no final state, but never null
      */
@@ -164,15 +146,6 @@ public class Autom{
     	}
     	
     	return finals;
-    }
-    
-    /**
-     * Removes "being final" from all states of the automaton
-     */
-    public void clearFinal() {
-    	for (State q : Stateset) {
-    		q.setFinal(false);
-    	}
     }
     
     /**
@@ -187,22 +160,10 @@ public class Autom{
     }
     
     /**
-     * Sets an initial state
-     * Note that an automaton can have ONLY ONE initial state
-     */
-    public void setInit(State q) {
-    	// We clear the initial state and then set the given one to be initial
-    	// So we obtain exactly one initial state
-    	this.clearInit();
-        for (State p : Stateset) {
-            if (p.equals(q)) p.setInit(true);
-        }
-    }
-    
-    /**
      * Getter for the initial state
-     * Note that it returns null if there is no initial state 
-     * Note that it returns some initial state if the automaton has more than one initial state
+     * NOTE: We typically assume that automata have a unique initial state
+     * NOTE: It returns null if there is no initial state 
+     * NOTE: It returns some initial state if the automaton has more than one initial state
      * Use hasInit() before invoking this method to check if the automaton has exactly one initial state
      */
     public State getInit() {
@@ -219,17 +180,7 @@ public class Autom{
     }
     
     /**
-     * Removes the property of "being initial" from all states of the automaton
-     * The effect is that the automaton does not have any initial state any more
-     */
-    public void clearInit() {
-    	for (State q : Stateset) {
-    		q.setInit(false);
-    	}
-    }
-    
-    /**
-     * Checks if the automaton has a SINGLE initial state
+     * Checks if the automaton has a unique initial state
      */
     public boolean hasInit() {
     	boolean singleInit = false;
@@ -283,7 +234,7 @@ public class Autom{
     }
     
     /**
-     * Method for simple print on the console
+     * DEBUG method for simple print on the console
      */
     public void print(){
         String out = String.format("%-5s","");
@@ -318,18 +269,4 @@ public class Autom{
         
         System.out.println(out);
     }
-    
-    /* TODO
-    public Autom copy(){
-        // Creates a copy of the automaton
-        HashSet<Letter> Gamma = new HashSet<Letter>(Sigma);
-        HashSet<State> Q = new HashSet<State>(Stateset);
-        Autom B = new Autom(Gamma,Q);
-        for (Transition T : Trans) {
-            B.addTransition(T);
-        }
-
-        return B;
-    }
-    */
 }

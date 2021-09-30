@@ -3,15 +3,15 @@ package automata;
 import java.util.Objects;
 
 /*
- * State of a finite automaton.
- * Consists of a name, flags for initial or final state, an index.
+ * State of a finite automaton
+ * Consists of a name and flags for initial or final state
+ * @Immutable
  */
 public class State{
 	
     private final String name;
-    private boolean init;
-    private boolean fin;
-    private int index;
+    private final boolean init;
+    private final boolean fin;
 
     /**
      * Constructor which sets fin and init to false
@@ -20,7 +20,6 @@ public class State{
     	this.name = name;
     	this.init = false;
     	this.fin = false;
-    	this.index = 0;
     }
     
     /**
@@ -30,7 +29,6 @@ public class State{
         this.name = name;
         this.init = init;
         this.fin = fin;
-        this.index = 0;
     }
     
     /**
@@ -52,34 +50,6 @@ public class State{
      */
     public boolean isFinal(){
         return fin;
-    }
-
-    /**
-     * Getter: Index
-     */
-    public int getIndex(){
-        return index;
-    }
-
-    /**
-     * Setter: Initial state
-     */
-    public void setInit(boolean init){
-        this.init = init;
-    }
-
-    /**
-     * Setter: Final state
-     */
-    public void setFinal(boolean fin){
-        this.fin = fin;
-    }
-
-    /**
-     * Setter: Index
-     */
-    public void setIndex(int index){
-        this.index = index;
     }
     
     /**
