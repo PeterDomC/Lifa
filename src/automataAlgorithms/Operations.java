@@ -265,7 +265,26 @@ public class Operations {
 		return Kleene;
 	}
 	
+	/**
+	 * Takes an automaton and determinizes it via the powerset construction.
+	 * @param A is the given automaton.
+	 * @return Power, the determinization of A.
+	 * 
+	 * NOTE: Only the reachable states of the powerset construction are computed.
+	 * NOTE: If A does not have an initial state, the determinization is the empty automaton.
+	 * NOTE: Determinizations may grow large! Consider your input carefully.
+	 * NOTE: For better performance, we recommend to cut the isolated states of A.
+	 * NOTE: Does not return a reference to A, does not return null.
+	 */
 	public static Autom determinize(Autom A) {
+		
+		Autom Power = new Autom();
+		
+		// If A does not have an initial state, the determinization is empty
+		if (!A.hasInit()) return Power;
+		
+		// The powerset construction 
+		
 		return null;
 	}
 	

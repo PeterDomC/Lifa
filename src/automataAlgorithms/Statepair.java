@@ -6,6 +6,7 @@ import automata.State;
 
 /*
  * Class which models a pair of states
+ * @Immutable
  */
 public class Statepair {
 	
