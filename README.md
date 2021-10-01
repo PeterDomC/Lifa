@@ -20,18 +20,15 @@ Letter b = new Letter("b");
 Now you need to construct the set of states.
 We construct the states 'p0', 'p1', 'p2', and 'p3'.
 ```
-State p0 = new State("p0", true, true);
-State p1 = new State("p1", false, false);
-State p2 = new State("p2", false, true);
-State p3 = new State("p3", false, false);
+State p0 = new State("p0");
+State p1 = new State("p1");
+State p2 = new State("p2");
+State p3 = new State("p3");
 ```
-
-A state takes a name as input, and two additional booleans that specify whether it is initial and/or final.
-Here, 'p0' is both, 'p1' and 'p3' are neither, 'p2' is only final but not initial.
 
 Now we construct the transitions.
 A transition requires a source state, a target state, and a label.
-Adding them is simple:
+The construction is simple:
 ```
 Transition t1 = new Transition(p0,p1,a);
 Transition t2 = new Transition(p1,p2,b);
@@ -57,6 +54,15 @@ A.addTransition(t2);
 A.addTransition(t3);
 A.addTransition(t4);
 ```
+
+Now we specify the initial and the final states of 'A'.
+```
+A.addFinal(p0);
+A.addFinal(p2);
+A.setInit(p0);
+```
+
+Hence, 'p0' is both - initial and final, 'p1' and 'p3' are neither, 'p2' is only final but not initial.
 
 <h2>
   Graphical Output
