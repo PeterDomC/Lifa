@@ -140,6 +140,16 @@ public class Autom{
     }
     
     /**
+     * Method that adds the given states to the final states.
+     * If one of the states is not in the set of states, it does not get added.
+     */
+    public void addFinal(HashSet<State> Final) {
+    	for (State q : Final) {
+    		this.addFinal(q);
+    	}
+    }
+    
+    /**
      * Method adds a given state as final state.
      * If the state is not in the current stateset of the automaton, if gets added.
      * Only use this method if you know what you are doing!
@@ -147,15 +157,6 @@ public class Autom{
     public void forceAddFinal(State q) {
     	Stateset.add(q);
     	Final.add(q);
-    }
-    
-    /**
-     * Method that adds the given states to the final states.
-     * NOTE: The method does not check whether these states are in Stateset - it adds them
-     */
-    public void forceAddFinal(HashSet<State> Final) {
-    	this.Stateset.addAll(Final);
-    	this.Final.addAll(Final);
     }
     
     /**

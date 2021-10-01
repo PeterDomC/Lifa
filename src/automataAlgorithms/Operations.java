@@ -165,8 +165,8 @@ public class Operations {
 		}
 		
 		// Add final states to the union
-		Union.forceAddFinal(A.getFinal());
-		Union.forceAddFinal(B.getFinal());
+		Union.addFinal(A.getFinal());
+		Union.addFinal(B.getFinal());
 		
 		return Union;
 	}
@@ -214,14 +214,55 @@ public class Operations {
 		}
 		
 		// Final states of Concat are the final states of B
-		Final = B.getFinal();
-		for (State q : Final) Concat.addFinal(q);
-		
+		Concat.addFinal(B.getFinal());
 		return Concat;
 	}
 	
+	/**
+	 * Takes an automaton and returns the automaton that accepts the Kleene star of the original language.
+	 * @param A is the given automaton.
+	 * @return Kleene, the automata accepting L(A)^*.
+	 * 
+	 * NOTE: Kleene is constructed without epsilon transitions.
+	 * NOTE: If A does not have an initial state, the Kleene star language is empty.
+	 * NOTE: Does not return a reference on A, does not return null.
+	 */
 	public static Autom kleene(Autom A) {
-		return null;
+		
+		Autom Kleene = new Autom();
+		
+		// If A does not have an initial state, the Kleene star language is empty
+		if (!A.hasInit()) return Kleene;
+		
+		// Add a new initial state that is also final
+		State A_init_state = A.getInit();
+		State new_init = new State(A_init_state.getName() + "!");
+		Kleene.addState(new_init);
+		Kleene.addFinal(new_init);
+		Kleene.setInit(new_init);
+		
+		// Copy the transitions of A
+		// For each post initial state of A, add a transition from all final states to that state
+		// and from the new initial state as well
+		HashSet<Transition> Trans = A.getTransitions();
+		HashSet<State> Final = A.getFinal();
+		for (Transition t : Trans) {
+			Kleene.forceAddTransition(t);
+			
+			if (t.getSource().equals(A_init_state)) {
+				for (State q : Final) {
+					Transition t_add_interior = new Transition(q,t.getTarget(),t.getLabel());
+					Kleene.addTransition(t_add_interior);
+					
+					Transition t_add_ext = new Transition(new_init,t.getTarget(),t.getLabel());
+					Kleene.addTransition(t_add_ext);
+				}
+			}
+		}
+		
+		// Add the final states of A as final to Kleene
+		Kleene.addFinal(A.getFinal());
+		return Kleene;
 	}
 	
 	public static Autom determinize(Autom A) {

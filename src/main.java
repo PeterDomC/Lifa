@@ -30,5 +30,9 @@ public class main {
 		/* Concat test */
 		C = Operations.concat(A,B);
 		AutomTranslator.createVisual(C,"concat");
+		
+		/* Kleene test */
+		C = Operations.kleene(A);
+		AutomTranslator.createVisual(C, "kleene");
 	}
 }
