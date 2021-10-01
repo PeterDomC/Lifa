@@ -29,7 +29,7 @@ public class Autom{
     /**
      * Constructor with given alphabet
      */
-    public Autom(HashSet<Letter> Sigma){
+    public Autom(HashSet<Letter> Sigma) {
         this.Sigma = Sigma;
         this.Stateset = new HashSet<State>();
         this.Trans = new HashSet<Transition>();
@@ -40,7 +40,7 @@ public class Autom{
     /**
      * Constructor with given alphabet and set of states
      */
-    public Autom(HashSet<Letter> Sigma, HashSet<State> Stateset){
+    public Autom(HashSet<Letter> Sigma, HashSet<State> Stateset) {
         this.Sigma = Sigma;
         this.Stateset = Stateset;
         this.Trans = new HashSet<Transition>();
@@ -51,14 +51,14 @@ public class Autom{
     /**
      * Getter: Alphabet
      */
-    public HashSet<Letter> getAlphabet(){
+    public HashSet<Letter> getAlphabet() {
         return Sigma;
     }
 
     /**
      * Getter: Set of states
      */
-    public HashSet<State> getStates(){
+    public HashSet<State> getStates() {
         return Stateset;
     }
 
@@ -89,14 +89,14 @@ public class Autom{
     /**
      * Method adds a letter to the underlying alphabet
      */
-    public void addLetter(Letter a){
+    public void addLetter(Letter a) {
         Sigma.add(a);
     }
     
     /**
      * Method adds a given state to the set of states
      */
-    public void addState(State q){
+    public void addState(State q) {
         Stateset.add(q);
     }
     
@@ -104,7 +104,7 @@ public class Autom{
      * Method adds a given transition to the automaton if
      * the source, the target state, and the label of the transition are already stored in the automaton
      */
-    public void addTransition(Transition T){
+    public void addTransition(Transition T) {
         if (!Stateset.contains(T.getSource())|| !Stateset.contains(T.getTarget()) || !Sigma.contains(T.getLabel())) {
         	System.out.println("Source or target state / label of transition not in set of states / alphabet of the automaton.");
         	System.out.println("You may consider using the method 'forceAddTransition' instead.");
@@ -183,7 +183,7 @@ public class Autom{
     /**
      * Method that removes the given transition
      */
-    public void removeTransition(Transition T){
+    public void removeTransition(Transition T) {
         Trans.remove(T);
     }
     
@@ -267,7 +267,7 @@ public class Autom{
     /**
      * DEBUG method for simple print on the console
      */
-    public void print(){
+    public void print() {
         String out = String.format("%-5s","");
         String out_row = "";
         String out_initFin = "";
@@ -299,5 +299,31 @@ public class Autom{
         }
         
         System.out.println(out);
+    }
+    
+    /**
+     * Method that creates a copy of the automaton.
+     * The new automaton references to a copy of the alphabet, stateset, transition set, and set of final states.
+     * NOTE: States and Letters do not need to be newly constructed - they are immutable.
+     */
+    public Autom copy() {
+    	
+    	HashSet<Letter> Sigma_copy = new HashSet<Letter>();
+    	Sigma_copy.addAll(Sigma);
+    	
+    	HashSet<State> Stateset_copy = new HashSet<State>();
+    	Stateset_copy.addAll(Stateset);
+    	
+    	Autom copy = new Autom(Sigma_copy,Stateset_copy);
+    	for (Transition t : Trans) {
+    		copy.addTransition(t);
+    	}
+    	
+    	for (State q : Final) {
+    		copy.addFinal(q);
+    	}
+    	
+    	copy.setInit(init);
+    	return copy;
     }
 }

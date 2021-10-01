@@ -26,5 +26,9 @@ public class main {
 		/* Union test */
 		C = Operations.union(A,B);
 		AutomTranslator.createVisual(C,"union");
+		
+		/* Concat test */
+		C = Operations.concat(A,B);
+		AutomTranslator.createVisual(C,"concat");
 	}
 }

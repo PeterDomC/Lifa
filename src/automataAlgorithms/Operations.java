@@ -16,27 +16,26 @@ import automata.Transition;
 public class Operations {
 	
 	/**
-	 * Takes two automata and computes their cross product
-	 * The cross product generates the intersection of the languages 
-	 * @param A, B are the given automata
-	 * They need to have distinct sets of states
-	 * @return Cross, the cross product of A and B
-	 * It generates the language L(A) intersected L(B)
+	 * Takes two automata and computes their cross product.
+	 * The cross product generates the intersection of the languages .
+	 * @param A, B are the given automata.
+	 * They need to have distinct sets of states.
+	 * @return Cross, the cross product of A and B.
+	 * It generates the language L(A) intersected L(B).
 	 * 
-	 * NOTE: Only the reachable states of the cross product are computed
+	 * NOTE: Only the reachable states of the cross product are computed.
 	 * NOTE: If A or B (or both) do not have exactly one initial state,
-	 * the method returns the empty automaton
+	 * the method returns the empty automaton.
 	 * NOTE: For better performance, we recommend to cut isolated states of A and B
-	 * before computing the intersection
+	 * before computing the intersection.
+	 * NOTE: Does not return a reference to A or B, does not return null.
 	 */
 	public static Autom intersect(Autom A, Autom B) {
 		
 		Autom Cross = new Autom();
 		
-		// A or B (or both) do not have exactly one initial state
-		if (!A.hasInit() || !B.hasInit()) {
-			return Cross;
-		}
+		// A or B (or both) do not have an initial state - intersection is empty
+		if (!A.hasInit() || !B.hasInit()) return Cross;
 		
 		// Prepare the postmaps of A and B
 		Postmap postA = new Postmap(A);
@@ -110,28 +109,29 @@ public class Operations {
 	}
 	
 	/**
-	 * Takes two automata and returns an automaton that accepts the union of their languages
-	 * @param A, B are the given automata
-	 * @return Union, the automaton that accepts L(A) union L(B)
+	 * Takes two automata and returns an automaton that accepts the union of their languages.
+	 * @param A, B are the given automata.
+	 * They need to have distinct sets of states.
+	 * @return Union, the automaton that accepts L(A) union L(B).
 	 * 
-	 * NOTE: The union is constructed by adding a new initial state
+	 * NOTE: The union is constructed by adding a new initial state.
 	 * and without epsilon transitions.
-	 * NOTE: If A and B do not have exactly one initial state, the method returns the empty automaton
-	 * NOTE: The method ignores isolated states
+	 * NOTE: If A and B do not have exactly one initial state, the method returns the empty automaton.
+	 * NOTE: Does not return a reference to A or B, does not return null.
 	 */
 	public static Autom union(Autom A, Autom B) {
-		
-		Autom Union = new Autom();
 		
 		boolean A_init = A.hasInit();
 		boolean B_init = B.hasInit();
 		
 		// If A and B do not have an initial state - union is empty
-		if (!A_init && !B_init) return Union;
+		if (!A_init && !B_init) return new Autom();
 		// If A does not have an initial state but B has - union is L(B)
-		if (!A_init && B_init) return B;
+		if (!A_init && B_init) return B.copy();
 		// If A has an initial state but B does not - union is L(A)
-		if (A_init && !B_init) return A;
+		if (A_init && !B_init) return A.copy();
+		
+		Autom Union = new Autom();
 		
 		// If A and B have a unique initial state
 		State A_init_state = A.getInit();
@@ -171,8 +171,53 @@ public class Operations {
 		return Union;
 	}
 	
+	/**
+	 * Takes two automata and returns the automata that accepts the concatenation of their languages.
+	 * @param A, B are the given automata.
+	 * They need to have distinct sets of states.
+	 * @return Concat, the automata accepting L(A).L(B).
+	 * 
+	 * NOTE: The concatenation is constructed without epsilon transitions.
+	 * NOTE: If either A or B does not have an initial state, the concatenation is empty.
+	 * NOTE: Does not return a reference on A or B, does not return null.
+	 */
 	public static Autom concat(Autom A, Autom B) {
-		return null;
+		
+		Autom Concat = new Autom();
+		
+		// A or B (or both) do not have an initial state - concatenation is empty by definition
+		if (!A.hasInit() || !B.hasInit()) return Concat;
+		
+		// Copy the transitions of A
+		HashSet<Transition> Trans = A.getTransitions();
+		for (Transition t : Trans) {
+			Concat.forceAddTransition(t);
+		}
+		
+		// Take the initial state of A as new initial state
+		Concat.setInit(A.getInit());
+		State B_init_state = B.getInit();
+		
+		// Copy the transitions of B
+		// For each post initial state of B, add a transition from all final states of A to that state
+		Trans = B.getTransitions();
+		HashSet<State> Final = A.getFinal();
+		for (Transition t : Trans) {
+			Concat.forceAddTransition(t);
+			
+			if (t.getSource().equals(B_init_state)) {
+				for (State q : Final) {
+					Transition t_add = new Transition(q,t.getTarget(),t.getLabel());
+					Concat.addTransition(t_add);
+				}
+			}
+		}
+		
+		// Final states of Concat are the final states of B
+		Final = B.getFinal();
+		for (State q : Final) Concat.addFinal(q);
+		
+		return Concat;
 	}
 	
 	public static Autom kleene(Autom A) {
