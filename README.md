@@ -81,7 +81,7 @@ AutomTranslator.createVisual(A, "exampleRM");
 Note that the standard file format is .gif.
 The command generates a file 'exampleRM.gif' with the desired graphical output:
 
-![plot](exampleRM.gif)
+![plot](pics/exampleRM.gif)
 
 <h2>
   Automata Constructions
@@ -96,11 +96,11 @@ Autom B = ExampleCollection.exampleRM_B();
 
 Automaton 'A' is given as below:
 
-![plot](testA.gif)
+![plot](pics/testA.gif)
 
 Automaton 'B' is given by:
 
-![plot](testB.gif)
+![plot](pics/testB.gif)
 
 <h3>
   Intersection
@@ -114,7 +114,7 @@ Autom C = Operations.intersect(A,B);
 
 The product 'C' is then given by:
 
-![plot](inter.gif)
+![plot](pics/inter.gif)
 
 <h3>
   More Operations

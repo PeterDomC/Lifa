@@ -7,9 +7,8 @@ import automata.*;
 public class ExampleCollection {
 
 	/**
-	 * First simple example from the readme file
-	 * Creates a visual output of the constructed automaton
-	 * Alphabet is a,b
+	 * First simple example from the readme file.
+	 * Alphabet is a,b.
 	 */
 	public static Autom exampleRM() {
 		Letter a = new Letter("a");
@@ -49,7 +48,8 @@ public class ExampleCollection {
 	}
 	
 	/**
-	 * Readme example A
+	 * Readme example A.
+	 * Alphabet is  a,b.
 	 */
 	public static Autom exampleRM_A() {
 		Letter a = new Letter("a");
@@ -82,7 +82,8 @@ public class ExampleCollection {
 	}
 	
 	/**
-	 * Readme example B
+	 * Readme example B.
+	 * Alphabet is  a,b.
 	 */
 	public static Autom exampleRM_B() {
 		Letter a = new Letter("a");
@@ -111,8 +112,8 @@ public class ExampleCollection {
 	}
 	
 	/**
-	 * Small example 1
-	 * Alphabet is a,b
+	 * Small example 1.
+	 * Alphabet is a,b.
 	 */
 	public static Autom exampleSmall_1() {
 		Letter a = new Letter("a");
@@ -143,8 +144,8 @@ public class ExampleCollection {
 	}
 	
 	/**
-	 * Small example 2
-	 * Alphabet is a,b
+	 * Small example 2.
+	 * Alphabet is a,b.
 	 */
 	public static Autom exampleSmall_2() {
 		Letter a = new Letter("a");
@@ -185,8 +186,8 @@ public class ExampleCollection {
 	}
 	
 	/**
-	 * A simple example, medium size
-	 * Alphabet is a,b
+	 * A simple example, medium size.
+	 * Alphabet is a,b.
 	 */
 	public static Autom exampleMed_1() {
 		Letter a = new Letter("a");
