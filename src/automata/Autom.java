@@ -101,25 +101,11 @@ public class Autom{
     }
     
     /**
-     * Method adds a given transition to the automaton if
-     * the source, the target state, and the label of the transition are already stored in the automaton
-     */
-    public void addTransition(Transition T) {
-        if (!Stateset.contains(T.getSource())|| !Stateset.contains(T.getTarget()) || !Sigma.contains(T.getLabel())) {
-        	System.out.println("Source or target state / label of transition not in set of states / alphabet of the automaton.");
-        	System.out.println("You may consider using the method 'forceAddTransition' instead.");
-        } else {
-        	Trans.add(T);
-        }
-    }
-    
-    /**
      * Method adds a given transition to the automaton.
      * If source state or target state are not in the current set of states, they get added.
      * If the label is not in the current alphabet, it gets added.
-     * Only use this method if you know what you are doing!
      */
-    public void forceAddTransition(Transition T) {
+    public void addTransition(Transition T) {
     	Stateset.add(T.getSource());
     	Stateset.add(T.getTarget());
     	Sigma.add(T.getLabel());
@@ -127,16 +113,12 @@ public class Autom{
     }
     
     /**
-     * Method adds a given state to the final states.
-     * If it is not in the current set of states, it does not get added.
+     * Method that adds a given state as final state.
+     * If the state is not in the current stateset of the automaton, it gets added.
      */
     public void addFinal(State q) {
-    	if (!Stateset.contains(q)) {
-    		System.out.println("State is not in the current set of states.");
-    		System.out.println("You may consider using the method 'forceAdFinal' instead.");
-    	} else {
-    		Final.add(q);
-    	}
+    	Stateset.add(q);
+    	Final.add(q);
     }
     
     /**
@@ -147,16 +129,6 @@ public class Autom{
     	for (State q : Final) {
     		this.addFinal(q);
     	}
-    }
-    
-    /**
-     * Method adds a given state as final state.
-     * If the state is not in the current stateset of the automaton, if gets added.
-     * Only use this method if you know what you are doing!
-     */
-    public void forceAddFinal(State q) {
-    	Stateset.add(q);
-    	Final.add(q);
     }
     
     /**
@@ -267,13 +239,6 @@ public class Autom{
     	HashSet<State> isol = new HashSet<State>(Stateset);
     	isol.removeAll(conn);
     	return isol;
-    }
-    
-    /**
-     * Method that cuts away the isolated states of the automaton
-     */
-    public void cutIsolated() {
-    	
     }
     
     /**

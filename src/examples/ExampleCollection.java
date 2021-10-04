@@ -49,6 +49,68 @@ public class ExampleCollection {
 	}
 	
 	/**
+	 * Readme example A
+	 */
+	public static Autom exampleRM_A() {
+		Letter a = new Letter("a");
+		Letter b = new Letter("b");
+		
+		State p0 = new State("p0");
+		State p1 = new State("p1");
+		State p2 = new State("p2");
+		State p3 = new State("p3");
+		
+		Transition t1 = new Transition(p0,p1,a);
+		Transition t2 = new Transition(p0,p2,a);
+		Transition t3 = new Transition(p1,p2,b);
+		Transition t4 = new Transition(p1,p3,b);
+		Transition t5 = new Transition(p2,p3,a);
+		Transition t6 = new Transition(p3,p3,a);
+		
+		Autom A = new Autom();
+		A.addTransition(t1);
+		A.addTransition(t2);
+		A.addTransition(t3);
+		A.addTransition(t4);
+		A.addTransition(t5);
+		A.addTransition(t6);
+		
+		A.setInit(p0);
+		A.addFinal(p3);
+		
+		return A;
+	}
+	
+	/**
+	 * Readme example B
+	 */
+	public static Autom exampleRM_B() {
+		Letter a = new Letter("a");
+		Letter b = new Letter("b");
+		
+		State q0 = new State("q0");
+		State q1 = new State("q1");
+		State q2 = new State("q2");
+		
+		Transition t1 = new Transition(q0,q1,a);
+		Transition t2 = new Transition(q0,q2,b);
+		Transition t3 = new Transition(q1,q2,b);
+		Transition t4 = new Transition(q2,q2,a);
+		
+		Autom B = new Autom();
+		B.addTransition(t1);
+		B.addTransition(t2);
+		B.addTransition(t3);
+		B.addTransition(t4);
+		
+		B.setInit(q0);
+		B.addFinal(q0);
+		B.addFinal(q2);
+		
+		return B;
+	}
+	
+	/**
 	 * Small example 1
 	 * Alphabet is a,b
 	 */
@@ -67,10 +129,10 @@ public class ExampleCollection {
 		
 		Autom A = new Autom();
 		
-		A.forceAddTransition(t1);
-		A.forceAddTransition(t2);
-		A.forceAddTransition(t3);
-		A.forceAddTransition(t4);
+		A.addTransition(t1);
+		A.addTransition(t2);
+		A.addTransition(t3);
+		A.addTransition(t4);
 		
 		A.addFinal(p0);
 		A.addFinal(p2);
@@ -105,14 +167,14 @@ public class ExampleCollection {
 		
 		Autom A = new Autom();
 		
-		A.forceAddTransition(z1);
-		A.forceAddTransition(z2);
-		A.forceAddTransition(z3);
-		A.forceAddTransition(z4);
-		A.forceAddTransition(z5);
-		A.forceAddTransition(z6);
-		A.forceAddTransition(z7);
-		A.forceAddTransition(z8);
+		A.addTransition(z1);
+		A.addTransition(z2);
+		A.addTransition(z3);
+		A.addTransition(z4);
+		A.addTransition(z5);
+		A.addTransition(z6);
+		A.addTransition(z7);
+		A.addTransition(z8);
 		
 		A.addFinal(q0);
 		A.addFinal(q4);

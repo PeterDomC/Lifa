@@ -16,8 +16,8 @@ public class main {
 		AutomTranslator.createVisual(A, "exampleRM");
 		
 		/* Load examples */
-		A = ExampleCollection.exampleSmall_1();
-		Autom B = ExampleCollection.exampleSmall_2();
+		A = ExampleCollection.exampleRM_A();
+		Autom B = ExampleCollection.exampleRM_B();
 		AutomTranslator.createVisual(A,"testA");
 		AutomTranslator.createVisual(B,"testB");
 		
@@ -38,11 +38,11 @@ public class main {
 		AutomTranslator.createVisual(C, "kleene");
 		
 		/* Determinization test */
-		C = Operations.determinize(B);
+		C = Operations.determinize(A);
 		AutomTranslator.createVisual(C, "det");
 		
 		/* Complement test */
-		C = Operations.complement(B);
+		C = Operations.complement(A);
 		AutomTranslator.createVisual(C, "compl");
 	}
 }
