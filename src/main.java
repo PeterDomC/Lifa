@@ -40,5 +40,9 @@ public class main {
 		/* Determinization test */
 		C = Operations.determinize(B);
 		AutomTranslator.createVisual(C, "det");
+		
+		/* Complement test */
+		C = Operations.complement(B);
+		AutomTranslator.createVisual(C, "compl");
 	}
 }

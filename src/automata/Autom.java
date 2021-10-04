@@ -160,6 +160,13 @@ public class Autom{
     }
     
     /**
+     * Clears the set of final states to be empty
+     */
+    public void clearFinal()  {
+    	this.Final.clear();
+    }
+    
+    /**
      * Method that sets the given state to be initial.
      * This is only possible if the state is in the set of states.
      */
@@ -316,7 +323,7 @@ public class Autom{
     /**
      * Method that creates a copy of the automaton.
      * The new automaton references to a copy of the alphabet, stateset, transition set, and set of final states.
-     * NOTE: States and Letters do not need to be newly constructed - they are immutable.
+     * NOTE: States, Letters, and Transitions do not need to be newly constructed - they are immutable.
      */
     public Autom copy() {
     	

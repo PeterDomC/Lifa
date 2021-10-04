@@ -307,14 +307,11 @@ public class Operations {
 		if (A.isFinal(init_set)) Power.addFinal(init_state);
 		workQ.add(init);
 		
-		Powerstate cur;
-		HashSet<State> cur_content;
-		HashSet<State> post;
 		while(!workQ.isEmpty()) {
 			
 			// Take the current powerstate and add it to the set of considered powerstates
-			cur = workQ.poll();
-			cur_content = cur.getSetContent();
+			Powerstate cur = workQ.poll();
+			HashSet<State> cur_content = cur.getSetContent();
 			consSet.add(cur);
 			
 			for (Letter a : Sigma) {
@@ -324,7 +321,7 @@ public class Operations {
 				
 				for (State q : cur_content) {
 					// Get the post of q under a and add it to power_post
-					post = postA.get(q,a);
+					HashSet<State> post = postA.get(q,a);
 					if (post != null) det_post_content.addAll(post);
 				}
 				
@@ -358,6 +355,32 @@ public class Operations {
 	 * NOTE: If A does not have an initial state, the complement is universal - the whole set of words!
 	 */
 	public static Autom complement(Autom A) {
-		return null;
+		
+		Autom Comp = new Autom();
+		
+		if (!A.hasInit() || !A.hasFinal()) {
+			// A does not have an initial state or no final state, so its language is empty
+			// Construct a universal automaton
+			State only = new State("{}");
+			Comp.forceAddFinal(only);
+			Comp.setInit(only);
+			HashSet<Letter> Sigma = A.getAlphabet();
+			for (Letter a : Sigma) {
+				Transition t = new Transition(only,only,a);
+				Comp.forceAddTransition(t);
+			}
+			
+			return Comp;
+		}
+		
+		// A has an initial state - determinize and flip final states
+		Comp = determinize(A);
+		HashSet<State> new_final = new HashSet<State>();
+		new_final.addAll(Comp.getStates());
+		new_final.removeAll(Comp.getFinal());
+		Comp.clearFinal();
+		Comp.addFinal(new_final);
+		
+		return Comp;
 	}
 }
