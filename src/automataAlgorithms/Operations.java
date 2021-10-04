@@ -283,11 +283,80 @@ public class Operations {
 		// If A does not have an initial state, the determinization is empty
 		if (!A.hasInit()) return Power;
 		
-		// The powerset construction 
+		// The powerset construction consists of sets of states - so called powerstates
+		// A queue to store the powerstates that need to be investigated
+		// A set to store the powerstates that have already been investigated
+		Queue<Powerstate> workQ = new ArrayDeque<Powerstate>();
+		HashSet<Powerstate> consSet = new HashSet<Powerstate>();
 		
-		return null;
+		// The underlying alphabet of Power - the alphabet of A
+		HashSet<Letter> Sigma = A.getAlphabet();
+		
+		// Prepare the postmap of A
+		Postmap postA = new Postmap(A);
+		
+		// Construct the initial state - the powerstate consisting only of the initial state of A
+		HashSet<State> init_set = new HashSet<State>();
+		init_set.add(A.getInit());
+		Powerstate init = new Powerstate(init_set);
+		State init_state =  init.toState();
+		
+		// Add the state to Power and to the queue - it can be final
+		Power.addState(init_state);
+		Power.setInit(init_state);
+		if (A.isFinal(init_set)) Power.addFinal(init_state);
+		workQ.add(init);
+		
+		Powerstate cur;
+		HashSet<State> cur_content;
+		HashSet<State> post;
+		while(!workQ.isEmpty()) {
+			
+			// Take the current powerstate and add it to the set of considered powerstates
+			cur = workQ.poll();
+			cur_content = cur.getSetContent();
+			consSet.add(cur);
+			
+			for (Letter a : Sigma) {
+				
+				// Determine the post of cur under a in the determinization
+				HashSet<State> det_post_content = new HashSet<State>();
+				
+				for (State q : cur_content) {
+					// Get the post of q under a and add it to power_post
+					post = postA.get(q,a);
+					if (post != null) det_post_content.addAll(post);
+				}
+				
+				// Add the corresponding state to the determinization along with the corresponding transition
+				Powerstate det_post = new Powerstate(det_post_content);
+				State det_post_state = det_post.toState();
+				
+				Transition det_trans = new Transition(cur.toState(), det_post_state, a);
+				Power.forceAddTransition(det_trans);
+				
+				// If the constructed state contains a final state of A, 
+				// set it to be final in the determinization
+				if (A.isFinal(det_post_content)) Power.addFinal(det_post_state);
+				
+				// If the constructed state has not already been considered,
+				// add it to the worklist to continue the exploration from there
+				if (!consSet.contains(det_post)) workQ.add(det_post);
+			}
+		}
+		
+		return Power;
 	}
-	
+
+	/**
+	 * Takes an automaton and returns the automaton that accepts the complement language.
+	 * @param A is the given automaton.
+	 * @return Comp, the automaton that accepts the complement of A.
+	 * 
+	 * NOTE: The algorithm determinizes A and flips the final states.
+	 * NOTE: Does not return a reference on A, does not return null.
+	 * NOTE: If A does not have an initial state, the complement is universal - the whole set of words!
+	 */
 	public static Autom complement(Autom A) {
 		return null;
 	}

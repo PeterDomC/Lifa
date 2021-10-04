@@ -175,6 +175,17 @@ public class Autom{
     }
     
     /**
+     * Returns whether one of the states in the given set is final in this automaton
+     */
+    public boolean isFinal(HashSet<State> Q) {
+    	for (State q : Q) {
+    		if (isFinal(q)) return true;
+    	}
+    	
+    	return false;
+    }
+    
+    /**
      * Returns whether the given state is the initial state of this automaton
      */
     public boolean isInit(State q) {

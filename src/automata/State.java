@@ -7,7 +7,7 @@ import java.util.Objects;
  * Basically a wrapper of a String
  * @Immutable
  */
-public class State{
+public class State implements Comparable<State>{
 	
     private final String name;
 
@@ -45,4 +45,12 @@ public class State{
     public int hashCode(){
         return Objects.hash(name);
     }
+    
+    /**
+     * Override of compareTo
+     */
+	@Override
+	public int compareTo(State q) {
+		return name.compareTo(q.getName());
+	}
 }

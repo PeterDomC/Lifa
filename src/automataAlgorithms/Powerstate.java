@@ -1,5 +1,7 @@
 package automataAlgorithms;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -18,7 +20,7 @@ public class Powerstate {
 	/**
 	 * Constructor that builds the stateset
 	 */
-	protected Powerstate(HashSet<State> setContent) {
+	public Powerstate(HashSet<State> setContent) {
 		this.setContent = setContent;
 	}
 	
@@ -30,22 +32,29 @@ public class Powerstate {
 	}
 	
 	/**
-	 * Turns the stateset into a single state by combining the names of the entries
+	 * Turns the stateset into a single state by combining the names of the entries.
+	 * NOTE: We need the lexigraphical order here in order to identify two states as equal that stem from the
+	 * same powerstate but the below iteration over the elements is different.
+	 * For sets, order does not matter, for string comparison it does.
+	 * NOTE: States are comparable.
 	 */
 	public State toState() {
+		ArrayList<State> statelist = new ArrayList<State>(setContent);
+		Collections.sort(statelist);
+		
 		StringBuilder stateName = new StringBuilder();
 		int i = 0;
-		int n = setContent.size();
+		int n = statelist.size();
 		
-		stateName.append("\"{");
-		for (State q : setContent) {
+		stateName.append("{");
+		for (State q : statelist) {
 			stateName.append(q.getName());
 			
-			if (i < n-1) stateName.append(", ");
+			if (i < n-1) stateName.append(",");
 			i++;
 		}
 		
-		stateName.append("}\"");
+		stateName.append("}");
 		return new State(stateName.toString());
 	}
 	

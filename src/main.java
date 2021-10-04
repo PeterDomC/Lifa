@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+
 import automata.*;
 import automataAlgorithms.*;
 import automatonPrinter.*;
@@ -6,8 +10,6 @@ import examples.ExampleCollection;
 public class main {
 
 	public static void main(String[] args) {
-		
-		//TODO: Adjust the readme
 		
 		/* Readme Example */
 		Autom A = ExampleCollection.exampleRM();
@@ -34,5 +36,9 @@ public class main {
 		/* Kleene test */
 		C = Operations.kleene(A);
 		AutomTranslator.createVisual(C, "kleene");
+		
+		/* Determinization test */
+		C = Operations.determinize(B);
+		AutomTranslator.createVisual(C, "det");
 	}
 }
