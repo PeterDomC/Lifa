@@ -3,22 +3,20 @@
 </h1>
 
 If you are looking for an intuitive implementation of finite automata in Java without much squiggle, Lifa is your friend (;
-Currently, it features a graphical output of automata via [GraphViz](https://graphviz.org/).
-In the future, classic automata algorithms will be added.
+Currently, it features a graphical output of automata via [GraphViz](https://graphviz.org/) and a selection of classical automata constructions such as intersection, determinization, Kleene star, and more.
 
 <h2>
   Construction of a simple automaton
 </h2>
 
-To construct a finite automton (NFA), you first need to construct the letters of the underlying alphabet.
+To construct a finite automton (NFA), we first need to construct the letters of the underlying alphabet.
 In the following example, the alphabet will consist of the letters 'a' and 'b'.
 ```
 Letter a = new Letter("a");
 Letter b = new Letter("b");
 ```
 
-Now you need to construct the set of states.
-We construct the states 'p0', 'p1', 'p2', and 'p3'.
+Now we construct the set of states 'p0', 'p1', 'p2', and 'p3'.
 ```
 State p0 = new State("p0");
 State p1 = new State("p1");
@@ -26,7 +24,7 @@ State p2 = new State("p2");
 State p3 = new State("p3");
 ```
 
-Now we construct the transitions.
+An NFA consists of transitions.
 A transition requires a source state, a target state, and a label.
 The construction is simple:
 ```
@@ -36,7 +34,7 @@ Transition t3 = new Transition(p2,p3,a);
 Transition t4 = new Transition(p3,p0,b);
 ```
 
-It is only left to glue everything together to an NFA 'A'.
+It is left to glue everything together to an NFA 'A'.
 We add the letters, the states, and the transitions to 'A'.
 ```
 Autom A = new Autom();
@@ -55,7 +53,7 @@ A.addTransition(t3);
 A.addTransition(t4);
 ```
 
-Now we specify the initial and the final states of 'A'.
+Now we specify the initial and the final states of the automaton.
 ```
 A.addFinal(p0);
 A.addFinal(p2);
@@ -86,6 +84,49 @@ The command generates a file 'exampleRM.gif' with the desired graphical output:
 ![plot](exampleRM.gif)
 
 <h2>
-  Automaton Algorithms  
+  Automata Constructions
 </h2>
-More on this in future updates (:
+
+Lifa features the standard automata constructions: Intersection (Product), Union, Concatenation, Kleene star, Determinization (Powerset), and Complement.
+We consider the constructions with two examples that we load from the example collection:
+```
+Autom A = ExampleCollection.exampleRM_A();
+Autom B = ExampleCollection.exampleRM_B();
+```
+
+Automaton 'A' is given as below:
+
+![plot](testA.gif)
+
+Automaton 'B' is given by:
+
+![plot](testB.gif)
+
+<h3>
+  Intersection
+</h3>
+
+Lifa can compute the product of 'A' and 'B' - the NFA that accepts the intersection of the languages L(A) and L(B).
+We can call the corresponding method from the Operations class:
+```
+Autom C = Operations.intersect(A,B);
+```
+
+The product 'C' is then given by:
+
+![plot](inter.gif)
+
+<h3>
+  More Operations
+</h3>
+
+Similarly to the intersection, other operations on automata can be called from the Operations class:
+```
+C = Operations.union(A,B);
+C = Operations.concat(A,B);
+C = Operations.kleene(A);
+C = Operations.determinize(A);
+C = Operations.complement(A);
+```
+
+The corresponding results can be considered in the attached gif files of this repository.
