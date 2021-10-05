@@ -1,5 +1,6 @@
 package automata;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 /*
@@ -127,7 +128,7 @@ public class Autom{
      */
     public void addFinal(HashSet<State> Final) {
     	for (State q : Final) {
-    		this.addFinal(q);
+    		addFinal(q);
     	}
     }
     
@@ -135,7 +136,7 @@ public class Autom{
      * Clears the set of final states to be empty
      */
     public void clearFinal()  {
-    	this.Final.clear();
+    	Final.clear();
     }
     
     /**
@@ -179,6 +180,13 @@ public class Autom{
     }
     
     /**
+     * Method that removes all transitions
+     */
+    private void clearTransition() {
+    	Trans.clear();
+    }
+    
+    /**
      * Method that removes a given state q.
      * Note that then also all transitions involving q, as source or target, vanish.
      */
@@ -190,6 +198,24 @@ public class Autom{
     			Trans.remove(T);
     		}
     	}
+    }
+    
+    /**
+     * Method that removes all states including final ones and the initial
+     */
+    private void clearStates() {
+    	Stateset.clear();
+    	init = null;
+    	Final.clear();
+    }
+    
+    /**
+     * Method that checks whether the automaton contains one of the given states.
+     */
+    public boolean containsState(HashSet<State> states) {
+    	HashSet<State> temp = new HashSet<State>(Stateset);
+    	temp.retainAll(states);
+    	return !temp.isEmpty();
     }
     
     /**
@@ -242,10 +268,42 @@ public class Autom{
     }
     
     /**
-     * TODO: Method that renews the names of the states of the automaton to something simple
+     * Method that renews the names of the states of the automaton.
+     * @param postfix is appended to the state names.
      */
-    public void renewStateNames() {
+    public void renewStateNames(String postfix) {
     	
+    	// Mapping old state names to new ones
+    	HashMap<State,State> translation = new HashMap<State,State>();
+    	HashSet<State> newState = new HashSet<State>();
+    	HashSet<State> newFinal = new HashSet<State>();
+    	State newInit = null;
+    	for (State q : Stateset) {
+    		State new_q = new State(q.getName() + postfix);
+    		newState.add(new_q);
+    		if (isFinal(q)) newFinal.add(new_q);
+    		if (isInit(q)) newInit = new_q;
+    		
+    		translation.put(q, new_q);
+    	}
+    	
+    	// Lift the transitions to the new state names
+    	HashSet<Transition> newTrans = new HashSet<Transition>();
+    	for (Transition t : Trans) {
+    		Transition new_t = new Transition(
+    				translation.get(t.getSource()), 
+    				translation.get(t.getTarget()), 
+    				t.getLabel());
+    		newTrans.add(new_t);
+    	}
+    	
+    	// Replace the transitions and states
+    	this.clearStates();
+    	this.clearTransition();
+    	this.Stateset = newState;
+    	this.Trans = newTrans;
+    	this.Final = newFinal;
+    	this.init = newInit;
     }
     
     /**

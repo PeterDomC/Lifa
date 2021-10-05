@@ -20,7 +20,7 @@ public class Powerstate {
 	/**
 	 * Constructor that builds the stateset
 	 */
-	public Powerstate(HashSet<State> setContent) {
+	protected Powerstate(HashSet<State> setContent) {
 		this.setContent = setContent;
 	}
 	

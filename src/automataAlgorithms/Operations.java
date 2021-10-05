@@ -15,8 +15,6 @@ import automata.Transition;
  */
 public class Operations {
 	
-	//TODO: Check whether state sets are distinct automatically!
-	
 	/**
 	 * Takes two automata and computes their cross product.
 	 * The cross product generates the intersection of the languages .
@@ -37,6 +35,12 @@ public class Operations {
 		
 		// A or B (or both) do not have an initial state / final states - intersection is empty
 		if (!A.hasInit() || !B.hasInit() || !A.hasFinal() || !B.hasFinal()) return Cross;
+		
+		// If A and B share a state (name), then we give A and B different state names
+		if (A.containsState(B.getStates())) {
+			A.renewStateNames("A");
+			B.renewStateNames("B");
+		}
 		
 		// Prepare the postmaps of A and B
 		Postmap postA = new Postmap(A);
@@ -138,6 +142,12 @@ public class Operations {
 		// If A has final states but B does not - union is L(A)
 		if (A_final && !B_final) return A.copy();
 		
+		// If A and B share a state (name), then we give A and B different state names
+		if (A.containsState(B.getStates())) {
+			A.renewStateNames("A");
+			B.renewStateNames("B");
+		}
+		
 		Autom Union = new Autom();
 		
 		// If A and B have a unique initial state
@@ -185,7 +195,7 @@ public class Operations {
 	 * @return Concat, the automata accepting L(A).L(B).
 	 * 
 	 * NOTE: The concatenation is constructed without epsilon transitions.
-	 * NOTE: Does not return a reference on A or B, does not return null.
+	 * NOTE: Does not return a reference to A or B, does not return null.
 	 */
 	public static Autom concat(Autom A, Autom B) {
 		
@@ -193,6 +203,12 @@ public class Operations {
 		
 		// A or B does not have final or initial state - concatenation is empty
 		if (!A.hasInit() || !B.hasInit() || !A.hasFinal() || !B.hasFinal()) return Concat;
+		
+		// If A and B share a state (name), then we give A and B different state names
+		if (A.containsState(B.getStates())) {
+			A.renewStateNames("A");
+			B.renewStateNames("B");
+		}
 		
 		// Copy the transitions of A
 		HashSet<Transition> Trans = A.getTransitions();

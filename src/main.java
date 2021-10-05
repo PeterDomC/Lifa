@@ -6,43 +6,21 @@ import automata.*;
 import automataAlgorithms.*;
 import automatonPrinter.*;
 import examples.ExampleCollection;
+import examples.Test;
 
 public class main {
 
 	public static void main(String[] args) {
 		
-		/* Readme Example */
 		Autom A = ExampleCollection.exampleRM();
-		AutomTranslator.createVisual(A, "exampleRM");
-		
-		/* Load examples */
-		A = ExampleCollection.exampleRM_A();
-		Autom B = ExampleCollection.exampleRM_B();
-		AutomTranslator.createVisual(A,"testA");
-		AutomTranslator.createVisual(B,"testB");
-		
-		/* Intersection test */
+		AutomTranslator.createVisual(A, "A");
+		Autom B = ExampleCollection.exampleRM_A();
+		AutomTranslator.createVisual(B, "B");
 		Autom C = Operations.intersect(A,B);
-		AutomTranslator.createVisual(C,"inter");
+		AutomTranslator.createVisual(A, "Anew");
+		AutomTranslator.createVisual(B, "Bnew");
+		AutomTranslator.createVisual(C, "AcapB");
 		
-		/* Union test */
-		C = Operations.union(A,B);
-		AutomTranslator.createVisual(C,"union");
-		
-		/* Concat test */
-		C = Operations.concat(A,B);
-		AutomTranslator.createVisual(C,"concat");
-		
-		/* Kleene test */
-		C = Operations.kleene(A);
-		AutomTranslator.createVisual(C, "kleene");
-		
-		/* Determinization test */
-		C = Operations.determinize(A);
-		AutomTranslator.createVisual(C, "det");
-		
-		/* Complement test */
-		C = Operations.complement(A);
-		AutomTranslator.createVisual(C, "compl");
+		Test.runTests();
 	}
 }
