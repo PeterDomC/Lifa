@@ -1,12 +1,13 @@
 package examples;
 
 import automata.Autom;
+import automataAlgorithms.Language;
 import automataAlgorithms.Operations;
 import automatonPrinter.AutomTranslator;
 
 public class Test {
 	
-	public static void runTests() {
+	public static void runOperationTests() {
 	
 		/* Readme Example */
 		Autom A = ExampleCollection.exampleRM();
@@ -41,5 +42,15 @@ public class Test {
 		/* Complement test */
 		C = Operations.complement(A);
 		AutomTranslator.createVisual(C, "compl");
+	}
+	
+	public static void runLanguageTests() {
+		
+		/* Emptiness Check */
+		Autom A = ExampleCollection.exampleMed_2();
+		assert (Language.isEmpty(A)); // Language is empty
+		Autom B = ExampleCollection.exampleMed_1();
+		assert (!Language.isEmpty(B)); // Language not empty
+		
 	}
 }
