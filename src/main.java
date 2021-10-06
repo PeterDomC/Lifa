@@ -12,11 +12,6 @@ public class main {
 
 	public static void main(String[] args) {
 		
-		Autom A = ExampleCollection.exampleMed_3();
-		AutomTranslator.createVisual(A,"testA");
-		
-		
-		
 		//Test.runOperationTests();
 		//Test.runLanguageTests();
 	}

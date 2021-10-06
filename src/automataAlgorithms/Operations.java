@@ -319,7 +319,7 @@ public class Operations {
 		HashSet<State> init_set = new HashSet<State>();
 		init_set.add(A.getInit());
 		Powerstate init = new Powerstate(init_set);
-		State init_state =  init.toState();
+		State init_state = init.toState();
 		
 		// Add the state to Power and to the queue - it can be final
 		Power.addState(init_state);
@@ -340,7 +340,7 @@ public class Operations {
 				HashSet<State> det_post_content = new HashSet<State>();
 				
 				for (State q : cur_content) {
-					// Get the post of q under a and add it to power_post
+					// Get the post of q under a and add it to det_post_content
 					HashSet<State> post = postA.get(q,a);
 					if (post != null) det_post_content.addAll(post);
 				}

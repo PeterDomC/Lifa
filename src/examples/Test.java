@@ -62,5 +62,8 @@ public class Test {
 		Autom B = ExampleCollection.exampleMed_1();
 		assert (!Language.isEmpty(B)); // Language not empty
 		
+		/* Universality Check */
+		A = ExampleCollection.exampleMed_4();
+		assert (Language.isUniversal(A));
 	}
 }
