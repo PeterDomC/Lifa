@@ -42,6 +42,12 @@ public class Test {
 		/* Complement test */
 		C = Operations.complement(A);
 		AutomTranslator.createVisual(C, "compl");
+		
+		/* Reduction test */
+		A = ExampleCollection.exampleMed_3();
+		AutomTranslator.createVisual(A, "unreduced");
+		C = Operations.reduce(A);
+		AutomTranslator.createVisual(C, "reduced");
 	}
 	
 	public static void runLanguageTests() {

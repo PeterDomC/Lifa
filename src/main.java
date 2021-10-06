@@ -11,23 +11,15 @@ import examples.Test;
 public class main {
 
 	public static void main(String[] args) {
-		/*
-		Autom A = ExampleCollection.exampleSmall_3();
-		AutomTranslator.createVisual(A,"test");
-		Autom C = Language.reduce(A);
-		AutomTranslator.createVisual(C,"reduced");
-		*/
 		
-		Autom A = ExampleCollection.exampleRM_A();
-		Autom B = ExampleCollection.exampleRM_B();
+		Autom A = ExampleCollection.exampleMed_3();
 		AutomTranslator.createVisual(A,"testA");
-		AutomTranslator.createVisual(B,"testB");
 		
-		/* Intersection test */
-		Autom C = Language.reduce(Operations.intersect(A,B));
-		AutomTranslator.createVisual(C,"inter");
+		/* Reduction test */
+		Autom C = Operations.reduce(A);
+		AutomTranslator.createVisual(C,"reduced");
 		
-		//Test.runOperationTests();
+		Test.runOperationTests();
 		//Test.runLanguageTests();
 	}
 }

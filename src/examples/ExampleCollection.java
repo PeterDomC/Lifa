@@ -357,4 +357,70 @@ public class ExampleCollection {
 		
 		return A;
 	}
+	
+	/**
+	 * An example, medium size.
+	 * Alphabet is a,b,c,d.
+	 * NOTE: The automaton has several useless states that 
+	 * cannot be reached from the initial state or that cannot reach a final state.
+	 */
+	public static Autom exampleMed_3() {
+		Letter a = new Letter("a");
+		Letter b = new Letter("b");
+		Letter c = new Letter("c");
+		
+		State p0 = new State("p0");
+		State p1 = new State("p1");
+		State p2 = new State("p2");
+		State p3 = new State("p3");
+		State p4 = new State("p4");
+		State p5 = new State("p5");
+		State p6 = new State("p6");
+		State p7 = new State("p7");
+		State p8 = new State("p8");
+		State p9 = new State("p9");
+		State p10 = new State("p10");
+		State p11 = new State("p11");
+		State p12 = new State("p12");
+		State p13 = new State("p13");
+		
+		Transition t1 = new Transition(p0,p1,a);
+		Transition t2 = new Transition(p1,p2,b);
+		Transition t3 = new Transition(p2,p4,c);
+		Transition t4 = new Transition(p3,p4,b);
+		Transition t5 = new Transition(p1,p5,a);
+		Transition t6 = new Transition(p5,p6,c);
+		Transition t7 = new Transition(p6,p6,c);
+		Transition t8 = new Transition(p6,p7,a);
+		Transition t9 = new Transition(p7,p7,a);
+		Transition t10 = new Transition(p8,p10,a);
+		Transition t11 = new Transition(p9,p10,b);
+		Transition t12 = new Transition(p2,p10,c);
+		Transition t13 = new Transition(p10,p11,c);
+		Transition t14 = new Transition(p11,p13,c);
+		Transition t15 = new Transition(p12,p3,a);
+		
+		Autom A = new Autom();
+		
+		A.addTransition(t1);
+		A.addTransition(t2);
+		A.addTransition(t3);
+		A.addTransition(t4);
+		A.addTransition(t5);
+		A.addTransition(t6);
+		A.addTransition(t7);
+		A.addTransition(t8);
+		A.addTransition(t9);
+		A.addTransition(t10);
+		A.addTransition(t11);
+		A.addTransition(t12);
+		A.addTransition(t13);
+		A.addTransition(t14);
+		A.addTransition(t15);
+		
+		A.addFinal(p13);
+		A.setInit(p0);
+		
+		return A;
+	}
 }

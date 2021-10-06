@@ -192,12 +192,16 @@ public class Autom{
      */
     public void removeState(State q){
     	Stateset.remove(q);
-    	
-    	for (Transition T : Trans) {
-    		if (T.getSource().equals(q) || T.getTarget().equals(q)) {
-    			Trans.remove(T);
-    		}
-    	}
+    	Trans.removeIf(t -> (t.getSource().equals(q) || t.getTarget().equals(q)));
+    }
+    
+    /**
+     * Method that removes all states from the automaton but the given ones.
+     * Note that then also all transitions involving a state outside of Q, as source or target, vanish.
+     */
+    public void retainStates(HashSet<State> Q){
+    	Stateset.retainAll(Q);
+    	Trans.removeIf(t -> (!Q.contains(t.getSource()) || !Q.contains(t.getTarget())));
     }
     
     /**
@@ -216,20 +220,6 @@ public class Autom{
     	HashSet<State> temp = new HashSet<State>(Stateset);
     	temp.retainAll(states);
     	return !temp.isEmpty();
-    }
-    
-    /**
-     * Method that removes a given letter a.
-     * Note that then also all transitions involving a as label vanish.
-     */
-    public void removeLetter(Letter a){
-    	Sigma.remove(a);
-    	
-    	for (Transition T : Trans) {
-    		if (T.getLabel().equals(a)) {
-    			Trans.remove(T);
-    		}
-    	}
     }
     
     /**

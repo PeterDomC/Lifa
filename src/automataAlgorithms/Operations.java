@@ -404,4 +404,144 @@ public class Operations {
 		
 		return Comp;
 	}
+	
+	/**
+     * Method for reducing the given automaton to one that accepts the same language
+     * and that has only reachable states/states that can reach a final state.
+     * @param A is the given automaton.
+     * @return Red, the reduced automaton.
+     * 
+     * NOTE: Does not return a reference to A, does not return null.
+     * NOTE: This is a breadth-first algorithm into two directions:
+     *     - it determines the states that can be reached from the initial state, and 
+     *     - it determines the states that can reach a final state,
+     *     then it intersects both.
+     */
+    public static Autom reduce(Autom A) {
+    	
+    	Autom Red = new Autom();
+    	
+    	// If A does not have an initial state or no final states, the reduction is empty
+    	if (!A.hasInit() || !A.hasFinal()) return Red;
+    	
+    	// Begin with the breadth-first search for reachable states
+    	// Store a set of already considered (reachable) states and a work queue
+		HashSet<State> consSet = new HashSet<State>();
+		Queue<State> workQ = new ArrayDeque<State>();
+    	
+		// Prepare the postmap of A
+		HashSet<Letter> Sigma = A.getAlphabet();
+		Postmap postA = new Postmap(A);
+		
+		// Begin the first breadth first algorithm with the initial state
+		State Ainit = A.getInit();
+		Red.addState(Ainit);
+		Red.setInit(Ainit);
+		if (A.isFinal(Ainit)) Red.addFinal(Ainit);
+		workQ.add(Ainit);
+		
+		while (!workQ.isEmpty()) {
+			
+			// Take the current state from the queue and add its post states 
+			// to the queue if they have not been considered yet
+			State cur = workQ.poll();
+			consSet.add(cur);
+			
+			for (Letter a : Sigma) {
+				HashSet<State> post = postA.get(cur,a);
+				if (post != null) {
+					
+					for (State q : post) {
+						Transition t = new Transition(cur,q,a);
+						Red.addTransition(t);
+						if (A.isFinal(q)) Red.addFinal(q);
+						
+						// Continue exploration from q if not already considered
+						if (!consSet.contains(q)) workQ.add(q);
+					}
+				}
+			}
+		}
+		
+		// Begin the second breadth-first search
+		// We directly work on Red since the automaton is smaller than A
+		HashSet<State> canReachFinal = new HashSet<State>();
+		
+		// Get the premap of Red - this is the postmap of the reversed automaton
+		// Note that the workQ is empty at this point!
+		Postmap preRed = new Postmap(reverseTransitions(Red));
+		
+		// Begin the search from all final states of Red
+		HashSet<State> finalRed = Red.getFinal();
+		for (State q : finalRed) {
+			workQ.add(q);
+		}
+		
+		while (!workQ.isEmpty()) {
+			
+			// Take the current state from the queue and add its pre states 
+			// to the queue if they have not been considered yet
+			State cur = workQ.poll();
+			canReachFinal.add(cur);
+			
+			for (Letter a : Sigma) {
+				HashSet<State> pre = preRed.get(cur,a);
+				
+				if (pre != null) {	
+					for (State q : pre) {
+						// Continue exploration from q if not already considered
+						if (!canReachFinal.contains(q)) workQ.add(q);
+					}
+				}
+			}
+		}
+		
+		// Delete the states that cannot reach a final state in Red
+		// Note that the corresponding transitions are also removed from Red
+		Red.retainStates(canReachFinal);
+    	return Red;
+    }
+    
+    /**
+     * Method takes an automaton and outputs one that accepts the reverse language.
+     * @param A is the given automaton.
+     * @return Rev, the automaton that accepts reverse(L(A)).
+     * 
+     * NOTE: Does not return a reference to A, does not return null.
+     */
+    public static Autom reverse(Autom A) {
+    	
+    	Autom Rev = new Autom();
+    	// If A does not have an initial state or a final state, the reversed language is empty
+    	if (!A.hasInit() || !A.hasFinal()) return Rev;
+    	
+    	// Turn around the transitions of A and store it in Rev
+    	Rev = reverseTransitions(Rev);
+    	
+    	// Turn the initial state into a final state
+    	// and add a new initial state that points to post-final states
+    	//TODO
+    	
+    	return Rev;
+    	
+    }
+    
+    /**
+     * Method that turns around the direction of the transitions in the given automaton.
+     * @param A is the given automaton.
+     * @return Rev, the automaton with turned around transitions.
+     * 
+     * NOTE: The method cuts isolated states of A.
+     * NOTE: Does not return a reference to A, does not return null.
+     */
+    private static Autom reverseTransitions(Autom A) {
+    	
+    	Autom Rev = new Autom();
+    	HashSet<Transition> Trans = A.getTransitions();
+    	for (Transition t : Trans) {
+    		Rev.addTransition(new Transition(t.getTarget(), t.getSource(), t.getLabel()));
+    	}
+    	
+    	return Rev;
+    }
 }
