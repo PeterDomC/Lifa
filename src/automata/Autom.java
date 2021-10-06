@@ -106,11 +106,20 @@ public class Autom{
      * If source state or target state are not in the current set of states, they get added.
      * If the label is not in the current alphabet, it gets added.
      */
-    public void addTransition(Transition T) {
-    	Stateset.add(T.getSource());
-    	Stateset.add(T.getTarget());
-    	Sigma.add(T.getLabel());
-    	Trans.add(T);
+    public void addTransition(Transition t) {
+    	Stateset.add(t.getSource());
+    	Stateset.add(t.getTarget());
+    	Sigma.add(t.getLabel());
+    	Trans.add(t);
+    }
+    
+    /**
+     * Method adds a given set of transitions to the automaton.
+     */
+    public void addTransition(HashSet<Transition> T) {
+    	for  (Transition t : T) {
+    		addTransition(t);
+    	}
     }
     
     /**

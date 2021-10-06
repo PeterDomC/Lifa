@@ -419,6 +419,7 @@ public class ExampleCollection {
 		A.addTransition(t15);
 		
 		A.addFinal(p13);
+		A.addFinal(p8);
 		A.setInit(p0);
 		
 		return A;

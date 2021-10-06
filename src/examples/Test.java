@@ -48,6 +48,10 @@ public class Test {
 		AutomTranslator.createVisual(A, "unreduced");
 		C = Operations.reduce(A);
 		AutomTranslator.createVisual(C, "reduced");
+		
+		/* Reverse test */
+		C = Operations.reverse(A);
+		AutomTranslator.createVisual(C,"reverse");
 	}
 	
 	public static void runLanguageTests() {

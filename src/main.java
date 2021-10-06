@@ -15,11 +15,9 @@ public class main {
 		Autom A = ExampleCollection.exampleMed_3();
 		AutomTranslator.createVisual(A,"testA");
 		
-		/* Reduction test */
-		Autom C = Operations.reduce(A);
-		AutomTranslator.createVisual(C,"reduced");
 		
-		Test.runOperationTests();
+		
+		//Test.runOperationTests();
 		//Test.runLanguageTests();
 	}
 }

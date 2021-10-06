@@ -63,4 +63,18 @@ public class Language {
 		return true;
 	}
 	
+	/**
+	 * Method takes an automaton and checks whether its language is universal.
+	 * @param A is the given automaton.
+	 * @return true, if L(A) is the whole set of words - false, otherwise.
+	 * 
+	 * NOTE: The method is a breadth-first search for a non-final state in the determinization of A.
+	 * NOTE: L(A) is not universal if and only if the determinization of A can reach a non-final state.
+	 * NOTE: First constructing the determinization of A and then calling isEmpty() is slower!
+	 */
+	public static boolean isUniversal(Autom A) {
+		return true;
+	}
+	
+	
 }

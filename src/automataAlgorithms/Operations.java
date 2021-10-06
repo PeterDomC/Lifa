@@ -516,14 +516,28 @@ public class Operations {
     	if (!A.hasInit() || !A.hasFinal()) return Rev;
     	
     	// Turn around the transitions of A and store it in Rev
-    	Rev = reverseTransitions(Rev);
+    	Rev = reverseTransitions(A);
     	
-    	// Turn the initial state into a final state
-    	// and add a new initial state that points to post-final states
-    	//TODO
+    	// Add a new initial state that points to pre-final (now post-final) states
+    	State init_A = A.getInit();
+    	State init = new State(init_A.getName() + "!");
+    	Rev.addState(init);
+    	Rev.setInit(init);
+    	if (A.isFinal(init_A)) Rev.addFinal(init);
     	
+    	HashSet<Transition> Trans = Rev.getTransitions();
+    	HashSet<Transition> Trans_new = new HashSet<Transition>();
+    	for (Transition t : Trans) {
+    		if (A.isFinal(t.getSource())) {
+    			Transition t_new = new Transition(init,t.getTarget(),t.getLabel());
+    			Trans_new.add(t_new);
+    		}
+    	}
+    	Rev.addTransition(Trans_new);
+    	
+    	// Add the initial state of A as final in Rev
+    	Rev.addFinal(init_A);
     	return Rev;
-    	
     }
     
     /**
