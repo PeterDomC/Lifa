@@ -135,7 +135,7 @@ The method eliminates the useless states and for the above example, we obtain:
   More Operations
 </h3>
 
-Similarly to the intersection, other operations on automata can be called from the Operations class:
+Similarly to intersection and reduction, other operations on automata can be called from the Operations class:
 ```
 C = Operations.union(A,B);
 C = Operations.concat(A,B);
