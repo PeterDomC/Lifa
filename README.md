@@ -87,7 +87,7 @@ The command generates a file 'exampleRM.gif' with the desired graphical output:
   Automata Constructions
 </h2>
 
-Lifa features the standard automata constructions: Intersection (Product), Union, Concatenation, Kleene star, Determinization (Powerset), and Complement.
+Lifa features the standard automata constructions: Intersection (Product), Union, Concatenation, Kleene star, Determinization (Powerset), Complement, Reversal, and Reduction.
 We consider the constructions with two examples that we load from the example collection:
 ```
 Autom A = ExampleCollection.exampleRM_A();
@@ -117,6 +117,21 @@ The product 'C' is then given by:
 ![plot](pics/inter.gif)
 
 <h3>
+  Reduction
+</h3>
+
+As we can see in the picture, not all states of the automaton 'C' are useful.
+In fact, from the state '(p2,q1)', we cannot reach a final state and therefore it does not contribute to the language of the automaton.
+To get rid of such states and to shrink the size of the automaton without changing its language, we perform a reduction:
+```
+Autom Rev = Operations.reduce(C);
+```
+
+The method eliminates the useless states and for the above example, we obtain:
+
+![plot](pics/interred.gif)
+
+<h3>
   More Operations
 </h3>
 
@@ -127,6 +142,7 @@ C = Operations.concat(A,B);
 C = Operations.kleene(A);
 C = Operations.determinize(A);
 C = Operations.complement(A);
+C = Operations.reverse(A);
 ```
 
 The corresponding results can be considered in the attached gif files of this repository.
