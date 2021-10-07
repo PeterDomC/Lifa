@@ -11,8 +11,8 @@ import examples.Test;
 public class main {
 
 	public static void main(String[] args) {
-		
-		//Test.runOperationTests();
-		//Test.runLanguageTests();
+				
+		Test.runOperationTests();
+		Test.runLanguageTests();
 	}
 }

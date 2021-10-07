@@ -56,14 +56,22 @@ public class Test {
 	
 	public static void runLanguageTests() {
 		
-		/* Emptiness Check */
+		/* Emptiness check */
 		Autom A = ExampleCollection.exampleMed_2();
 		assert (Language.isEmpty(A)); // Language is empty
 		Autom B = ExampleCollection.exampleMed_1();
 		assert (!Language.isEmpty(B)); // Language not empty
 		
-		/* Universality Check */
+		/* Universality check */
 		A = ExampleCollection.exampleMed_4();
 		assert (Language.isUniversal(A));
+		
+		/* Containment check */
+		A = ExampleCollection.exampleRM_A();
+		B = ExampleCollection.exampleRM_B();
+		assert (!Language.isContained(A,B));
+		
+		B = Operations.determinize(A);
+		assert (Language.isContained(A, B));
 	}
 }
