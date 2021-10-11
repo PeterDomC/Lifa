@@ -3,7 +3,7 @@
 </h1>
 
 If you are looking for an intuitive implementation of finite automata in Java without much squiggle, Lifa is your friend (;
-Currently, it features a graphical output of automata via [GraphViz](https://graphviz.org/) and a selection of classical automata constructions such as intersection, determinization, Kleene star, and more.
+Currently, it features a graphical output of automata via [GraphViz](https://graphviz.org/) and a selection of classical automata constructions such as intersection, determinization, Kleene star, as well as some basic language checking algorithms like emptiness or universality.
 
 <h2>
   Construction of a simple automaton
