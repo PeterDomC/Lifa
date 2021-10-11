@@ -73,5 +73,11 @@ public class Test {
 		
 		B = Operations.determinize(A);
 		assert (Language.isContained(A, B));
+		
+		/* Equivalence check */
+		assert (Language.isEquivalent(A, B));
+		
+		B = ExampleCollection.exampleRM_B();
+		assert (!Language.isEquivalent(A, B));
 	}
 }

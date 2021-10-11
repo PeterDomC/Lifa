@@ -224,4 +224,18 @@ public class Language {
 		
 		return true;
 	}
+	
+	/**
+	 * Method takes two automata and checks whether their languages are equal.
+	 * @param A,B are the given automaton.
+	 * @return true, if L(A) = L(B) - false, otherwise.
+	 * 
+	 * NOTE: The method calls isContained() two times to check whether L(A) is contained in L(B) and vice versa.
+	 */
+	public static boolean isEquivalent(Autom A, Autom B) {
+		return (isContained(A,B) && isContained(B,A));
+	}
+	
+	
+	// TODO: write depth-first searches for the problems
 }
