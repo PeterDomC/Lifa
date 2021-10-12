@@ -17,7 +17,7 @@ public class AutomatonParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, STATENAME=11, LABELNAME=12, WS=13;
+		T__9=10, NAME=11, WS=12;
 	public static final int
 		RULE_automaton = 0, RULE_transitions = 1, RULE_initial = 2, RULE_finals = 3;
 	private static String[] makeRuleNames() {
@@ -36,8 +36,8 @@ public class AutomatonParser extends Parser {
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, null, null, null, "STATENAME", 
-			"LABELNAME", "WS"
+			null, null, null, null, null, null, null, null, null, null, null, "NAME", 
+			"WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -179,11 +179,10 @@ public class AutomatonParser extends Parser {
 	}
 
 	public static class TransitionsContext extends ParserRuleContext {
-		public List<TerminalNode> STATENAME() { return getTokens(AutomatonParser.STATENAME); }
-		public TerminalNode STATENAME(int i) {
-			return getToken(AutomatonParser.STATENAME, i);
+		public List<TerminalNode> NAME() { return getTokens(AutomatonParser.NAME); }
+		public TerminalNode NAME(int i) {
+			return getToken(AutomatonParser.NAME, i);
 		}
-		public TerminalNode LABELNAME() { return getToken(AutomatonParser.LABELNAME, 0); }
 		public TransitionsContext transitions() {
 			return getRuleContext(TransitionsContext.class,0);
 		}
@@ -214,19 +213,19 @@ public class AutomatonParser extends Parser {
 				setState(22);
 				match(T__4);
 				setState(23);
-				match(STATENAME);
+				match(NAME);
 				setState(24);
 				match(T__5);
 				setState(25);
 				match(T__6);
 				setState(26);
-				match(LABELNAME);
+				match(NAME);
 				setState(27);
 				match(T__7);
 				setState(28);
 				match(T__4);
 				setState(29);
-				match(STATENAME);
+				match(NAME);
 				setState(30);
 				match(T__8);
 				}
@@ -237,19 +236,19 @@ public class AutomatonParser extends Parser {
 				setState(31);
 				match(T__4);
 				setState(32);
-				match(STATENAME);
+				match(NAME);
 				setState(33);
 				match(T__5);
 				setState(34);
 				match(T__6);
 				setState(35);
-				match(LABELNAME);
+				match(NAME);
 				setState(36);
 				match(T__7);
 				setState(37);
 				match(T__4);
 				setState(38);
-				match(STATENAME);
+				match(NAME);
 				setState(39);
 				match(T__9);
 				setState(40);
@@ -270,7 +269,7 @@ public class AutomatonParser extends Parser {
 	}
 
 	public static class InitialContext extends ParserRuleContext {
-		public TerminalNode STATENAME() { return getToken(AutomatonParser.STATENAME, 0); }
+		public TerminalNode NAME() { return getToken(AutomatonParser.NAME, 0); }
 		public InitialContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -294,7 +293,7 @@ public class AutomatonParser extends Parser {
 			setState(43);
 			match(T__4);
 			setState(44);
-			match(STATENAME);
+			match(NAME);
 			setState(45);
 			match(T__8);
 			}
@@ -311,7 +310,7 @@ public class AutomatonParser extends Parser {
 	}
 
 	public static class FinalsContext extends ParserRuleContext {
-		public TerminalNode STATENAME() { return getToken(AutomatonParser.STATENAME, 0); }
+		public TerminalNode NAME() { return getToken(AutomatonParser.NAME, 0); }
 		public FinalsContext finals() {
 			return getRuleContext(FinalsContext.class,0);
 		}
@@ -342,7 +341,7 @@ public class AutomatonParser extends Parser {
 				setState(47);
 				match(T__4);
 				setState(48);
-				match(STATENAME);
+				match(NAME);
 				setState(49);
 				match(T__8);
 				}
@@ -353,7 +352,7 @@ public class AutomatonParser extends Parser {
 				setState(50);
 				match(T__4);
 				setState(51);
-				match(STATENAME);
+				match(NAME);
 				setState(52);
 				match(T__9);
 				setState(53);
@@ -374,7 +373,7 @@ public class AutomatonParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\17;\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\16;\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\3\2\3\2\3\2\3\2\5\2\17\n\2\3\2\3\2\5\2\23\n\2\3\2\3"+
 		"\2\5\2\27\n\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\5\3,\n\3\3\4\3\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\3\5"+
@@ -383,12 +382,12 @@ public class AutomatonParser extends Parser {
 		"\3\2\2\2\16\17\3\2\2\2\17\22\3\2\2\2\20\21\7\5\2\2\21\23\5\b\5\2\22\20"+
 		"\3\2\2\2\22\23\3\2\2\2\23\26\3\2\2\2\24\25\7\6\2\2\25\27\5\b\5\2\26\24"+
 		"\3\2\2\2\26\27\3\2\2\2\27\3\3\2\2\2\30\31\7\7\2\2\31\32\7\r\2\2\32\33"+
-		"\7\b\2\2\33\34\7\t\2\2\34\35\7\16\2\2\35\36\7\n\2\2\36\37\7\7\2\2\37 "+
-		"\7\r\2\2 ,\7\13\2\2!\"\7\7\2\2\"#\7\r\2\2#$\7\b\2\2$%\7\t\2\2%&\7\16\2"+
-		"\2&\'\7\n\2\2\'(\7\7\2\2()\7\r\2\2)*\7\f\2\2*,\5\4\3\2+\30\3\2\2\2+!\3"+
-		"\2\2\2,\5\3\2\2\2-.\7\7\2\2./\7\r\2\2/\60\7\13\2\2\60\7\3\2\2\2\61\62"+
-		"\7\7\2\2\62\63\7\r\2\2\639\7\13\2\2\64\65\7\7\2\2\65\66\7\r\2\2\66\67"+
-		"\7\f\2\2\679\5\b\5\28\61\3\2\2\28\64\3\2\2\29\t\3\2\2\2\7\16\22\26+8";
+		"\7\b\2\2\33\34\7\t\2\2\34\35\7\r\2\2\35\36\7\n\2\2\36\37\7\7\2\2\37 \7"+
+		"\r\2\2 ,\7\13\2\2!\"\7\7\2\2\"#\7\r\2\2#$\7\b\2\2$%\7\t\2\2%&\7\r\2\2"+
+		"&\'\7\n\2\2\'(\7\7\2\2()\7\r\2\2)*\7\f\2\2*,\5\4\3\2+\30\3\2\2\2+!\3\2"+
+		"\2\2,\5\3\2\2\2-.\7\7\2\2./\7\r\2\2/\60\7\13\2\2\60\7\3\2\2\2\61\62\7"+
+		"\7\2\2\62\63\7\r\2\2\639\7\13\2\2\64\65\7\7\2\2\65\66\7\r\2\2\66\67\7"+
+		"\f\2\2\679\5\b\5\28\61\3\2\2\28\64\3\2\2\29\t\3\2\2\2\7\16\22\26+8";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

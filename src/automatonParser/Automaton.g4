@@ -1,4 +1,4 @@
-// Grammer for parsing automata
+// Grammar for parsing automata
 grammar Automaton;
 
 // An automaton is a list of transitions (at least one), 
@@ -13,31 +13,26 @@ automaton
 // and a target (surr. by []).
 // The following models a list of transitions.
 transitions
-	: '[' STATENAME ']' '(' LABELNAME ')' '[' STATENAME '];'
-	| '[' STATENAME ']' '(' LABELNAME ')' '[' STATENAME '],' transitions
+	: '[' NAME ']' '(' NAME ')' '[' NAME '];'
+	| '[' NAME ']' '(' NAME ')' '[' NAME '],' transitions
 	;
 
-// Initial state is one state.
+// One initial state.
 initial
-	: '[' STATENAME '];'
+	: '[' NAME '];'
 	;
 
 // Final states can be a list of states.
 finals
-	: '[' STATENAME '];'
-	| '[' STATENAME '],' finals
+	: '[' NAME '];'
+	| '[' NAME '],' finals
 	;
 
-// Allowed names for states.
-STATENAME
+// Allowed names for states and labels.
+NAME
 	: [a-zA-Z0-9]+
 	;
-
-// Allowed names for labels.
-LABELNAME
-	: [a-z0-9]+
-	;
-    
+ 
 WS
-	: [\t\r\n]+ -> skip 
+	: [ \t\r\n]+ -> skip 
 	;
