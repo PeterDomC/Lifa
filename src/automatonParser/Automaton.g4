@@ -28,11 +28,12 @@ finals
 	| STATENAME ',' finals
 	;
 
-// Allowed names for states and labels.
+// Allowed names for states.
 STATENAME
 	: '[' [a-zA-Z0-9]+ ']'
 	;
 
+// Allowed names for labels.
 LABELNAME
 	: '(' ([a-z] | [0-9])+ ')'
 	; 

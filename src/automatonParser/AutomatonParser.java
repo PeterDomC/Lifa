@@ -1,4 +1,5 @@
-// Generated from Automaton.g4 by ANTLR 4.9.2
+package automatonParser;
+
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -8,6 +9,10 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 
+/* 
+ * Generated from Automaton.g4 by ANTLR 4.9.2
+ * 
+ */
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class AutomatonParser extends Parser {
 	static { RuntimeMetaData.checkVersion("4.9.2", RuntimeMetaData.VERSION); }
