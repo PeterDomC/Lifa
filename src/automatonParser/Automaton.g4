@@ -13,25 +13,29 @@ automaton
 // and a target (surr. by []).
 // The following models a list of transitions.
 transitions
-	: '[' NAME ']' '(' NAME ')' '[' NAME '];'
-	| '[' NAME ']' '(' NAME ')' '[' NAME '],' transitions
+	: STATENAME LABELNAME STATENAME ';'
+	| STATENAME LABELNAME STATENAME ',' transitions
 	;
 
 // One initial state.
 initial
-	: '[' NAME '];'
+	: STATENAME ';'
 	;
 
 // Final states can be a list of states.
 finals
-	: '[' NAME '];'
-	| '[' NAME '],' finals
+	: STATENAME ';'
+	| STATENAME ',' finals
 	;
 
 // Allowed names for states and labels.
-NAME
-	: [a-zA-Z0-9]+
+STATENAME
+	: '[' [a-zA-Z0-9]+ ']'
 	;
+
+LABELNAME
+	: '(' ([a-z] | [0-9])+ ')'
+	; 
  
 WS
 	: [ \t\r\n]+ -> skip 

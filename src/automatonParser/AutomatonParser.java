@@ -16,8 +16,8 @@ public class AutomatonParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, NAME=11, WS=12;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, STATENAME=7, LABELNAME=8, 
+		WS=9;
 	public static final int
 		RULE_automaton = 0, RULE_transitions = 1, RULE_initial = 2, RULE_finals = 3;
 	private static String[] makeRuleNames() {
@@ -29,15 +29,13 @@ public class AutomatonParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'trans'", "'init'", "'final'", "'add'", "'['", "']'", "'('", "')'", 
-			"'];'", "'],'"
+			null, "'trans'", "'init'", "'final'", "'add'", "';'", "','"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, null, null, null, "NAME", 
-			"WS"
+			null, null, null, null, null, null, null, "STATENAME", "LABELNAME", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -179,10 +177,11 @@ public class AutomatonParser extends Parser {
 	}
 
 	public static class TransitionsContext extends ParserRuleContext {
-		public List<TerminalNode> NAME() { return getTokens(AutomatonParser.NAME); }
-		public TerminalNode NAME(int i) {
-			return getToken(AutomatonParser.NAME, i);
+		public List<TerminalNode> STATENAME() { return getTokens(AutomatonParser.STATENAME); }
+		public TerminalNode STATENAME(int i) {
+			return getToken(AutomatonParser.STATENAME, i);
 		}
+		public TerminalNode LABELNAME() { return getToken(AutomatonParser.LABELNAME, 0); }
 		public TransitionsContext transitions() {
 			return getRuleContext(TransitionsContext.class,0);
 		}
@@ -204,54 +203,34 @@ public class AutomatonParser extends Parser {
 		TransitionsContext _localctx = new TransitionsContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_transitions);
 		try {
-			setState(41);
+			setState(31);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(22);
-				match(T__4);
+				match(STATENAME);
 				setState(23);
-				match(NAME);
+				match(LABELNAME);
 				setState(24);
-				match(T__5);
+				match(STATENAME);
 				setState(25);
-				match(T__6);
-				setState(26);
-				match(NAME);
-				setState(27);
-				match(T__7);
-				setState(28);
 				match(T__4);
-				setState(29);
-				match(NAME);
-				setState(30);
-				match(T__8);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(31);
-				match(T__4);
-				setState(32);
-				match(NAME);
-				setState(33);
+				setState(26);
+				match(STATENAME);
+				setState(27);
+				match(LABELNAME);
+				setState(28);
+				match(STATENAME);
+				setState(29);
 				match(T__5);
-				setState(34);
-				match(T__6);
-				setState(35);
-				match(NAME);
-				setState(36);
-				match(T__7);
-				setState(37);
-				match(T__4);
-				setState(38);
-				match(NAME);
-				setState(39);
-				match(T__9);
-				setState(40);
+				setState(30);
 				transitions();
 				}
 				break;
@@ -269,7 +248,7 @@ public class AutomatonParser extends Parser {
 	}
 
 	public static class InitialContext extends ParserRuleContext {
-		public TerminalNode NAME() { return getToken(AutomatonParser.NAME, 0); }
+		public TerminalNode STATENAME() { return getToken(AutomatonParser.STATENAME, 0); }
 		public InitialContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -290,12 +269,10 @@ public class AutomatonParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(43);
+			setState(33);
+			match(STATENAME);
+			setState(34);
 			match(T__4);
-			setState(44);
-			match(NAME);
-			setState(45);
-			match(T__8);
 			}
 		}
 		catch (RecognitionException re) {
@@ -310,7 +287,7 @@ public class AutomatonParser extends Parser {
 	}
 
 	public static class FinalsContext extends ParserRuleContext {
-		public TerminalNode NAME() { return getToken(AutomatonParser.NAME, 0); }
+		public TerminalNode STATENAME() { return getToken(AutomatonParser.STATENAME, 0); }
 		public FinalsContext finals() {
 			return getRuleContext(FinalsContext.class,0);
 		}
@@ -332,30 +309,26 @@ public class AutomatonParser extends Parser {
 		FinalsContext _localctx = new FinalsContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_finals);
 		try {
-			setState(54);
+			setState(41);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(47);
+				setState(36);
+				match(STATENAME);
+				setState(37);
 				match(T__4);
-				setState(48);
-				match(NAME);
-				setState(49);
-				match(T__8);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(50);
-				match(T__4);
-				setState(51);
-				match(NAME);
-				setState(52);
-				match(T__9);
-				setState(53);
+				setState(38);
+				match(STATENAME);
+				setState(39);
+				match(T__5);
+				setState(40);
 				finals();
 				}
 				break;
@@ -373,21 +346,18 @@ public class AutomatonParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\16;\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\13.\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\3\2\3\2\3\2\3\2\5\2\17\n\2\3\2\3\2\5\2\23\n\2\3\2\3"+
-		"\2\5\2\27\n\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\3\3\3\3\3\3\3\3\5\3,\n\3\3\4\3\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\3\5"+
-		"\3\5\5\59\n\5\3\5\2\2\6\2\4\6\b\2\2\2;\2\n\3\2\2\2\4+\3\2\2\2\6-\3\2\2"+
-		"\2\b8\3\2\2\2\n\13\7\3\2\2\13\16\5\4\3\2\f\r\7\4\2\2\r\17\5\6\4\2\16\f"+
-		"\3\2\2\2\16\17\3\2\2\2\17\22\3\2\2\2\20\21\7\5\2\2\21\23\5\b\5\2\22\20"+
-		"\3\2\2\2\22\23\3\2\2\2\23\26\3\2\2\2\24\25\7\6\2\2\25\27\5\b\5\2\26\24"+
-		"\3\2\2\2\26\27\3\2\2\2\27\3\3\2\2\2\30\31\7\7\2\2\31\32\7\r\2\2\32\33"+
-		"\7\b\2\2\33\34\7\t\2\2\34\35\7\r\2\2\35\36\7\n\2\2\36\37\7\7\2\2\37 \7"+
-		"\r\2\2 ,\7\13\2\2!\"\7\7\2\2\"#\7\r\2\2#$\7\b\2\2$%\7\t\2\2%&\7\r\2\2"+
-		"&\'\7\n\2\2\'(\7\7\2\2()\7\r\2\2)*\7\f\2\2*,\5\4\3\2+\30\3\2\2\2+!\3\2"+
-		"\2\2,\5\3\2\2\2-.\7\7\2\2./\7\r\2\2/\60\7\13\2\2\60\7\3\2\2\2\61\62\7"+
-		"\7\2\2\62\63\7\r\2\2\639\7\13\2\2\64\65\7\7\2\2\65\66\7\r\2\2\66\67\7"+
-		"\f\2\2\679\5\b\5\28\61\3\2\2\28\64\3\2\2\29\t\3\2\2\2\7\16\22\26+8";
+		"\2\5\2\27\n\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\"\n\3\3\4\3\4\3"+
+		"\4\3\5\3\5\3\5\3\5\3\5\5\5,\n\5\3\5\2\2\6\2\4\6\b\2\2\2.\2\n\3\2\2\2\4"+
+		"!\3\2\2\2\6#\3\2\2\2\b+\3\2\2\2\n\13\7\3\2\2\13\16\5\4\3\2\f\r\7\4\2\2"+
+		"\r\17\5\6\4\2\16\f\3\2\2\2\16\17\3\2\2\2\17\22\3\2\2\2\20\21\7\5\2\2\21"+
+		"\23\5\b\5\2\22\20\3\2\2\2\22\23\3\2\2\2\23\26\3\2\2\2\24\25\7\6\2\2\25"+
+		"\27\5\b\5\2\26\24\3\2\2\2\26\27\3\2\2\2\27\3\3\2\2\2\30\31\7\t\2\2\31"+
+		"\32\7\n\2\2\32\33\7\t\2\2\33\"\7\7\2\2\34\35\7\t\2\2\35\36\7\n\2\2\36"+
+		"\37\7\t\2\2\37 \7\b\2\2 \"\5\4\3\2!\30\3\2\2\2!\34\3\2\2\2\"\5\3\2\2\2"+
+		"#$\7\t\2\2$%\7\7\2\2%\7\3\2\2\2&\'\7\t\2\2\',\7\7\2\2()\7\t\2\2)*\7\b"+
+		"\2\2*,\5\b\5\2+&\3\2\2\2+(\3\2\2\2,\t\3\2\2\2\7\16\22\26!+";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
