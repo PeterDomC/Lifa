@@ -1,5 +1,6 @@
 package automatonParser;
 
+// Generated from Automaton.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -9,10 +10,6 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 
-/* 
- * Generated from Automaton.g4 by ANTLR 4.9.2
- * 
- */
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class AutomatonParser extends Parser {
 	static { RuntimeMetaData.checkVersion("4.9.2", RuntimeMetaData.VERSION); }
@@ -21,8 +18,7 @@ public class AutomatonParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, STATENAME=7, LABELNAME=8, 
-		WS=9;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, STATENAME=6, LABELNAME=7, WS=8;
 	public static final int
 		RULE_automaton = 0, RULE_transitions = 1, RULE_initial = 2, RULE_finals = 3;
 	private static String[] makeRuleNames() {
@@ -34,13 +30,13 @@ public class AutomatonParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'trans'", "'init'", "'final'", "'add'", "';'", "','"
+			null, "'trans'", "'init'", "'final'", "';'", "','"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, "STATENAME", "LABELNAME", "WS"
+			null, null, null, null, null, null, "STATENAME", "LABELNAME", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -101,11 +97,8 @@ public class AutomatonParser extends Parser {
 		public InitialContext initial() {
 			return getRuleContext(InitialContext.class,0);
 		}
-		public List<FinalsContext> finals() {
-			return getRuleContexts(FinalsContext.class);
-		}
-		public FinalsContext finals(int i) {
-			return getRuleContext(FinalsContext.class,i);
+		public FinalsContext finals() {
+			return getRuleContext(FinalsContext.class,0);
 		}
 		public AutomatonContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -156,18 +149,6 @@ public class AutomatonParser extends Parser {
 				}
 			}
 
-			setState(20);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			if (_la==T__3) {
-				{
-				setState(18);
-				match(T__3);
-				setState(19);
-				finals();
-				}
-			}
-
 			}
 		}
 		catch (RecognitionException re) {
@@ -208,11 +189,24 @@ public class AutomatonParser extends Parser {
 		TransitionsContext _localctx = new TransitionsContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_transitions);
 		try {
-			setState(31);
+			setState(27);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
+				{
+				setState(18);
+				match(STATENAME);
+				setState(19);
+				match(LABELNAME);
+				setState(20);
+				match(STATENAME);
+				setState(21);
+				match(T__3);
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
 				{
 				setState(22);
 				match(STATENAME);
@@ -222,20 +216,7 @@ public class AutomatonParser extends Parser {
 				match(STATENAME);
 				setState(25);
 				match(T__4);
-				}
-				break;
-			case 2:
-				enterOuterAlt(_localctx, 2);
-				{
 				setState(26);
-				match(STATENAME);
-				setState(27);
-				match(LABELNAME);
-				setState(28);
-				match(STATENAME);
-				setState(29);
-				match(T__5);
-				setState(30);
 				transitions();
 				}
 				break;
@@ -274,10 +255,10 @@ public class AutomatonParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(33);
+			setState(29);
 			match(STATENAME);
-			setState(34);
-			match(T__4);
+			setState(30);
+			match(T__3);
 			}
 		}
 		catch (RecognitionException re) {
@@ -314,26 +295,26 @@ public class AutomatonParser extends Parser {
 		FinalsContext _localctx = new FinalsContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_finals);
 		try {
-			setState(41);
+			setState(37);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(36);
+				setState(32);
 				match(STATENAME);
-				setState(37);
-				match(T__4);
+				setState(33);
+				match(T__3);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(38);
+				setState(34);
 				match(STATENAME);
-				setState(39);
-				match(T__5);
-				setState(40);
+				setState(35);
+				match(T__4);
+				setState(36);
 				finals();
 				}
 				break;
@@ -351,18 +332,17 @@ public class AutomatonParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\13.\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\3\2\3\2\3\2\3\2\5\2\17\n\2\3\2\3\2\5\2\23\n\2\3\2\3"+
-		"\2\5\2\27\n\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\"\n\3\3\4\3\4\3"+
-		"\4\3\5\3\5\3\5\3\5\3\5\5\5,\n\5\3\5\2\2\6\2\4\6\b\2\2\2.\2\n\3\2\2\2\4"+
-		"!\3\2\2\2\6#\3\2\2\2\b+\3\2\2\2\n\13\7\3\2\2\13\16\5\4\3\2\f\r\7\4\2\2"+
-		"\r\17\5\6\4\2\16\f\3\2\2\2\16\17\3\2\2\2\17\22\3\2\2\2\20\21\7\5\2\2\21"+
-		"\23\5\b\5\2\22\20\3\2\2\2\22\23\3\2\2\2\23\26\3\2\2\2\24\25\7\6\2\2\25"+
-		"\27\5\b\5\2\26\24\3\2\2\2\26\27\3\2\2\2\27\3\3\2\2\2\30\31\7\t\2\2\31"+
-		"\32\7\n\2\2\32\33\7\t\2\2\33\"\7\7\2\2\34\35\7\t\2\2\35\36\7\n\2\2\36"+
-		"\37\7\t\2\2\37 \7\b\2\2 \"\5\4\3\2!\30\3\2\2\2!\34\3\2\2\2\"\5\3\2\2\2"+
-		"#$\7\t\2\2$%\7\7\2\2%\7\3\2\2\2&\'\7\t\2\2\',\7\7\2\2()\7\t\2\2)*\7\b"+
-		"\2\2*,\5\b\5\2+&\3\2\2\2+(\3\2\2\2,\t\3\2\2\2\7\16\22\26!+";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\n*\4\2\t\2\4\3\t"+
+		"\3\4\4\t\4\4\5\t\5\3\2\3\2\3\2\3\2\5\2\17\n\2\3\2\3\2\5\2\23\n\2\3\3\3"+
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\36\n\3\3\4\3\4\3\4\3\5\3\5\3\5\3\5"+
+		"\3\5\5\5(\n\5\3\5\2\2\6\2\4\6\b\2\2\2)\2\n\3\2\2\2\4\35\3\2\2\2\6\37\3"+
+		"\2\2\2\b\'\3\2\2\2\n\13\7\3\2\2\13\16\5\4\3\2\f\r\7\4\2\2\r\17\5\6\4\2"+
+		"\16\f\3\2\2\2\16\17\3\2\2\2\17\22\3\2\2\2\20\21\7\5\2\2\21\23\5\b\5\2"+
+		"\22\20\3\2\2\2\22\23\3\2\2\2\23\3\3\2\2\2\24\25\7\b\2\2\25\26\7\t\2\2"+
+		"\26\27\7\b\2\2\27\36\7\6\2\2\30\31\7\b\2\2\31\32\7\t\2\2\32\33\7\b\2\2"+
+		"\33\34\7\7\2\2\34\36\5\4\3\2\35\24\3\2\2\2\35\30\3\2\2\2\36\5\3\2\2\2"+
+		"\37 \7\b\2\2 !\7\6\2\2!\7\3\2\2\2\"#\7\b\2\2#(\7\6\2\2$%\7\b\2\2%&\7\7"+
+		"\2\2&(\5\b\5\2\'\"\3\2\2\2\'$\3\2\2\2(\t\3\2\2\2\6\16\22\35\'";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

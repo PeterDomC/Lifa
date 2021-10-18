@@ -2,10 +2,9 @@
 grammar Automaton;
 
 // An automaton is a list of transitions (at least one), 
-// followed by an optional initial state, 
-// optional final states, and optional additional states.
+// followed by an optional initial state and optional final states
 automaton
-	: 'trans' transitions ('init' initial)? ('final' finals)? ('add' finals)?
+	: 'trans' transitions ('init' initial)? ('final' finals)?
 	;
 
 // A transition has a source state (surrounded by []), 
