@@ -12,73 +12,34 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class AutomatonLexer extends Lexer {
+	
 	static { RuntimeMetaData.checkVersion("4.9.2", RuntimeMetaData.VERSION); }
-
 	protected static final DFA[] _decisionToDFA;
-	protected static final PredictionContextCache _sharedContextCache =
-		new PredictionContextCache();
-	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, STATENAME=6, LABELNAME=7, WS=8;
-	public static String[] channelNames = {
-		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
-	};
-
-	public static String[] modeNames = {
-		"DEFAULT_MODE"
-	};
-
-	private static String[] makeRuleNames() {
-		return new String[] {
-			"T__0", "T__1", "T__2", "T__3", "T__4", "STATENAME", "LABELNAME", "WS"
-		};
-	}
+	protected static final PredictionContextCache _sharedContextCache = new PredictionContextCache();
+	public static final int T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, STATENAME=6, LABELNAME=7, WS=8;
+	public static String[] channelNames = {"DEFAULT_TOKEN_CHANNEL", "HIDDEN"};
+	public static String[] modeNames = {"DEFAULT_MODE"};
 	public static final String[] ruleNames = makeRuleNames();
-
-	private static String[] makeLiteralNames() {
-		return new String[] {
-			null, "'trans'", "'init'", "'final'", "';'", "','"
-		};
-	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
-	private static String[] makeSymbolicNames() {
-		return new String[] {
-			null, null, null, null, null, null, "STATENAME", "LABELNAME", "WS"
-		};
-	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
-	/**
-	 * @deprecated Use {@link #VOCABULARY} instead.
-	 */
-	@Deprecated
-	public static final String[] tokenNames;
-	static {
-		tokenNames = new String[_SYMBOLIC_NAMES.length];
-		for (int i = 0; i < tokenNames.length; i++) {
-			tokenNames[i] = VOCABULARY.getLiteralName(i);
-			if (tokenNames[i] == null) {
-				tokenNames[i] = VOCABULARY.getSymbolicName(i);
-			}
-
-			if (tokenNames[i] == null) {
-				tokenNames[i] = "<INVALID>";
-			}
-		}
+	private static String[] makeRuleNames() {
+		return new String[] {"T__0", "T__1", "T__2", "T__3", "T__4", "STATENAME", "LABELNAME", "WS"};
 	}
-
-	@Override
-	@Deprecated
-	public String[] getTokenNames() {
-		return tokenNames;
+	
+	private static String[] makeLiteralNames() {
+		return new String[] {null, "'trans'", "'init'", "'final'", "';'", "','"};
 	}
-
+	
+	private static String[] makeSymbolicNames() {
+		return new String[] {null, null, null, null, null, null, "STATENAME", "LABELNAME", "WS"};
+	}
+	
 	@Override
-
 	public Vocabulary getVocabulary() {
 		return VOCABULARY;
 	}
-
 
 	public AutomatonLexer(CharStream input) {
 		super(input);
@@ -86,22 +47,34 @@ public class AutomatonLexer extends Lexer {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "Automaton.g4"; }
+	public String getGrammarFileName() {
+		return "Automaton.g4";
+	}
 
 	@Override
-	public String[] getRuleNames() { return ruleNames; }
+	public String[] getRuleNames() {
+		return ruleNames;
+	}
 
 	@Override
-	public String getSerializedATN() { return _serializedATN; }
+	public String getSerializedATN() {
+		return _serializedATN; 
+	}
 
 	@Override
-	public String[] getChannelNames() { return channelNames; }
+	public String[] getChannelNames() {
+		return channelNames; 
+	}
 
 	@Override
-	public String[] getModeNames() { return modeNames; }
+	public String[] getModeNames() {
+		return modeNames; 
+	}
 
 	@Override
-	public ATN getATN() { return _ATN; }
+	public ATN getATN() {
+		return _ATN;
+	}
 
 	public static final String _serializedATN =
 		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2\n?\b\1\4\2\t\2\4"+
@@ -121,8 +94,9 @@ public class AutomatonLexer extends Lexer {
 		"\3\2\2\2\63\64\3\2\2\2\64\62\3\2\2\2\64\65\3\2\2\2\65\66\3\2\2\2\66\67"+
 		"\7+\2\2\67\20\3\2\2\28:\t\4\2\298\3\2\2\2:;\3\2\2\2;9\3\2\2\2;<\3\2\2"+
 		"\2<=\3\2\2\2=>\b\t\2\2>\22\3\2\2\2\7\2,\62\64;\3\b\2\2";
-	public static final ATN _ATN =
-		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
+	
+	public static final ATN _ATN = new ATNDeserializer().deserialize(_serializedATN.toCharArray());
+	
 	static {
 		_decisionToDFA = new DFA[_ATN.getNumberOfDecisions()];
 		for (int i = 0; i < _ATN.getNumberOfDecisions(); i++) {

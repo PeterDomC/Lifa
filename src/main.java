@@ -21,10 +21,10 @@ public class main {
 
 	public static void main(String[] args) {
 		
+		Test.runOperationTests();
+		Test.runLanguageTests();
+		
 		Autom A = AutomParser.parseFromFile("test.txt");
 		AutomPrinter.createVisual(A, "testprint");
-		
-		//Test.runOperationTests();
-		//Test.runLanguageTests();
 	}
 }
