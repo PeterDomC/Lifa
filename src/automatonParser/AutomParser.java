@@ -23,7 +23,7 @@ public class AutomParser {
 	 * 
 	 * NOTE: The method initializes the lexer, the parser, and the corresponding listener.
 	 */
-	public static Autom parse(CharStream stream) {
+	private static Autom parse(CharStream stream) {
 		// Initialize the lexer
 		AutomatonLexer lex = new AutomatonLexer(stream);
 		// Initialize the parser
@@ -48,7 +48,7 @@ public class AutomParser {
 	 * 
 	 * NOTE: The method generates a CharStream and passes it to the corresponding parse method.
 	 */
-	public static Autom parse(String inputStr) {
+	public static Autom parseFromString(String inputStr) {
 		return parse(CharStreams.fromString(inputStr));
 	}
 	
