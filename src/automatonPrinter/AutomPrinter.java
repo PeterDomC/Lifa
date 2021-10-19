@@ -14,7 +14,7 @@ import automata.Transition;
  * which is supported by GraphViz - then it creates the corresponding output picture.
  * Standard format is gif
  */
-public class AutomTranslator {
+public class AutomPrinter {
 	
 	/**
 	 * Standard file_format of output picture

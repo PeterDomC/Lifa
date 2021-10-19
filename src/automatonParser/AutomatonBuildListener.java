@@ -32,7 +32,7 @@ public class AutomatonBuildListener implements AutomatonListener {
 	 */
 	@Override
 	public void enterAutomaton(AutomatonParser.AutomatonContext ctx) {
-		System.out.println("Parsing started.");
+		//System.out.println("Parsing started.");
 	}
 	
 	/**
@@ -40,7 +40,7 @@ public class AutomatonBuildListener implements AutomatonListener {
 	 */
 	@Override
 	public void exitAutomaton(AutomatonParser.AutomatonContext ctx) {
-		System.out.println("Parsing completed.");
+		//System.out.println("Parsing completed.");
 	}
 	
 	/**
