@@ -20,12 +20,11 @@ import examples.Test;
 public class main {
 
 	public static void main(String[] args) {
-		/*
+		
 		Test.runOperationTests();
 		Test.runLanguageTests();
-		*/
 		
-		Autom A = AutomParser.parseFromFile("src/examples/parsetest.txt");
-		AutomPrinter.createVisual(A,"testprint");
+		Autom B = AutomParser.parseFromFile("src/examples/parsetest.txt");
+		AutomPrinter.createVisual(B,"testprint");
 	}
 }

@@ -76,7 +76,6 @@ public class Test {
 		
 		/* Equivalence check */
 		assert (Language.isEquivalent(A, B));
-		
 		B = ExampleCollection.exampleRM_B();
 		assert (!Language.isEquivalent(A, B));
 	}
