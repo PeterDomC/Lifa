@@ -16,7 +16,11 @@ On Mac, an installation via Homebrew is simple:
 brew install graphviz
 ```
 
-Step2: In your IDE, make sure that that the library 'antlr-4.9.2-complete.jar' which lies in the 'lib' folder is added as a referenced library to your project.
+Step2: In your IDE, make sure that you use the correct run configuration to compile and run a Maven project.
+As goals of the run configuration, you should set:
+```
+compile exec:java -Dexec.mainClass="main"
+```
 After this, you are ready to go (:
 
 <h2>
