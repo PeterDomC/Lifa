@@ -22,7 +22,7 @@ As goals of the run configuration, you should set:
 compile exec:java -Dexec.mainClass="main"
 ```
 
-Step3 (optional): If you are using Eclipse with embededd Maven, you may run into an infamous [bug](https://bugs.eclipse.org/bugs/show_bug.cgi?id=506676).
+Step3 (optional): If you are using Eclipse with embedded Maven, you may run into an infamous [bug](https://bugs.eclipse.org/bugs/show_bug.cgi?id=506676).
 There are two solutions to the problem, the [easier one](https://stackoverflow.com/questions/63518376/eclipse-maven-slf4j-class-path-contains-multiple-slf4j-bindings) and the [more involved one](https://stackoverflow.com/questions/63755390/multiple-slf4j-bindings-with-m2e-in-eclipse-2020-06).
 After this, you are ready to go (:
 
