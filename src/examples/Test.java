@@ -1,8 +1,12 @@
 package examples;
 
+import java.util.HashSet;
+
 import automata.Autom;
+import automata.State;
 import automataAlgorithms.Language;
 import automataAlgorithms.Operations;
+import automatonParser.AutomParser;
 import automatonPrinter.AutomPrinter;
 
 public class Test {
@@ -72,11 +76,43 @@ public class Test {
 		assert (!Language.isContained(A,B));
 		
 		B = Operations.determinize(A);
-		assert (Language.isContained(A, B));
+		assert (Language.isContained(A,B));
 		
 		/* Equivalence check */
-		assert (Language.isEquivalent(A, B));
+		assert (Language.isEquivalent(A,B));
 		B = ExampleCollection.exampleRM_B();
-		assert (!Language.isEquivalent(A, B));
+		assert (!Language.isEquivalent(A,B));
+	}
+	
+	/**
+	 * Real world test scenarios, taken from http://www.languageinclusion.org
+	 */
+	public static void runRealWorldTests() {
+		
+		/* Peterson */
+		Autom A = AutomParser.parseFromFile("src/examples/realworld/petersonA.txt");
+		Autom B = AutomParser.parseFromFile("src/examples/realworld/petersonB.txt");
+		assert (Language.isContained(A,B));
+		
+		/* Phils */
+		A = AutomParser.parseFromFile("src/examples/realworld/philsA.txt");
+		B = AutomParser.parseFromFile("src/examples/realworld/philsB.txt");
+		assert (Language.isContained(A,B));
+		
+		/* Bakery */
+		A = AutomParser.parseFromFile("src/examples/realworld/bakeryA.txt");
+		B = AutomParser.parseFromFile("src/examples/realworld/bakeryB.txt");
+		assert (!Language.isContained(A,B));
+		
+		/* Fischer V5 (this test may take a while) */
+		A = AutomParser.parseFromFile("src/examples/realworld/fischerV5A.txt");
+		HashSet<State> finA = new HashSet<State>(A.getStates());
+		A.addFinal(finA);
+		
+		B = AutomParser.parseFromFile("src/examples/realworld/fischerV5B.txt");
+		HashSet<State> finB = new HashSet<State>(B.getStates());
+		B.addFinal(finB);
+		
+		assert (!Language.isContained(A,B));
 	}
 }

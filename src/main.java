@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,15 +17,15 @@ import automatonParser.AutomatonParser;
 import automatonPrinter.*;
 import examples.ExampleCollection;
 import examples.Test;
+import examples.Translator;
 
 public class main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		Test.runOperationTests();
 		Test.runLanguageTests();
+		Test.runRealWorldTests();
 		
-		Autom B = AutomParser.parseFromFile("src/examples/parsetest.txt");
-		AutomPrinter.createVisual(B,"testprint");
 	}
 }
