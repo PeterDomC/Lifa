@@ -3,8 +3,8 @@ package automata;
 import java.util.Objects;
 
 /*
- * State of a finite automaton
- * Basically a wrapper of a String
+ * State of a finite automaton.
+ * Basically a wrapper of a String.
  * @Immutable
  */
 public class State implements Comparable<State>{
@@ -12,7 +12,7 @@ public class State implements Comparable<State>{
     private final String name;
 
     /**
-     * Constructor generating a state with the given name
+     * Constructor generating a state with the given name.
      */
     public State(String name) {
     	this.name = name;
@@ -26,7 +26,7 @@ public class State implements Comparable<State>{
     }
     
     /**
-     * Override of equals
+     * Override of equals.
      */
     @Override
     public boolean equals(Object o){
@@ -39,7 +39,7 @@ public class State implements Comparable<State>{
     }
     
     /**
-     * Override of hashCode
+     * Override of hashCode.
      */
     @Override
     public int hashCode(){
@@ -47,7 +47,7 @@ public class State implements Comparable<State>{
     }
     
     /**
-     * Override of compareTo
+     * Override of compareTo.
      */
 	@Override
 	public int compareTo(State q) {

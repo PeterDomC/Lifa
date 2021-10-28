@@ -3,8 +3,8 @@ package automata;
 import java.util.Objects;
 
 /*
- * Letter class
- * This is just a wrapped String
+ * Letter class.
+ * This is just a wrapped String.
  * @Immutable
  */
 public class Letter{
