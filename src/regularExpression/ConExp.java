@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class ConExp extends RegExp {
 
-	private RegExp leftFactor;
-	private RegExp rightFactor;
+	private final RegExp leftFactor;
+	private final RegExp rightFactor;
 	
 	public ConExp (RegExp leftFactor, RegExp rightFactor) {
 		super(RegExpType.conExp);

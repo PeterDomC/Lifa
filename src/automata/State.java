@@ -19,7 +19,7 @@ public class State implements Comparable<State>{
     }
     
     /**
-     * Getter: Name
+     * Getter for the name.
      */
     public String getName(){
         return name;

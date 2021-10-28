@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class SumExp extends RegExp {
 	
-	private RegExp leftSumand;
-	private RegExp rightSumand;
+	private final RegExp leftSumand;
+	private final RegExp rightSumand;
 	
 	public SumExp (RegExp leftSumand, RegExp rightSumand) {
 		super(RegExpType.sumExp);

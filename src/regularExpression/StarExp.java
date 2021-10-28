@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class StarExp extends RegExp {
 	
-	private RegExp inner;
+	private final RegExp inner;
 	
 	public StarExp (RegExp inner) {
 		super(RegExpType.starExp);

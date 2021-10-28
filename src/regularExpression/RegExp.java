@@ -1,5 +1,7 @@
 package regularExpression;
 
+import automata.Autom;
+
 /*
  * Base abstract class for regular expressions.
  * Regular Expressions of a determined type implement the interface.
@@ -22,4 +24,9 @@ public abstract class RegExp {
 	public RegExpType getType() {
 		return this.type;
 	}
+	
+	/**
+	 * 
+	 */
+	//public abstract Autom toAutom();
 }
