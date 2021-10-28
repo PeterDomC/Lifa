@@ -2,12 +2,13 @@ package regularExpression;
 
 import java.util.Objects;
 
-public class ConExp implements RegExp {
+public class ConExp extends RegExp {
 
 	private RegExp leftFactor;
 	private RegExp rightFactor;
 	
 	public ConExp (RegExp leftFactor, RegExp rightFactor) {
+		super(RegExpType.conExp);
 		this.leftFactor = leftFactor;
 		this.rightFactor = rightFactor;
 	}

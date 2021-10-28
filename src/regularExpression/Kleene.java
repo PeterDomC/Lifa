@@ -5,16 +5,15 @@ package regularExpression;
  */
 public class Kleene {
 	
-	public static Atom add(Atom a, Atom b) {
-		System.out.println("Atom method");
-		return a;
-	}
-	
 	public static RegExp add(RegExp a, RegExp b) {
-		System.out.println("RegExp method");
-		return b;
+		return new SumExp(a,b);
 	}
-
 	
+	public static RegExp concat(RegExp a, RegExp b) {
+		return new ConExp(a,b);
+	}
 	
+	public static RegExp star(RegExp a) {
+		return new StarExp(a);
+	}
 }

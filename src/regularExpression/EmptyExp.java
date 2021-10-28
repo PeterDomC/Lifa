@@ -3,14 +3,16 @@ package regularExpression;
 /*
  * Singleton.
  */
-public class EmptyExp implements RegExp {
-
+public class EmptyExp extends RegExp {
+	
 	private static EmptyExp emptySet;
 	
 	/**
 	 * 
 	 */
-	private EmptyExp () {}
+	private EmptyExp () {
+		super(RegExpType.emptyExp);
+	}
 	
 	/**
 	 * 

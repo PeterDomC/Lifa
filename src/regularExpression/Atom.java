@@ -8,7 +8,7 @@ import automata.Letter;
  * Class for modeling a regular expression that consists of a single letter.
  * @Immutable
  */
-public class Atom implements RegExp {
+public class Atom extends RegExp {
 	
 	private final String symb;
 	
@@ -16,6 +16,7 @@ public class Atom implements RegExp {
      * Constructor.
      */
 	public Atom (Letter a) {
+		super(RegExpType.atom);
 		this.symb = a.getSymb();
 	}
 	

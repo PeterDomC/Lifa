@@ -2,11 +2,12 @@ package regularExpression;
 
 import java.util.Objects;
 
-public class StarExp implements RegExp {
+public class StarExp extends RegExp {
 	
 	private RegExp inner;
 	
 	public StarExp (RegExp inner) {
+		super(RegExpType.starExp);
 		this.inner = inner;
 	}
 	

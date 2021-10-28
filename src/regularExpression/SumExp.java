@@ -2,12 +2,13 @@ package regularExpression;
 
 import java.util.Objects;
 
-public class SumExp implements RegExp {
+public class SumExp extends RegExp {
 	
 	private RegExp leftSumand;
 	private RegExp rightSumand;
 	
 	public SumExp (RegExp leftSumand, RegExp rightSumand) {
+		super(RegExpType.sumExp);
 		this.leftSumand = leftSumand;
 		this.rightSumand = rightSumand;
 	}

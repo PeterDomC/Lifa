@@ -3,14 +3,16 @@ package regularExpression;
 /*
  * Singleton pattern.
  */
-public class Epsilon implements RegExp {
+public class Epsilon extends RegExp {
 	
 	private static Epsilon eps;
 	
 	/**
 	 * 
 	 */
-	private Epsilon () {}
+	private Epsilon () {
+		super(RegExpType.epsilon);
+	}
 	
 	/**
 	 * 
