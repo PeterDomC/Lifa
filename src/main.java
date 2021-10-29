@@ -14,12 +14,12 @@ import regularExpression.SumExp;
 public class main {
 
 	public static void main(String[] args) throws IOException {
-		/*
+		
 		Test.runOperationTests();
 		Test.runLanguageTests();
 		Test.runRealWorldTests();
-		*/
 		
+		/*
 		Letter a = new Letter("a");
 		Letter b = new Letter("b");
 		Atom A = new Atom(a);
@@ -37,5 +37,9 @@ public class main {
 		System.out.println(C.toString());
 		System.out.println(C.getType());
 		
+		C = Kleene.star(C);
+		System.out.println(C.toString());
+		System.out.println(C.getType());
+		*/
 	}
 }

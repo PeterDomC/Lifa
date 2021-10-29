@@ -4,7 +4,7 @@ import automata.Autom;
 
 /*
  * Base abstract class for regular expressions.
- * Regular Expressions of a determined type implement the interface.
+ * Regular Expressions of a certain type extend the class.
  * @Immutable
  */
 public abstract class RegExp {
