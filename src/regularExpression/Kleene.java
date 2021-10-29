@@ -1,5 +1,9 @@
 package regularExpression;
 
+import java.util.HashSet;
+
+import automata.Autom;
+
 /*
  * Class that implements the operations of the Kleene algebra over the regular expressions.
  */
@@ -38,6 +42,15 @@ public class Kleene {
 		return new SumExp(a,b);
 	}
 	
+	/**
+	 * Method for concatenating two regular expressions.
+	 * This yields a new regular con expression.
+	 * @param a, b are the given regular expressions.
+	 * @return the resulting con expression.
+	 * 
+	 * NOTE: The method simplifies the resulting expression.
+	 * NOTE: May return a reference to a or b.
+	 */
 	public static RegExp concat(RegExp a, RegExp b) {
 		
 		// Obvious Simplification cases.
@@ -51,9 +64,25 @@ public class Kleene {
 		if (type_a == RegExpType.epsilon) return b;
 		if (type_b == RegExpType.epsilon) return a;
 		
-		//TODO
+		// Non-obvious simplification.
+		if (type_a == RegExpType.starExp && type_b == RegExpType.starExp) {
+			
+			// Factor a = R* and b = E*.
+			RegExp R = ((StarExp) a).getInner();
+			RegExp E = ((StarExp) b).getInner();
+			
+			// R and E are syntactically equal - return one factor.
+			if (R.equals(E)) return a;
+			
+			// If E is contained in R, return a: R* . E* = R* = a.
+			if (isContained(E,R)) return a;
+			
+			// If R is contained in E, return b: R* . E* = E* = b.
+			if (isContained(R,E)) return b;
+		}
 		
 		// No simplification applicable.
+		//TODO: find common prefix and pull factor out.
 		return new ConExp(a,b);
 	}
 	
@@ -77,8 +106,12 @@ public class Kleene {
 		if (type_a == RegExpType.emptyExp) return Epsilon.getEps();
 		
 		// Non-obvious simplification.
-		// Check if the given expression is a chain of stared expressions and apply: (a*.b*)* = (a+b)*.
-		// TODO - apply isStarChain().
+		// Check if the given expression is a chain of star expressions and shorten via: (R*.E*)* = (R+E)*.
+		HashSet<RegExp> comp = getStarChainComp(a);
+		// If comp contains at least 2 factors, we can simplify the expression.
+		if (comp.size() >= 2) {
+			return simplifyStarChain(comp);
+		}
 		
 		// No simplification applicable.
 		return new StarExp(a);
@@ -100,8 +133,69 @@ public class Kleene {
 		return false;
 	}
 	
-	private boolean isStarChain(RegExp a) {
-		//TODO 
-		return false;
+	/**
+	 * Checks whether the given regular expression is a star chain of the form: a* . b* . c* ...
+	 * If so, it returns the components a,b,c...
+	 * @param a is the given regular expression.
+	 * @return the components if a is a star chain and an empty set otherwise.
+	 */
+	private static HashSet<RegExp> getStarChainComp(RegExp a) {
+		
+		HashSet<RegExp> factors = new HashSet<RegExp>();
+		
+		if (a.getType() == RegExpType.conExp) {
+			// The given expression is a concat expression.
+			RegExp left = ((ConExp) a).getLeftFactor();
+			RegExp right = ((ConExp) a).getRightFactor();
+			
+			// Split the search into the left and the right part.
+			HashSet<RegExp> left_factors = getStarChainComp(left);
+			HashSet<RegExp> right_factors = getStarChainComp(right);
+			if (!left_factors.isEmpty() && !right_factors.isEmpty()) {
+				// Add the found factors.
+				factors.addAll(left_factors);
+				factors.addAll(right_factors);
+			}
+		}
+		
+		if (a.getType() == RegExpType.starExp) {
+			// The given expression is a star expression - this is the end of the recursion.
+			RegExp inner = ((StarExp) a).getInner();
+			factors.add(inner);
+		}
+		
+		// If the expression has a subexpression that is not a star chain,
+		// returns the empty set.
+		return factors;
+	}
+	
+	/**
+	 * Simplifies a star chain to its sum representation, requires the list of components.
+	 * @param comp is the list of components of the star chain.
+	 * @return a regular expression that is the star of the sum of the components.
+	 */
+	private static StarExp simplifyStarChain(HashSet<RegExp> comp) {
+		// Build the star expresssion out of the given components.
+		RegExp sum = EmptyExp.getEmptySet();
+		boolean init = true;
+		
+		for (RegExp E : comp) {
+			if (init) {
+				// The initial expression in the set.
+				sum = E;
+				init = false;
+			} else {
+				// Add the remaining expressions.
+				sum = Kleene.add(sum,E);
+			}
+		}
+		
+		// Return star expression of the sum.
+		return new StarExp(sum);
+	}
+	
+	//TODO: Implement
+	public static Autom regExpToAutom(RegExp a) {
+		return null;
 	}
 }

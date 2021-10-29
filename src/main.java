@@ -22,24 +22,18 @@ public class main {
 		/*
 		Letter a = new Letter("a");
 		Letter b = new Letter("b");
+		Letter c = new Letter("c");
 		Atom A = new Atom(a);
 		Atom B = new Atom(b);
+		Atom C = new Atom(c);
 		
-		RegExp C = Kleene.add(A,B);
-		System.out.println(C.toString());
-		System.out.println(C.getType());
+		RegExp AB = Kleene.add(A,B);
+		RegExp BC = Kleene.add(B,C);
+		RegExp out = Kleene.concat(AB,BC);
+		System.out.println(out.toString());
 		
-		C = Kleene.add(C,EmptyExp.getEmptySet());
-		System.out.println(C.toString());
-		System.out.println(C.getType());
-		
-		C = Kleene.star(C);
-		System.out.println(C.toString());
-		System.out.println(C.getType());
-		
-		C = Kleene.star(C);
-		System.out.println(C.toString());
-		System.out.println(C.getType());
+		out = Kleene.concat(Kleene.star(AB),BC);
+		System.out.println(out.toString());
 		*/
 	}
 }

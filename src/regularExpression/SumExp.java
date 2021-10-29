@@ -2,21 +2,36 @@ package regularExpression;
 
 import java.util.Objects;
 
+/*
+ * Class for regular expressions of summation type: R = A + B.
+ * @Immutable
+ */
 public class SumExp extends RegExp {
 	
 	private final RegExp leftSumand;
 	private final RegExp rightSumand;
 	
+	/**
+	 * Constructor for expressions of sum type.
+	 * @param leftSumand, rightSumand are the expressions that are summed up.
+	 * The resulting expression is lefftSumand + rightSumand.
+	 */
 	public SumExp (RegExp leftSumand, RegExp rightSumand) {
 		super(RegExpType.sumExp);
 		this.leftSumand = leftSumand;
 		this.rightSumand = rightSumand;
 	}
 	
+	/**
+	 * Getter for the left summand.
+	 */
 	public RegExp getLeftSumand() {
 		return this.leftSumand;
 	}
 	
+	/**
+	 * Getter for the right summand.
+	 */
 	public RegExp getRightSumand() {
 		return this.rightSumand;
 	}
@@ -42,7 +57,10 @@ public class SumExp extends RegExp {
     public int hashCode(){
         return Objects.hash(leftSumand,rightSumand);
     }
-	
+    
+    /**
+	 * Generate a string that represents the summation expression.
+	 */
 	@Override
 	public String toString() {
 		return (leftSumand.toString() + " + "  + rightSumand.toString());

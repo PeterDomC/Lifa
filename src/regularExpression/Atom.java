@@ -5,7 +5,7 @@ import java.util.Objects;
 import automata.Letter;
 
 /*
- * Class for modeling a regular expression that consists of a single letter.
+ * Class for modeling a regular expression that consists of a single letter - an atom.
  * @Immutable
  */
 public class Atom extends RegExp {
@@ -13,7 +13,7 @@ public class Atom extends RegExp {
 	private final String symb;
 	
 	/**
-     * Constructor.
+     * Constructor that takes the symbol from a given letter.
      */
 	public Atom (Letter a) {
 		super(RegExpType.atom);
@@ -21,7 +21,7 @@ public class Atom extends RegExp {
 	}
 	
 	/**
-     * Getter: Symbol.
+     * Getter for the symbol.
      */
 	public String getSymb() {
 		return this.symb;

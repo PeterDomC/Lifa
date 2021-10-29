@@ -2,21 +2,36 @@ package regularExpression;
 
 import java.util.Objects;
 
+/*
+ * Class for regular expressions of concatenation type: R = A.B.
+ * @Immutable
+ */
 public class ConExp extends RegExp {
 
 	private final RegExp leftFactor;
 	private final RegExp rightFactor;
 	
+	/**
+	 * Constructor for expressions of concat type.
+	 * @param leftFactor, rightFactor are the expressions that are concatenated.
+	 * The resulting expression is lefftFactor . rightFactor.
+	 */
 	public ConExp (RegExp leftFactor, RegExp rightFactor) {
 		super(RegExpType.conExp);
 		this.leftFactor = leftFactor;
 		this.rightFactor = rightFactor;
 	}
-
+	
+	/**
+	 * Getter for the left factor.
+	 */
 	public RegExp getLeftFactor() {
 		return this.leftFactor;
 	}
 
+	/**
+	 * Getter for the right factor.
+	 */
 	public RegExp getRightFactor() {
 		return this.rightFactor;
 	}
@@ -43,12 +58,20 @@ public class ConExp extends RegExp {
         return Objects.hash(leftFactor,rightFactor);
     }
 	
-    /*
-     * TODO: binding of .
-     * Check what left and right factor are and whether we need a bracket (case of sum expression)
-     */
+    /**
+	 * Generate a string that represents the concatenation expression.
+	 */
 	@Override
 	public String toString() {
-		return (leftFactor.toString() + " . "  + rightFactor.toString());
+		RegExpType left_type = leftFactor.getType();
+		RegExpType right_type = rightFactor.getType();
+		
+		String left = leftFactor.toString();
+		if (left_type == RegExpType.sumExp) left = "(" + left + ")";
+		
+		String right = rightFactor.toString();
+		if (right_type == RegExpType.sumExp) right = "(" + right + ")";
+		
+		return left + "." + right;
 	}
 }
