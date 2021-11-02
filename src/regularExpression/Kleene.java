@@ -5,21 +5,28 @@ import java.util.HashSet;
 import automata.Autom;
 
 /*
- * Class that implements the operations of the Kleene algebra over the regular expressions.
+ * Class that implements the operations of the Kleene algebra over regular expressions.
  */
 public class Kleene {
 	
 	/**
-	 * Method for adding two regular expressions.
-	 * This yields a new regular sum expression.
-	 * @param a, b are the given regular expressions.
-	 * @return the resulting sum expression.
+	 * Method for adding two regular expressions in disjunctive normalform.
+	 * This yields a new regular expression in DNF.
+	 * @param a = r_1 + ... + r_n, b = s_1 + ... + s_k are the given regular expressions.
+	 * @return the resulting sum expression r_1 + ... + r_n + s_1 + ... + s_k modulo simplifications.
 	 * 
-	 * NOTE: The method simplifies the resulting sum.
-	 * NOTE: May return a reference to a or b.
+	 * NOTE: The method simplifies the resulting sum in a four step procedure.
+	 * 1st: It checks for additions with zero - these are abbreviated.
+	 * 2nd: It looks for syntactically equivalent summands and discards copies.
+	 * 3rd: It looks for some hardcoded pattern that allow to erase summands.
+	 * 4th: It successively checks for semantic inclusion and erases summands that are not needed.
+	 * NOTE: Does not return a reference to a or b.
 	 */
 	/*
 	public static RegExp add(RegExp a, RegExp b) {
+		
+		// Collect the new summands in this set.
+		HashSet<Clause> new_summands = new HashSet<Clause>();
 		
 		// Obvious simplification cases.
 		// One of the given expressions is empty - addition with zero.
@@ -41,8 +48,7 @@ public class Kleene {
 		
 		// No simplification applicable.
 		return new SumExp(a,b);
-	}
-	*/
+	} */
 	
 	/**
 	 * Method for concatenating two regular expressions.
