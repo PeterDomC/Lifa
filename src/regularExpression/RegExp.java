@@ -1,30 +1,65 @@
 package regularExpression;
 
+import java.util.HashSet;
+import java.util.Objects;
+
 /*
- * Base abstract class for regular expressions.
- * Regular Expressions of a certain type extend the class.
+ * Base class for regular expressions.
  * 
- * NOTE: We follow the mathematical definition of regular expressions.
- * They can be build from concatenation, summation, or by (Kleene-)staring other regular expressions.
- * The leaf cases are atoms (letters), epsilon, or the empty expression.
- * This is implemented via a tree structure.
- * The structure has to be respected when implementing algorithms over regular expressions.
+ * NOTE: Regular Expressions are always assumed to be in disjunctive normal form (DNF):
+ * R = r_1 + r_2 + ... r_n, where the r_i are constructed out of concatenation and Kleene star.
+ * The r_i are clauses.
+ * Expressions that are built without addition are seen as DNF with only one clause.
+ * The clauses extends this class and carries a tree structure for its interior expression,
+ * based on the clause type (concatenation or star expression).
+ * Base cases are atoms (letters), epsilon, and the empty expression.
+ * @Immutable
  */
-public abstract class RegExp {
+public class RegExp {
 	
-	private RegExpType type;
+	final HashSet<Clause> summands;
 	
 	/**
-	 * Constructor that specifies the type of the regular expression.
+	 * Constructor with given set of clauses.
 	 */
-	public RegExp(RegExpType type) {
-		this.type = type;
+	public RegExp(HashSet<Clause> summands) {
+		this.summands = summands;
 	}
 	
 	/**
-	 * Getter for the type.
+	 * Constructor for a single clause.
 	 */
-	public RegExpType getType() {
-		return this.type;
+	public RegExp(Clause summand) {
+		this.summands = new HashSet<Clause>();
+		summands.add(summand);
 	}
+	
+	/**
+	 * Getter for the summands.
+	 */
+	public HashSet<Clause> getSummands() {
+		return this.summands;
+	}
+	
+	/**
+     * Override of equals.
+     * NOTE: This is only for syntactic equivalence!
+     */
+    @Override
+    public boolean equals(Object o){
+        if (o == null) return false;
+        if (o == this) return true;
+        if (!(o instanceof RegExp)) return false;
+        
+        RegExp C = (RegExp) o;
+        return summands.equals(C.getSummands());
+    }
+    
+    /**
+     * Override of hashCode.
+     */
+    @Override
+    public int hashCode(){
+        return Objects.hash(summands);
+    }
 }

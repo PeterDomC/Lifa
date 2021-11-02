@@ -5,10 +5,10 @@ import java.util.Objects;
 import automata.Letter;
 
 /*
- * Class for modeling a regular expression that consists of a single letter - an atom.
+ * Class for modeling a clause that consists of a single letter - an atom.
  * @Immutable
  */
-public class Atom extends RegExp {
+public class Atom extends Clause {
 	
 	private final String symb;
 	
@@ -16,8 +16,16 @@ public class Atom extends RegExp {
      * Constructor that takes the symbol from a given letter.
      */
 	public Atom (Letter a) {
-		super(RegExpType.atom);
+		super(ClauseType.atom);
 		this.symb = a.getSymb();
+	}
+	
+	/**
+     * Constructor that takes the symbol from a given string.
+     */
+	public Atom (String a) {
+		super(ClauseType.atom);
+		this.symb = a;
 	}
 	
 	/**

@@ -1,21 +1,23 @@
 package regularExpression;
 
 /*
- * Singleton pattern.
+ * Class for modeling a clause that consists of epsilon.
+ * Note that this is a singleton pattern.
+ * @Immutable
  */
-public class Epsilon extends RegExp {
+public class Epsilon extends Clause {
 	
 	private static Epsilon eps;
 	
 	/**
-	 * 
+	 * Private Constructor.
 	 */
 	private Epsilon () {
-		super(RegExpType.epsilon);
+		super(ClauseType.epsilon);
 	}
 	
 	/**
-	 * 
+	 * Getter for the instance.
 	 */
 	public static Epsilon getEps() {
 		if (eps == null) {
@@ -26,10 +28,10 @@ public class Epsilon extends RegExp {
 	}
 	
 	/**
-	 * 
-	 */
+	 * Method for representing epsilon as a string.
+     */
 	@Override
 	public String toString() {
-		return "@eps";
+		return "[@eps]";
 	}
 }

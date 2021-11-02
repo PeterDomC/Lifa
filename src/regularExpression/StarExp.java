@@ -3,26 +3,25 @@ package regularExpression;
 import java.util.Objects;
 
 /*
- * Class for regular expressions of star type: R = A*.
+ * Class for clauses of star type: R = A*.
  * @Immutable
  */
-public class StarExp extends RegExp {
+public class StarExp extends Clause {
 	
-	private final RegExp inner;
+	private final Clause inner;
 	
 	/**
-	 * Constructor for expressions of star type.
-	 * @param inner is the expression that is stared.
+	 * Constructor for clauses of star type with given clause/expression that is stared.
 	 */
-	public StarExp (RegExp inner) {
-		super(RegExpType.starExp);
+	public StarExp (Clause inner) {
+		super(ClauseType.starExp);
 		this.inner = inner;
 	}
 	
 	/**
 	 * Getter for the inner expression.
 	 */
-	public RegExp getInner() {
+	public Clause getInner() {
 		return this.inner;
 	}
 	
@@ -53,8 +52,8 @@ public class StarExp extends RegExp {
 	 */
     @Override
 	public String toString() {
-		RegExpType inner_type = inner.getType();
-		if (inner_type == RegExpType.atom) return (inner.toString() + "*");
+		ClauseType inner_type = inner.getType();
+		if (inner_type == ClauseType.atom) return (inner.toString() + "*");
 		return ("(" + inner.toString() + ")*");
 	}
 }

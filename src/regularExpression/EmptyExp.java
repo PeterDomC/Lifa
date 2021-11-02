@@ -1,21 +1,23 @@
 package regularExpression;
 
 /*
- * Singleton.
+ * Class for modeling a clause that represents the empty set.
+ * Note that this is a singleton pattern.
+ * @Immutable
  */
-public class EmptyExp extends RegExp {
+public class EmptyExp extends Clause {
 	
 	private static EmptyExp emptySet;
 	
 	/**
-	 * 
+	 * Private Constructor.
 	 */
 	private EmptyExp () {
-		super(RegExpType.emptyExp);
+		super(ClauseType.emptyExp);
 	}
 	
 	/**
-	 * 
+	 * Getter for the instance.
 	 */
 	public static EmptyExp getEmptySet() {
 		if (emptySet == null) {
@@ -26,12 +28,10 @@ public class EmptyExp extends RegExp {
 	}
 	
 	/**
-	 * 
-	 */
+	 * Method for representing the empty set as a string.
+     */
 	@Override
 	public String toString() {
 		return "{}";
 	}
-	
-	
 }

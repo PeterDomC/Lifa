@@ -9,7 +9,6 @@ import regularExpression.Epsilon;
 import regularExpression.Kleene;
 import regularExpression.RegExp;
 import regularExpression.StarExp;
-import regularExpression.SumExp;
 
 public class main {
 
@@ -18,6 +17,7 @@ public class main {
 		Test.runOperationTests();
 		Test.runLanguageTests();
 		Test.runRealWorldTests();
+		
 		
 		/*
 		Letter a = new Letter("a");
@@ -29,11 +29,16 @@ public class main {
 		
 		RegExp AB = Kleene.add(A,B);
 		RegExp BC = Kleene.add(B,C);
+		RegExp sum = Kleene.add(AB,BC);
+		System.out.println(sum.toString());
+		*/
+		/*
 		RegExp out = Kleene.concat(AB,BC);
 		System.out.println(out.toString());
 		
 		out = Kleene.concat(Kleene.star(AB),BC);
 		System.out.println(out.toString());
 		*/
+		
 	}
 }

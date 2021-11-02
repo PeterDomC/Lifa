@@ -1,39 +1,30 @@
 package regularExpression;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 /*
- * Class for regular expressions of concatenation type: R = A.B.
+ * Class for clauses of concatenation type: R = r_1 ... r_n.
  * @Immutable
  */
-public class ConExp extends RegExp {
+public class ConExp extends Clause {
 
-	private final RegExp leftFactor;
-	private final RegExp rightFactor;
+	private final ArrayList<Clause> factors;
 	
 	/**
-	 * Constructor for expressions of concat type.
-	 * @param leftFactor, rightFactor are the expressions that are concatenated.
-	 * The resulting expression is lefftFactor . rightFactor.
+	 * Constructor for clauses of concatenation type.
+	 * The given list contains the factors.
 	 */
-	public ConExp (RegExp leftFactor, RegExp rightFactor) {
-		super(RegExpType.conExp);
-		this.leftFactor = leftFactor;
-		this.rightFactor = rightFactor;
+	public ConExp (ArrayList<Clause> factors) {
+		super(ClauseType.conExp);
+		this.factors = factors;
 	}
 	
 	/**
-	 * Getter for the left factor.
+	 * Getter for the factors.
 	 */
-	public RegExp getLeftFactor() {
-		return this.leftFactor;
-	}
-
-	/**
-	 * Getter for the right factor.
-	 */
-	public RegExp getRightFactor() {
-		return this.rightFactor;
+	public ArrayList<Clause> getFactors() {
+		return this.factors;
 	}
 	
 	/**
@@ -47,7 +38,7 @@ public class ConExp extends RegExp {
         if (!(o instanceof ConExp)) return false;
         
         ConExp C = (ConExp) o;
-        return leftFactor.equals(C.getLeftFactor()) && rightFactor.equals(C.getRightFactor());
+        return factors.equals(C.getFactors());
     }
     
     /**
@@ -55,7 +46,7 @@ public class ConExp extends RegExp {
      */
     @Override
     public int hashCode(){
-        return Objects.hash(leftFactor,rightFactor);
+        return Objects.hash(factors);
     }
 	
     /**
@@ -63,15 +54,12 @@ public class ConExp extends RegExp {
 	 */
 	@Override
 	public String toString() {
-		RegExpType left_type = leftFactor.getType();
-		RegExpType right_type = rightFactor.getType();
 		
-		String left = leftFactor.toString();
-		if (left_type == RegExpType.sumExp) left = "(" + left + ")";
+		StringBuilder builder = new StringBuilder();
+		for (Clause c : factors) {
+			builder.append(c.toString());
+		}
 		
-		String right = rightFactor.toString();
-		if (right_type == RegExpType.sumExp) right = "(" + right + ")";
-		
-		return left + "." + right;
+		return builder.toString();
 	}
 }
