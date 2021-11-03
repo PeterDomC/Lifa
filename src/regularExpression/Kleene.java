@@ -91,18 +91,20 @@ public class Kleene {
 			
 			// Iterate over all clauses and check whether they satisfy the split form c.c* 
 			// and if so, simplify them to c*.
-			for (Clause c : reducedClause) {
+			boolean simplified = false;
+			for (Clause c : clauses) {
 				
 				Clause split = getSplitForm(c);
 				if (!split.equals(EmptyExp.getEmptySet())) {
 					// Clause c = a.a* is in split form - simplify to a*.
-					c = new StarExp(split);
+					reducedClause.remove(c);
+					reducedClause.add(new StarExp(split));
+					simplified = true;
 				}
 			}
 			
-			//TODO: remove epsilon only if at least one summand got shrunk!
-			// Remove epsilon as explicit summand.
-			reducedClause.remove(Epsilon.getEps());
+			// Remove epsilon as explicit summand if at least one expression got simplified.
+			if (simplified) reducedClause.remove(Epsilon.getEps());
 		}
 		
 		//TODO

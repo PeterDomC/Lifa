@@ -36,7 +36,6 @@ public class ConExp extends Clause {
 	/**
      * Override of equals.
      * NOTE: This is only for syntactic equivalence!
-     * TODO: test and change in other classes as well.
      */
     @Override
     public boolean equals(Object o){
@@ -47,14 +46,7 @@ public class ConExp extends Clause {
         if (!(o instanceof Clause)) return false;
         Clause C = (Clause) o;
         
-        // Given clause is a concatenation expression - all factors need to coincide.
-        if (C.getType() == ClauseType.conExp) return factors.equals(((ConExp)C ).getFactors());
-        
-        // Given clause is an atom, empty, epsilon, or a star expression.
-        // Then the concatenation expression at hand needs to have a single factor that coincides with C.
-        if (factors.size() == 1) return factors.get(0).equals(C);
-        
-        return false;
+        return ClauseType.isSyntaxEquivalent(this,C);
     }
     
     /**
