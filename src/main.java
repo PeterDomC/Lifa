@@ -1,8 +1,10 @@
 import java.io.IOException;
+import java.util.ArrayList;
 
 import automata.Letter;
 import examples.Test;
 import regularExpression.Atom;
+import regularExpression.Clause;
 import regularExpression.ConExp;
 import regularExpression.EmptyExp;
 import regularExpression.Epsilon;
@@ -18,7 +20,6 @@ public class main {
 		Test.runLanguageTests();
 		Test.runRealWorldTests();
 		
-		
 		/*
 		Letter a = new Letter("a");
 		Letter b = new Letter("b");
@@ -27,17 +28,15 @@ public class main {
 		Atom B = new Atom(b);
 		Atom C = new Atom(c);
 		
-		RegExp AB = Kleene.add(A,B);
-		RegExp BC = Kleene.add(B,C);
-		RegExp sum = Kleene.add(AB,BC);
-		System.out.println(sum.toString());
-		*/
-		/*
-		RegExp out = Kleene.concat(AB,BC);
-		System.out.println(out.toString());
+		StarExp Bstar = new StarExp(B);
+		ArrayList<Clause> split_factors = new ArrayList<Clause>();
+		split_factors.add(B);
+		split_factors.add(Bstar);
+		ConExp split = new ConExp(split_factors);
+		System.out.println(split.toString());
 		
-		out = Kleene.concat(Kleene.star(AB),BC);
-		System.out.println(out.toString());
+		RegExp simple = Kleene.add(Epsilon.getEps(),split);
+		System.out.println(simple.toString());
 		*/
 		
 	}

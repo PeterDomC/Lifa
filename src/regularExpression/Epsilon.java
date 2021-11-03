@@ -3,6 +3,7 @@ package regularExpression;
 /*
  * Class for modeling a clause that consists of epsilon.
  * Note that this is a singleton pattern.
+ * This means there is no need for overriding equals/hash code since there is only a single instance of this class.
  * @Immutable
  */
 public class Epsilon extends Clause {

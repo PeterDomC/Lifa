@@ -1,14 +1,16 @@
 package regularExpression;
 
-import java.util.HashSet;
-
 /*
  * Class for the clauses of a regular expression.
- * Clauses of a certain type extend this class.
+ * Clauses of a certain type extend this class:
+ * This can be concatenation or star expressions or one of the base cases:
+ * atoms (letters), epsilon, and the empty expression.
  * The type is stored in the field 'type'.
+ * 
+ * NOTE: Clause is not a subclass of RegExp due to self-referencing reasons.
  * @Immutable
  */
-public abstract class Clause extends RegExp {
+public abstract class Clause {
 	
 	private final ClauseType type;
 	
@@ -16,8 +18,6 @@ public abstract class Clause extends RegExp {
 	 * Constructor with the given type.
 	 */
 	public Clause(ClauseType type) {
-		super(new HashSet<Clause>());
-		super.summands.add(this);
 		this.type = type;
 	}
 

@@ -3,6 +3,7 @@ package regularExpression;
 /*
  * Class for modeling a clause that represents the empty set.
  * Note that this is a singleton pattern.
+ * This means there is no need for overriding equals/hash code since there is only a single instance of this class.
  * @Immutable
  */
 public class EmptyExp extends Clause {

@@ -10,9 +10,6 @@ import java.util.Objects;
  * R = r_1 + r_2 + ... r_n, where the r_i are constructed out of concatenation and Kleene star.
  * The r_i are clauses.
  * Expressions that are built without addition are seen as DNF with only one clause.
- * The clauses extends this class and carries a tree structure for its interior expression,
- * based on the clause type (concatenation or star expression).
- * Base cases are atoms (letters), epsilon, and the empty expression.
  * @Immutable
  */
 public class RegExp {
@@ -27,11 +24,12 @@ public class RegExp {
 	}
 	
 	/**
-	 * Constructor for a single clause.
+	 * Constructor with given clause.
 	 */
-	public RegExp(Clause summand) {
-		this.summands = new HashSet<Clause>();
-		summands.add(summand);
+	public RegExp(Clause c) {
+		HashSet<Clause> summands = new HashSet<Clause>();
+		summands.add(c);
+		this.summands = summands;
 	}
 	
 	/**
@@ -62,4 +60,25 @@ public class RegExp {
     public int hashCode(){
         return Objects.hash(summands);
     }
+    
+    /**
+	 * Generate a string that represents the regular expression.
+	 */
+	@Override
+	public String toString() {
+		
+		StringBuilder builder = new StringBuilder();
+		boolean first = true;
+		for (Clause c : summands) {
+			if (!first) {
+				builder.append(" + ");
+			} else {
+				first = false;
+			}
+			
+			builder.append(c.toString());
+		}
+		
+		return builder.toString();
+	}
 }

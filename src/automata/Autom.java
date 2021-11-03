@@ -117,7 +117,7 @@ public class Autom{
      * Method adds a given set of transitions to the automaton.
      */
     public void addTransition(HashSet<Transition> T) {
-    	for  (Transition t : T) {
+    	for (Transition t : T) {
     		addTransition(t);
     	}
     }

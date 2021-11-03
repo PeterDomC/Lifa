@@ -4,12 +4,18 @@ import java.util.Objects;
 
 /*
  * Class for clauses of star type: R = A*.
+ * 
+ * NOTE: Star expressions are always assumed to be flat:
+ * If A = E* is a star expression itself, then R = E** = E* and we store only E.
+ * Hence, the inner A cannot be a star expression itself.
+ * This is not checked by the constructor due to performance - this has to be ensured by the user
+ * or by constructing star expressions solely via the factory provided by the class Kleene.
  * @Immutable
  */
 public class StarExp extends Clause {
 	
 	private final Clause inner;
-	
+	//TODO: make constructor protected
 	/**
 	 * Constructor for clauses of star type with given clause/expression that is stared.
 	 */

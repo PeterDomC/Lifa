@@ -1,8 +1,7 @@
 package regularExpression;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-
-import automata.Autom;
 
 /*
  * Class that implements the operations of the Kleene algebra over regular expressions.
@@ -16,39 +15,150 @@ public class Kleene {
 	 * @return the resulting sum expression r_1 + ... + r_n + s_1 + ... + s_k modulo simplifications.
 	 * 
 	 * NOTE: The method simplifies the resulting sum in a four step procedure.
-	 * 1st: It checks for additions with zero - these are abbreviated.
-	 * 2nd: It looks for syntactically equivalent summands and discards copies.
+	 * 1st: It looks for syntactically equivalent summands and discards copies.
+	 * 2nd: It checks for additions with zero - these are abbreviated.
 	 * 3rd: It looks for some hardcoded pattern that allow to erase summands.
 	 * 4th: It successively checks for semantic inclusion and erases summands that are not needed.
 	 * NOTE: Does not return a reference to a or b.
 	 */
-	/*
 	public static RegExp add(RegExp a, RegExp b) {
 		
-		// Collect the new summands in this set.
-		HashSet<Clause> new_summands = new HashSet<Clause>();
+		// First simplification.
+		// This is implicit in building the new set of summands for the regular expression.
+		// Syntactically equivalent clauses are discarded.
+		HashSet<Clause> summands = new HashSet<Clause>();
+		summands.addAll(a.getSummands());
+		summands.addAll(b.getSummands());
 		
-		// Obvious simplification cases.
-		// One of the given expressions is empty - addition with zero.
-		ClauseType type_a = a.getType();
-		ClauseType type_b = b.getType();
-		if (type_a == ClauseType.emptyExp && type_b == ClauseType.emptyExp) return EmptyExp.getEmptySet();
-		if (type_a == ClauseType.emptyExp) return b;
-		if (type_b == ClauseType.emptyExp) return a;
+		// Second simplification.
+		// Remove the summand zero/empty set.
+		summands = removeZero(summands);
 		
-		// Summands are syntactically equal - return one summand.
-		if (a.equals(b)) return a;
+		// Third simplification.
+		// Simplify hardcoded pattern.
+		summands = simplifyPattern(summands);
 		
-		// Non-obvious simplification cases.
-		// Summand b is contained in a - return a.
-		if (isContained(b,a)) return a;
+		// Fourth simplification
+		// TODO
 		
-		// Summand a is contained in b - return b.
-		if (isContained(a,b)) return b;
+		return new RegExp(summands);
+	}
+	
+	public static RegExp add(Clause a, RegExp b) {
+		return add(new RegExp(a),b);
+	}
+	
+	public static RegExp add(RegExp a, Clause b) {
+		return add(a,new RegExp(b));
+	}
+	
+	public static RegExp add(Clause a, Clause b) {
+		return add(new RegExp(a),new RegExp(b));
+	}
+	
+	/**
+	 * Method that removes the empty expression from the given set of clauses.
+	 * @param clauses is the given set.
+	 * @return new_clauses, the set with removed empty expression.
+	 */
+	public static HashSet<Clause> removeZero(HashSet<Clause> clauses) {
+		HashSet<Clause> new_clauses = new HashSet<Clause>(clauses);
+		new_clauses.remove(EmptyExp.getEmptySet());
+		return new_clauses;
+	}
+	
+	/**
+	 * 
+	 * @param clauses
+	 * @return
+	 */
+	private static HashSet<Clause> simplifyPattern(HashSet<Clause> clauses) {
 		
-		// No simplification applicable.
-		return new SumExp(a,b);
-	} */
+		// The simplified set of clauses
+		HashSet<Clause> reducedClause = new HashSet<Clause>(clauses);
+		
+		// Obtain the inner of the star clauses.
+		HashSet<Clause> innerStarClause = new HashSet<Clause>();
+		for (Clause c : clauses) {
+			if (c.getType() == ClauseType.starExp) {
+				innerStarClause.add(((StarExp) c).getInner());
+			}
+		}
+		
+		// Simplification pattern one: eps + c.c* = c* for each clause c.
+		// Applicable if the set of clauses contains epsilon or a star expression (then we can add epsilon for free).
+		if (clauses.contains(Epsilon.getEps()) || !innerStarClause.isEmpty()) {
+			
+			// Iterate over all clauses and check whether they satisfy the split form c.c* 
+			// and if so, simplify them to c*.
+			for (Clause c : reducedClause) {
+				
+				Clause split = getSplitForm(c);
+				if (!split.equals(EmptyExp.getEmptySet())) {
+					// Clause c = a.a* is in split form - simplify to a*.
+					c = new StarExp(split);
+				}
+			}
+			
+			//TODO: remove epsilon only if at least one summand got shrunk!
+			// Remove epsilon as explicit summand.
+			reducedClause.remove(Epsilon.getEps());
+		}
+		
+		//TODO
+		/*
+		// Simplification: c is contained in c* for each clause c, so c can be discarded.
+		// Obtain all star expression clauses.
+		HashSet<Clause> starClauses = new HashSet<Clause>(clauses);
+		starClauses.removeIf(c -> c.getType() != ClauseType.starExp);
+		
+		// Obtain the inner of the star clauses.
+		HashSet<Clause> innerStarClauses = new HashSet<Clause>();
+		starClauses.forEach(c -> innerStarClauses.add(((StarExp) c).getInner()));
+		
+		// Remove those clauses from the initial set that appear as inner of a star clause.
+		reducedClause.removeAll(innerStarClauses);
+		
+		*/
+		
+		return reducedClause;
+	}
+	
+	/**
+	 * Method that checks whether the given clause is in split form.
+	 * This means it can be written as c = w.w*, where w is some expression.
+	 * @param c is the given clause.
+	 * @return the inner of the split form: w.
+	 * 
+	 * NOTE: Returns the empty expression if the given clause is not in split form.
+	 */
+	private static Clause getSplitForm(Clause c) {
+		
+		// Clause c can only be in split form if it is a concatenation expression.
+		if (c.getType() == ClauseType.conExp) {
+			
+			ConExp con = (ConExp) c;
+			ArrayList<Clause> factors = con.getFactors();
+			int n = factors.size();
+			
+			// For split form, the last concatenated factor needs to be a star expression.
+			Clause star = factors.get(n-1);
+			if (star.getType() == ClauseType.starExp) {
+				
+				// Clause c is in split form if the expression up to the last star expression
+				// coincides (syntactically) with the star expression's inner.
+				ArrayList<Clause> prefix_factors = new ArrayList<Clause>(factors);
+				prefix_factors.remove(n-1);
+				Clause prefix = new ConExp(prefix_factors);
+				Clause star_inner = ((StarExp) star).getInner();
+				
+				if (prefix.equals(star_inner)) return star_inner;
+			}
+		}
+		
+		// If the given clause is not in star form, return the empty clause.
+		return EmptyExp.getEmptySet();
+	}
 	
 	/**
 	 * Method for concatenating two regular expressions.
