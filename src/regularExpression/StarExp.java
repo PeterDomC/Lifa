@@ -1,5 +1,6 @@
 package regularExpression;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 /*
@@ -32,6 +33,28 @@ public class StarExp extends Clause {
 	}
 	
 	/**
+	 * Method that checks whether the expression is of the form (r_1* r_2* ... r_n*)* = (r_1 + ... + r_n)*.
+	 * The method is needed to simplify the printed expression.
+	 */
+	public boolean isStarChain() {
+		
+		if (inner.getType() == ClauseType.conExp) {
+			// The inner is of concatenation type with at least two factors.
+			// And all these factors need to be star expressions.
+			ArrayList<Clause> factors = ((ConExp) inner).getFactors();
+			if (factors.size() >= 1) {
+				for (Clause c : factors) {
+					if (c.getType() != ClauseType.starExp) return false;
+				}
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
      * Override of equals.
      * NOTE: This is only for syntactic equivalence!
      */
@@ -58,8 +81,30 @@ public class StarExp extends Clause {
 	 */
     @Override
 	public String toString() {
-		ClauseType inner_type = inner.getType();
-		if (inner_type == ClauseType.atom) return (inner.toString() + "*");
+		if (inner.getType() == ClauseType.atom) return (inner.toString() + "*");
+		
+		if (isStarChain()) {
+			// Star chain expressions (r_1*r_2* ... r_n*)* are visualized as (r_1 + r_2 + ... + r_n)*.
+			// The formula stays readable this way.
+			StringBuilder builder = new StringBuilder();
+			builder.append("(");
+			
+			ArrayList<Clause> factors = ((ConExp) inner).getFactors();
+			boolean first = true;
+			for (Clause c : factors) {
+				if (!first) {
+					builder.append(" + ");
+				} else {
+					first = false;
+				}
+				
+				builder.append(((StarExp) c).inner.toString());
+			}
+			
+			builder.append(")*");
+			return builder.toString();
+		}
+		
 		return ("(" + inner.toString() + ")*");
 	}
 }

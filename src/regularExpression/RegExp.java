@@ -67,18 +67,24 @@ public class RegExp {
 	@Override
 	public String toString() {
 		
-		StringBuilder builder = new StringBuilder();
-		boolean first = true;
-		for (Clause c : summands) {
-			if (!first) {
-				builder.append(" + ");
-			} else {
-				first = false;
+		// At least one summand: generate the expression, where summands are separated by a +.
+		if (summands.size() >= 1) {
+			StringBuilder builder = new StringBuilder();
+			boolean first = true;
+			for (Clause c : summands) {
+				if (!first) {
+					builder.append(" + ");
+				} else {
+					first = false;
+				}
+				
+				builder.append(c.toString());
 			}
 			
-			builder.append(c.toString());
+			return builder.toString();
 		}
 		
-		return builder.toString();
+		// No summands: the expression represents the empty expression.
+		return "{}";
 	}
 }

@@ -43,7 +43,7 @@ public class ClauseFactory {
 	 * NOTE: We generally recommend to create clauses via the operations of the class Kleene
 	 * since applying this method without deeper knowledge can lead to subtle structure violations.
 	 */
-	public static Clause CreateStarExp(Clause inner) {
+	public static Clause createStarExp(Clause inner) {
 		
 		ClauseType inner_type = inner.getType();
 		

@@ -36,18 +36,21 @@ public class main {
 		//System.out.println(AB.toString());
 		
 		RegExp BBAB = Kleene.concat(BB,AB);
-		//System.out.println(BBAB.toString());
+		System.out.println(BBAB.toString());
 		
-		RegExp more = Kleene.add(BBAB,A);
-		//System.out.println(more.toString());
-		more = Kleene.add(more,A);
-		//System.out.println(more.toString());
-		more = Kleene.add(more,Epsilon.getEps());
-		//System.out.println(more.toString());
-		more = Kleene.add(more,EmptyExp.getEmptySet());
-		System.out.println(more.toString());
-		more = Kleene.concat(more,more);
-		System.out.println(more.toString());
+		RegExp res = Kleene.add(BBAB,BB);
+		System.out.println(res.toString());
+		res = Kleene.star(res);
+		System.out.println(res.toString());
+		
+		res = Kleene.concat(res,B);
+		System.out.println(res.toString());
+		
+		res = Kleene.add(res,BB);
+		System.out.println(res.toString());
+		
+		res = Kleene.star(res);
+		System.out.println(res.toString());
 		*/
 	}
 }

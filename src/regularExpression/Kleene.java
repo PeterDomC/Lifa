@@ -25,7 +25,7 @@ public abstract class Kleene {
 		summands.addAll(a.getSummands());
 		summands.addAll(b.getSummands());
 		
-		summands = simplify(summands);
+		summands = simplifySum(summands);
 		return new RegExp(summands);
 	}
 	
@@ -75,7 +75,7 @@ public abstract class Kleene {
 		}
 		
 		// Then call simplify
-		concat_summands = simplify(concat_summands);
+		concat_summands = simplifySum(concat_summands);
 		return new RegExp(concat_summands);
 	}
 	
@@ -168,16 +168,51 @@ public abstract class Kleene {
 	}
 	
 	/**
-	 * Method for staring a regular expression.
-	 * @param a is the given expression.
-	 * @return the resulting star expression.
+	 * Method for applying Kleene star to a regular expression in DNF.
+	 * This yields a new regular expression in DNF.
+	 * @param a = r_1 + ... + r_n is the given regular expressions.
+	 * @return the resulting expression (r_1 + ... + r_n)* = (r_1* ... r_n*)* modulo simplifications.
 	 * 
+	 * NOTE: The resulting expression is in DNF with one clause only.
 	 * NOTE: The method simplifies the expression.
 	 * NOTE: May return a reference to a.
 	 */
-	/*
 	public static RegExp star(RegExp a) {
 		
+		HashSet<Clause> a_summands = a.getSummands();
+		ArrayList<Clause> inner_factors = new ArrayList<Clause>();
+		
+		// Construct the factors r_i* and add them to the list of inner_factors.
+		// Syntactically equivalent factors do not appear since a does not contain syntactically equivalent summands.
+		for (Clause r : a_summands) {
+			Clause r_star = clauseStar(r);
+			inner_factors.add(r_star);
+		}
+		
+		// Then simplify the resulting star chain expression.
+		inner_factors = simplifyStarChain(inner_factors);
+		Clause starChain = ClauseFactory.createConExp(inner_factors);
+		starChain = ClauseFactory.createStarExp(starChain);
+		return new RegExp(starChain);
+		
+		// Do we need an explicity case where a is empty?
+		//TODO
+	}
+	
+	/**
+	 * Further Kleene star method allowing to apply the operation to clauses as well.
+	 */
+	public static RegExp star(Clause a) {
+		return star(new RegExp(a));
+	}
+	
+	/**
+	 * TODO
+	 * @param r
+	 * @return
+	 */
+	private static Clause clauseStar(Clause r) {
+		/*
 		// Obvious Simplification cases.
 		ClauseType type_a = a.getType();
 		// The expression is already a star expression: a** = a*.
@@ -197,8 +232,200 @@ public abstract class Kleene {
 		
 		// No simplification applicable.
 		return new StarExp(a);
+		*/
+		return ClauseFactory.createStarExp(r);
 	}
-	*/
+	
+	/**
+	 * Method that takes a set of clauses of a regular DNF expression and simplifies them.
+	 * @param clauses is the given set of clauses.
+	 * @return simpl, the simplified set of clauses.
+	 * 
+	 * NOTE: The method simplifies in three steps.
+	 * 1st: It checks for addition with the empty expression (zero) - these are discarded.
+	 * 2nd: It looks for some hardcoded pattern that allow to erase summands.
+	 * 3rd: It successively checks for semantic inclusion and erases summands that are not needed.
+	 * NOTE: Does not return a reference to clauses nor does it manipulate clauses.
+	 */
+	private static HashSet<Clause> simplifySum(HashSet<Clause> clauses) {
+		
+		// Set of simplified clauses.
+		HashSet<Clause> simpl = new HashSet<Clause>(clauses);
+		
+		// First simplification.
+		// Remove the summand zero/empty set.
+		simpl = removeZero(simpl);
+		
+		// Second simplification.
+		// Simplify hardcoded pattern.
+		simpl = simplifyPattern(simpl);
+		
+		// Third simplification.
+		// TODO
+		
+		// Return simplified clauses.
+		return simpl;
+	}
+	
+	/**
+	 * Method that removes the empty expression from the given set of clauses.
+	 * @param clauses is the given set.
+	 * @return new_clauses, the set with removed empty expression.
+	 */
+	private static HashSet<Clause> removeZero(HashSet<Clause> clauses) {
+		HashSet<Clause> new_clauses = new HashSet<Clause>(clauses);
+		new_clauses.remove(EmptyExp.getEmptySet());
+		return new_clauses;
+	}
+	
+	
+	/**
+	 * Method that simplifies the given set of clauses via checking for hardcoded pattern.
+	 * @param clauses is the given set of clauses.
+	 * @return reducedClause, the reduced set of clauses after the simplifications.
+	 * 
+	 * NOTE: Currently, the method applies two simplifications, 
+	 * namely 1+ c.c* = c* and c is contained in c*.
+	 */
+	private static HashSet<Clause> simplifyPattern(HashSet<Clause> clauses) {
+		
+		// The simplified set of clauses
+		HashSet<Clause> reducedClause = new HashSet<Clause>(clauses);
+		
+		// Simplification pattern one: eps + c.c* = c* for each clause c.
+		// Applicable if the set of clauses contains epsilon or any star expression (then we can add epsilon for free).
+		boolean containsStar = false;
+		for (Clause c : clauses) {
+			if (c.getType() == ClauseType.starExp) {
+				containsStar = true; 
+				break;
+			}
+		}
+		
+		if (clauses.contains(Epsilon.getEps()) || containsStar) {
+			// Iterate over all clauses and check whether they satisfy the split form c = d.d* 
+			// and if so, simplify them to c = d*.
+			boolean simplified = false;
+			for (Clause c : clauses) {
+				
+				Clause split = getSplitForm(c);
+				if (!split.equals(EmptyExp.getEmptySet())) {
+					// Clause c = d.d* is in split form - simplify to d*.
+					reducedClause.remove(c);
+					reducedClause.add(ClauseFactory.createStarExp(split));
+					simplified = true;
+				}
+			}
+			
+			// Remove epsilon as explicit summand if at least one expression got simplified.
+			if (simplified) reducedClause.remove(Epsilon.getEps());
+		}
+		
+		// Simplification pattern two: c is contained in c* for each clause c, so c can be discarded.
+		// Obtain the inner of the star clauses.
+		HashSet<Clause> innerStarClause = new HashSet<Clause>();
+		for (Clause c : reducedClause) {
+			if (c.getType() == ClauseType.starExp) {
+				innerStarClause.add(((StarExp) c).getInner());
+			}
+		}
+		
+		// Remove those clauses from the reduced clause set that appear as inner of a star clause.
+		reducedClause.removeAll(innerStarClause);
+		
+		// Return the reduced set of clauses.
+		return reducedClause;
+	}
+	
+	
+	/**
+	 * Method that checks whether the given clause is in split form.
+	 * This means it can be written as c = w.w*, where w is some expression.
+	 * @param c is the given clause.
+	 * @return the inner of the split form: w.
+	 * 
+	 * NOTE: Returns the empty expression if the given clause is not in split form.
+	 */
+	private static Clause getSplitForm(Clause c) {
+		
+		// Clause c can only be in split form if it is a concatenation expression.
+		if (c.getType() == ClauseType.conExp) {
+			
+			ConExp con = (ConExp) c;
+			ArrayList<Clause> factors = con.getFactors();
+			int n = factors.size();
+			
+			// For split form, the last concatenated factor needs to be a star expression.
+			Clause star = factors.get(n-1);
+			if (star.getType() == ClauseType.starExp) {
+				
+				// Clause c is in split form if the expression up to the last star expression
+				// coincides (syntactically) with the star expression's inner.
+				ArrayList<Clause> prefix_factors = new ArrayList<Clause>(factors);
+				prefix_factors.remove(n-1);
+				Clause prefix = ClauseFactory.createConExp(prefix_factors);
+				Clause star_inner = ((StarExp) star).getInner();
+				if (prefix.equals(star_inner)) return star_inner;
+			}
+		}
+		
+		// If the given clause is not in split form, return the empty clause.
+		return EmptyExp.getEmptySet();
+	}
+	
+	/**
+	 * TODO
+	 * @param factors
+	 * @return
+	 */
+	private static ArrayList<Clause> simplifyStarChain(ArrayList<Clause> factors) {
+		return factors;
+	}
+	
+	/**
+	 * Method checks whether one regular expression is contained in the other.
+	 * @param a, b are the given expressions.
+	 * @return true, if a is contained in b - false, otherwise.
+	 */
+	public static boolean isContained(RegExp a, RegExp b) {
+		// TODO: Currently not implemented - build up automaton.
+		// along the expression and run corresponding automaton method.
+		return false;
+	}
+	
+	/**
+	 * Further addition method allowing to check containment for clause/regexp and clause/regexp.
+	 */
+	public static boolean isContained(Clause a, RegExp b) {
+		return isContained(new RegExp(a),b);
+	}
+	
+	/**
+	 * Further addition method allowing to check containment for clause/regexp and clause/regexp.
+	 */
+	public static boolean isContained(RegExp a, Clause b) {
+		return isContained(a,new RegExp(b));
+	}
+	
+	/**
+	 * Further addition method allowing to check containment for clause/regexp and clause/regexp.
+	 */
+	public static boolean isContained(Clause a, Clause b) {
+		return isContained(new RegExp(a),new RegExp(b));
+	}
+	
+	/**
+	 * Method checks whether the given regular expression is universal.
+	 * @param a is the given expressions.
+	 * @return true, if a is universal - false, otherwise.
+	 */
+	public static boolean isUniversal(RegExp a) {
+		// Check whether a given regular expression is universal.
+		// TODO: implement!
+		return false;
+	}
+	
+
 	
 	/**
 	 * Checks whether the given regular expression is a star chain of the form: a* . b* . c* ...
@@ -269,184 +496,4 @@ public abstract class Kleene {
 		return null;
 	}
 	*/
-	
-	/**
-	 * Method that takes a set of clauses of a regular DNF expression and simplifies them.
-	 * @param clauses is the given set of clauses.
-	 * @return simpl, the simplified set of clauses.
-	 * 
-	 * NOTE: The method simplifies in three steps.
-	 * 1st: It checks for addition with the empty expression (zero) - these are discarded.
-	 * 2nd: It looks for some hardcoded pattern that allow to erase summands.
-	 * 3rd: It successively checks for semantic inclusion and erases summands that are not needed.
-	 * NOTE: Does not return a reference to clauses nor does it manipulate clauses.
-	 */
-	private static HashSet<Clause> simplify(HashSet<Clause> clauses) {
-		
-		// Set of simplified clauses.
-		HashSet<Clause> simpl = new HashSet<Clause>(clauses);
-		
-		// First simplification.
-		// Remove the summand zero/empty set.
-		simpl = removeZero(simpl);
-		
-		// Second simplification.
-		// Simplify hardcoded pattern.
-		simpl = simplifyPattern(simpl);
-		
-		// Third simplification.
-		// TODO
-		
-		// Return simplified clauses.
-		return simpl;
-	}
-	
-	/**
-	 * Method that removes the empty expression from the given set of clauses.
-	 * @param clauses is the given set.
-	 * @return new_clauses, the set with removed empty expression.
-	 */
-	private static HashSet<Clause> removeZero(HashSet<Clause> clauses) {
-		HashSet<Clause> new_clauses = new HashSet<Clause>(clauses);
-		new_clauses.remove(EmptyExp.getEmptySet());
-		return new_clauses;
-	}
-	
-	
-	/**
-	 * Method that simplifies the given set of clauses via checking for hardcoded pattern.
-	 * @param clauses is the given set of clauses.
-	 * @return reducedClause, the reduced set of clauses after the simplifications.
-	 * 
-	 * NOTE: Currently, the method applies two simplifications, 
-	 * namely 1+ c.c* = c* and c is contained in c*.
-	 */
-	private static HashSet<Clause> simplifyPattern(HashSet<Clause> clauses) {
-		
-		// The simplified set of clauses
-		HashSet<Clause> reducedClause = new HashSet<Clause>(clauses);
-		
-		// Simplification pattern one: eps + c.c* = c* for each clause c.
-		// Applicable if the set of clauses contains epsilon or any star expression (then we can add epsilon for free).
-		boolean containsStar = false;
-		for (Clause c : clauses) {
-			if (c.getType() == ClauseType.starExp) {
-				containsStar = true; 
-				break;
-			}
-		}
-		
-		if (clauses.contains(Epsilon.getEps()) || containsStar) {
-			// Iterate over all clauses and check whether they satisfy the split form c = d.d* 
-			// and if so, simplify them to c = d*.
-			boolean simplified = false;
-			for (Clause c : clauses) {
-				
-				Clause split = getSplitForm(c);
-				if (!split.equals(EmptyExp.getEmptySet())) {
-					// Clause c = d.d* is in split form - simplify to d*.
-					reducedClause.remove(c);
-					reducedClause.add(ClauseFactory.CreateStarExp(split));
-					simplified = true;
-				}
-			}
-			
-			// Remove epsilon as explicit summand if at least one expression got simplified.
-			if (simplified) reducedClause.remove(Epsilon.getEps());
-		}
-		
-		// Simplification pattern two: c is contained in c* for each clause c, so c can be discarded.
-		// Obtain the inner of the star clauses.
-		HashSet<Clause> innerStarClause = new HashSet<Clause>();
-		for (Clause c : reducedClause) {
-			if (c.getType() == ClauseType.starExp) {
-				innerStarClause.add(((StarExp) c).getInner());
-			}
-		}
-		
-		// Remove those clauses from the reduced clause set that appear as inner of a star clause.
-		reducedClause.removeAll(innerStarClause);
-		
-		// Return the reduced set of clauses.
-		return reducedClause;
-	}
-	
-	
-	/**
-	 * Method that checks whether the given clause is in split form.
-	 * This means it can be written as c = w.w*, where w is some expression.
-	 * @param c is the given clause.
-	 * @return the inner of the split form: w.
-	 * 
-	 * NOTE: Returns the empty expression if the given clause is not in split form.
-	 */
-	private static Clause getSplitForm(Clause c) {
-		
-		// Clause c can only be in split form if it is a concatenation expression.
-		if (c.getType() == ClauseType.conExp) {
-			
-			ConExp con = (ConExp) c;
-			ArrayList<Clause> factors = con.getFactors();
-			int n = factors.size();
-			
-			// For split form, the last concatenated factor needs to be a star expression.
-			Clause star = factors.get(n-1);
-			if (star.getType() == ClauseType.starExp) {
-				
-				// Clause c is in split form if the expression up to the last star expression
-				// coincides (syntactically) with the star expression's inner.
-				ArrayList<Clause> prefix_factors = new ArrayList<Clause>(factors);
-				prefix_factors.remove(n-1);
-				Clause prefix = ClauseFactory.createConExp(prefix_factors);
-				Clause star_inner = ((StarExp) star).getInner();
-				if (prefix.equals(star_inner)) return star_inner;
-			}
-		}
-		
-		// If the given clause is not in split form, return the empty clause.
-		return EmptyExp.getEmptySet();
-	}
-	
-	/**
-	 * Method checks whether one regular expression is contained in the other.
-	 * @param a, b are the given expressions.
-	 * @return true, if a is contained in b - false, otherwise.
-	 */
-	public static boolean isContained(RegExp a, RegExp b) {
-		// TODO: Currently not implemented - build up automaton.
-		// along the expression and run corresponding automaton method.
-		return false;
-	}
-	
-	/**
-	 * Further addition method allowing to check containment for clause/regexp and clause/regexp.
-	 */
-	public static boolean isContained(Clause a, RegExp b) {
-		return isContained(new RegExp(a),b);
-	}
-	
-	/**
-	 * Further addition method allowing to check containment for clause/regexp and clause/regexp.
-	 */
-	public static boolean isContained(RegExp a, Clause b) {
-		return isContained(a,new RegExp(b));
-	}
-	
-	/**
-	 * Further addition method allowing to check containment for clause/regexp and clause/regexp.
-	 */
-	public static boolean isContained(Clause a, Clause b) {
-		return isContained(new RegExp(a),new RegExp(b));
-	}
-	
-	/**
-	 * Method checks whether the given regular expression is universal.
-	 * @param a is the given expressions.
-	 * @return true, if a is universal - false, otherwise.
-	 */
-	public static boolean isUniversal(RegExp a) {
-		// Check whether a given regular expression is universal.
-		// TODO: implement!
-		return false;
-	}
 }
