@@ -39,12 +39,10 @@ public class StarExp extends Clause {
     public boolean equals(Object o){
         if (o == null) return false;
         if (o == this) return true;
+        if (!(o instanceof StarExp)) return false;
         
-        // If input is not a clause - discard.
-        if (!(o instanceof Clause)) return false;
-        Clause C = (Clause) o;
-        
-        return ClauseType.isSyntaxEquivalent(this,C);
+        StarExp C = (StarExp) o;
+        return inner.equals(C.getInner());
     }
     
     /**

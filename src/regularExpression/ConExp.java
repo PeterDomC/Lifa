@@ -41,12 +41,10 @@ public class ConExp extends Clause {
     public boolean equals(Object o){
         if (o == null) return false;
         if (o == this) return true;
-        
-        // If input is not a clause - discard.
-        if (!(o instanceof Clause)) return false;
-        Clause C = (Clause) o;
-        
-        return ClauseType.isSyntaxEquivalent(this,C);
+        if (!(o instanceof ConExp)) return false;
+
+        ConExp C = (ConExp) o;
+        return factors.equals(C.getFactors());
     }
     
     /**

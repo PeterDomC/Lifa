@@ -18,12 +18,12 @@ public class main {
 
 	public static void main(String[] args) throws IOException {
 		
-		
+		/*
 		Test.runOperationTests();
 		Test.runLanguageTests();
 		Test.runRealWorldTests();
+		*/
 		
-		/*
 		Letter a = new Letter("a");
 		Letter b = new Letter("b");
 		Letter c = new Letter("c");
@@ -46,7 +46,6 @@ public class main {
 		
 		RegExp simple = Kleene.add(Epsilon.getEps(),splitTest);
 		System.out.println(simple.toString());
-		*/
 		
 	}
 }
