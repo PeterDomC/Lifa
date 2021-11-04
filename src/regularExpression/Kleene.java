@@ -89,16 +89,16 @@ public class Kleene {
 		// Applicable if the set of clauses contains epsilon or a star expression (then we can add epsilon for free).
 		if (clauses.contains(Epsilon.getEps()) || !innerStarClause.isEmpty()) {
 			
-			// Iterate over all clauses and check whether they satisfy the split form c.c* 
-			// and if so, simplify them to c*.
+			// Iterate over all clauses and check whether they satisfy the split form c = d.d* 
+			// and if so, simplify them to c = d*.
 			boolean simplified = false;
 			for (Clause c : clauses) {
 				
 				Clause split = getSplitForm(c);
 				if (!split.equals(EmptyExp.getEmptySet())) {
-					// Clause c = a.a* is in split form - simplify to a*.
+					// Clause c = d.d* is in split form - simplify to d*.
 					reducedClause.remove(c);
-					reducedClause.add(new StarExp(split));
+					reducedClause.add(ClauseFactory.CreateStarExp(split));
 					simplified = true;
 				}
 			}
@@ -151,14 +151,13 @@ public class Kleene {
 				// coincides (syntactically) with the star expression's inner.
 				ArrayList<Clause> prefix_factors = new ArrayList<Clause>(factors);
 				prefix_factors.remove(n-1);
-				Clause prefix = new ConExp(prefix_factors);
+				Clause prefix = ClauseFactory.createConExp(prefix_factors);
 				Clause star_inner = ((StarExp) star).getInner();
-				
 				if (prefix.equals(star_inner)) return star_inner;
 			}
 		}
 		
-		// If the given clause is not in star form, return the empty clause.
+		// If the given clause is not in split form, return the empty clause.
 		return EmptyExp.getEmptySet();
 	}
 	

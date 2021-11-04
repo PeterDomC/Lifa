@@ -16,12 +16,12 @@ import java.util.Objects;
 public class ConExp extends Clause {
 	
 	private final ArrayList<Clause> factors;
-	//TODO: make constructor protected
+	
 	/**
 	 * Constructor for clauses of concatenation type.
 	 * The given list contains the factors.
 	 */
-	public ConExp (ArrayList<Clause> factors) {
+	protected ConExp (ArrayList<Clause> factors) {
 		super(ClauseType.conExp);
 		this.factors = factors;
 	}

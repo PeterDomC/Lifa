@@ -15,11 +15,11 @@ import java.util.Objects;
 public class StarExp extends Clause {
 	
 	private final Clause inner;
-	//TODO: make constructor protected
+	
 	/**
 	 * Constructor for clauses of star type with given clause/expression that is stared.
 	 */
-	public StarExp (Clause inner) {
+	protected StarExp (Clause inner) {
 		super(ClauseType.starExp);
 		this.inner = inner;
 	}

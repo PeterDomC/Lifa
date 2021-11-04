@@ -19,8 +19,10 @@ public enum ClauseType {
 	 * @return true, if a and b are syntactically equivalent - false, if not.
 	 * 
 	 * NOTE: The above types can sometimes represent the same expression.
-	 * For instance can a concatenation contain only a single factor an actually represent a star expression.
-	 * The method at hand uses these relations and already provides limited semantic simplifications.
+	 * For instance can a concatenation contain only a single factor and actually represent a star expression.
+	 * The method at hand uses these relations and performs limited semantic simplifications.
+	 * 
+	 * TODO: Build factory for regular expressions that makes this method obsolete.
 	 */
 	public static boolean isSyntaxEquivalent(Clause a, Clause b) {
 		

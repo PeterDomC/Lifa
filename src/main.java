@@ -5,6 +5,7 @@ import automata.Letter;
 import examples.Test;
 import regularExpression.Atom;
 import regularExpression.Clause;
+import regularExpression.ClauseFactory;
 import regularExpression.ClauseType;
 import regularExpression.ConExp;
 import regularExpression.EmptyExp;
@@ -17,12 +18,12 @@ public class main {
 
 	public static void main(String[] args) throws IOException {
 		
-		/*
+		
 		Test.runOperationTests();
 		Test.runLanguageTests();
 		Test.runRealWorldTests();
-		*/
 		
+		/*
 		Letter a = new Letter("a");
 		Letter b = new Letter("b");
 		Letter c = new Letter("c");
@@ -33,20 +34,19 @@ public class main {
 		ArrayList<Clause> BBlist = new ArrayList<Clause>();
 		BBlist.add(B);
 		BBlist.add(B);
-		ConExp BB = new ConExp(BBlist);
-		
-		StarExp BBstar = new StarExp(BB);
+		Clause BB = ClauseFactory.createConExp(BBlist);
+		Clause BBstar = ClauseFactory.CreateStarExp(BB);
 		
 		ArrayList<Clause> splitTestList = new ArrayList<Clause>();
 		splitTestList.add(B);
 		splitTestList.add(B);
 		splitTestList.add(BBstar);
-		ConExp splitTest = new ConExp(splitTestList);
+		Clause splitTest = ClauseFactory.createConExp(splitTestList);
 		System.out.println(splitTest.toString());
 		
 		RegExp simple = Kleene.add(Epsilon.getEps(),splitTest);
 		System.out.println(simple.toString());
-		
+		*/
 		
 	}
 }
