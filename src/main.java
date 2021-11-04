@@ -30,25 +30,24 @@ public class main {
 		Atom B = new Atom(b);
 		Atom C = new Atom(c);
 		
-		ArrayList<Clause> BBlist = new ArrayList<Clause>();
-		BBlist.add(B);
-		BBlist.add(B);
-		Clause BB = ClauseFactory.createConExp(BBlist);
+		RegExp BB = Kleene.concat(B,B);
+		//System.out.println(BB.toString());
+		RegExp AB = Kleene.concat(A,B);
+		//System.out.println(AB.toString());
 		
-		Clause BBstar = ClauseFactory.CreateStarExp(BB);
-		Clause Astar = ClauseFactory.CreateStarExp(A);
+		RegExp BBAB = Kleene.concat(BB,AB);
+		//System.out.println(BBAB.toString());
 		
-		ArrayList<Clause> split_list = new ArrayList<Clause>();
-		split_list.addAll(BBlist);
-		split_list.add(BBstar);
-		Clause bbBB = ClauseFactory.createConExp(split_list);
-		
-		RegExp one = Kleene.add(C,BB);
-		System.out.println(one.toString());
-		RegExp two = Kleene.add(one,Astar);
-		System.out.println(two.toString());
-		RegExp three = Kleene.add(two,bbBB);
-		System.out.println(three.toString());
+		RegExp more = Kleene.add(BBAB,A);
+		//System.out.println(more.toString());
+		more = Kleene.add(more,A);
+		//System.out.println(more.toString());
+		more = Kleene.add(more,Epsilon.getEps());
+		//System.out.println(more.toString());
+		more = Kleene.add(more,EmptyExp.getEmptySet());
+		System.out.println(more.toString());
+		more = Kleene.concat(more,more);
+		System.out.println(more.toString());
 		*/
 	}
 }

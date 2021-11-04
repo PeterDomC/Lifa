@@ -6,7 +6,7 @@ import java.util.HashSet;
 /*
  * Class that implements the operations of the Kleene algebra over regular expressions.
  */
-public class Kleene {
+public abstract class Kleene {
 	
 	/**
 	 * Method for adding two regular expressions in disjunctive normalform.
@@ -14,33 +14,18 @@ public class Kleene {
 	 * @param a = r_1 + ... + r_n, b = s_1 + ... + s_k are the given regular expressions.
 	 * @return the resulting sum r_1 + ... + r_n + s_1 + ... + s_k modulo simplifications.
 	 * 
-	 * NOTE: The method simplifies the resulting sum in a four step procedure.
-	 * 1st: It looks for syntactically equivalent summands and discards copies.
-	 * 2nd: It checks for additions with zero - these are abbreviated.
-	 * 3rd: It looks for some hardcoded pattern that allow to erase summands.
-	 * 4th: It successively checks for semantic inclusion and erases summands that are not needed.
+	 * NOTE: The method simplifies the resulting sum by calling the method simplify.
 	 * NOTE: Does not return a reference to a or b.
 	 */
 	public static RegExp add(RegExp a, RegExp b) {
 		
-		// First simplification.
-		// This is implicit in building the new set of summands for the regular expression.
-		// Syntactically equivalent clauses are discarded.
+		// Building the new set of summands of the resulting regular expression.
+		// Note that syntactically equivalent clauses are already discarded.
 		HashSet<Clause> summands = new HashSet<Clause>();
 		summands.addAll(a.getSummands());
 		summands.addAll(b.getSummands());
 		
-		// Second simplification.
-		// Remove the summand zero/empty set.
-		summands = removeZero(summands);
-		
-		// Third simplification.
-		// Simplify hardcoded pattern.
-		summands = simplifyPattern(summands);
-		
-		// Fourth simplification
-		// TODO
-		
+		summands = simplify(summands);
 		return new RegExp(summands);
 	}
 	
@@ -71,14 +56,7 @@ public class Kleene {
 	 * @param a = r_1 + ... + r_n, b = s_1 + ... + s_k are the given regular expressions.
 	 * @return the resulting expression r_1.s_1 + r_2.s_1 + ... + r_n.s_n modulo simplifications.
 	 * 
-	 * NOTE: The method simplifies the resulting expression in a x step procedure.
-	 * 1st: If a or b is the empty expression, we can return the empty expression.
-	 * 2nd: If a or b is epsilon, we can return a or b correspondingly.
-	 * -----------------
-	 * 1st: It looks for syntactically equivalent summands and discards copies.
-	 * 2nd: It checks for additions with zero - these are abbreviated.
-	 * 3rd: It looks for some hardcoded pattern that allow to erase summands.
-	 * 4th: It successively checks for semantic inclusion and erases summands that are not needed.
+	 * NOTE: The method simplifies the resulting DNF by calling the method simplify.
 	 * NOTE: Does not return a reference to a or b.
 	 */
 	public static RegExp concat(RegExp a, RegExp b) {
@@ -87,48 +65,18 @@ public class Kleene {
 		HashSet<Clause> b_summands = b.getSummands();
 		HashSet<Clause> concat_summands = new HashSet<Clause>();
 		
+		// Construct the summands of the resulting DNF.
+		// Note that syntactically equivalent summands are already discarded.
 		for (Clause r : a_summands) {
 			for (Clause s : b_summands) {
-				// Concatenate r and s in extra method and add to concat_summands.
+				Clause rs = clauseConcat(r,s);
+				concat_summands.add(rs);
 			}
 		}
 		
-		// Then call the sum-simplification method consisting of 2nd, 3rd, and 4th component.
-		
-		/*
-		// Obvious Simplification cases.
-		// One of the given factors is empty - multiplication with zero.
-		ClauseType type_a = a.getType();
-		ClauseType type_b = b.getType();
-		if (type_a == ClauseType.emptyExp || type_b == ClauseType.emptyExp) return EmptyExp.getEmptySet();
-		
-		// One of the factors (or both) is epsilon - multiplication with one.
-		if (type_a == ClauseType.epsilon && type_b == ClauseType.epsilon) return Epsilon.getEps();
-		if (type_a == ClauseType.epsilon) return b;
-		if (type_b == ClauseType.epsilon) return a;
-		
-		// Non-obvious simplification.
-		if (type_a == ClauseType.starExp && type_b == ClauseType.starExp) {
-			
-			// Factor a = R* and b = E*.
-			RegExp R = ((StarExp) a).getInner();
-			RegExp E = ((StarExp) b).getInner();
-			
-			// R and E are syntactically equal - return one factor.
-			if (R.equals(E)) return a;
-			
-			// If E is contained in R, return a: R* . E* = R* = a.
-			if (isContained(E,R)) return a;
-			
-			// If R is contained in E, return b: R* . E* = E* = b.
-			if (isContained(R,E)) return b;
-		}
-		
-		// No simplification applicable.
-		//TODO: find common prefix and pull factor out.
-		return new ConExp(a,b);*/
-		
-		return null;
+		// Then call simplify
+		concat_summands = simplify(concat_summands);
+		return new RegExp(concat_summands);
 	}
 	
 	/**
@@ -153,13 +101,70 @@ public class Kleene {
 	}
 	
 	/**
-	 * Add description!
-	 * @param r
-	 * @param s
-	 * @return
+	 * Method for concatenating two clauses.
+	 * @param r,s are the given clauses.
+	 * @return r.s modulo simplifications.
+	 * 
+	 * NOTE: The method constructs a new concatenation expression r.s only if needed.
+	 * It first tries to simplify the expression r.s in a three step procedure:
+	 * 1st: It checks for a multiplication with zero (the empty expression).
+	 * 2nd: It checks for a multiplication with one (epsilon).
+	 * 3rd: It checks whether a factor vanishes due to monotonicity among star expressions.
+	 * NOTE: May return a reference to r or s.
 	 */
 	private static Clause clauseConcat(Clause r, Clause s) {
-		return null;
+		
+		// Simple multiplication cases.
+		ClauseType type_r = r.getType();
+		ClauseType type_s = s.getType();
+		
+		// Multiplication with the empty expression (zero).
+		// If r or s is empty, we return the empty expression.
+		if (type_r == ClauseType.emptyExp || type_s == ClauseType.emptyExp) return EmptyExp.getEmptySet();
+		
+		// One of the factors (or both) is epsilon - multiplication with one.
+		if (type_r == ClauseType.epsilon) return s;
+		if (type_s == ClauseType.epsilon) return r;
+		
+		// Non-obvious simplifications.
+		// If r = R* is a star expression and s = S* is a star expression and we have
+		// R is contained in S (S is contained in R) then we get r.s = s (r.s = r). 
+		if (type_r == ClauseType.starExp && type_s == ClauseType.starExp) {
+			
+			// Clause r = R* and s = S*.
+			Clause R = ((StarExp) r).getInner();
+			Clause S = ((StarExp) s).getInner();
+			
+			// R and S are syntactically equal - return one factor.
+			if (R.equals(S)) return r;
+			
+			// If S is contained in R, return r: R* . S* = R* = r.
+			if (isContained(S,R)) return r;
+			
+			// If R is contained in S, return s: R* . S* = S* = s.
+			if (isContained(R,S)) return s;
+		}
+		
+		// No simplification applicable.
+		// Build new concatenation expression.
+		ArrayList<Clause> factors = new ArrayList<Clause>();
+		if (type_r == ClauseType.conExp) {
+			// If r contains more than one factor, we add them all to the factors of the new expression.
+			factors.addAll(((ConExp) r).getFactors());
+		} else {
+			// If r contains only one factor (it is not a concatenation expression), we add r as a new factor.
+			factors.add(r);
+		}
+		
+		if (type_s == ClauseType.conExp) {
+			// If s contains more than one factor, we add them all to the factors of the new expression.
+			factors.addAll(((ConExp) s).getFactors());
+		} else {
+			// If s contains only one factor (it is not a concatenation expression), we add s as a new factor.
+			factors.add(s);
+		}
+		
+		return ClauseFactory.createConExp(factors);
 	}
 	
 	/**
@@ -192,26 +197,6 @@ public class Kleene {
 		
 		// No simplification applicable.
 		return new StarExp(a);
-	}
-	*/
-	
-	/**
-	 * Method checks whether one regular expression is contained in the other.
-	 * @param a, b are the given expressions.
-	 * @return true, if a is contained in b - false, otherwise.
-	 */
-	/*
-	public static boolean isContained(RegExp a, RegExp b) {
-		// Currently not implemented - build up automaton.
-		// along the expression and run corresponding automaton method.
-		return false;
-	}
-	*/
-	
-	/*
-	public static boolean isUniversal(RegExp a) {
-		// Check whether a given regular expression is universal.
-		return false;
 	}
 	*/
 	
@@ -285,9 +270,35 @@ public class Kleene {
 	}
 	*/
 	
-	//TODO: add body - need public method for regular expressions?
-	private static RegExp simplify(HashSet<Clause> clauses) {
-		return null;
+	/**
+	 * Method that takes a set of clauses of a regular DNF expression and simplifies them.
+	 * @param clauses is the given set of clauses.
+	 * @return simpl, the simplified set of clauses.
+	 * 
+	 * NOTE: The method simplifies in three steps.
+	 * 1st: It checks for addition with the empty expression (zero) - these are discarded.
+	 * 2nd: It looks for some hardcoded pattern that allow to erase summands.
+	 * 3rd: It successively checks for semantic inclusion and erases summands that are not needed.
+	 * NOTE: Does not return a reference to clauses nor does it manipulate clauses.
+	 */
+	private static HashSet<Clause> simplify(HashSet<Clause> clauses) {
+		
+		// Set of simplified clauses.
+		HashSet<Clause> simpl = new HashSet<Clause>(clauses);
+		
+		// First simplification.
+		// Remove the summand zero/empty set.
+		simpl = removeZero(simpl);
+		
+		// Second simplification.
+		// Simplify hardcoded pattern.
+		simpl = simplifyPattern(simpl);
+		
+		// Third simplification.
+		// TODO
+		
+		// Return simplified clauses.
+		return simpl;
 	}
 	
 	/**
@@ -300,6 +311,7 @@ public class Kleene {
 		new_clauses.remove(EmptyExp.getEmptySet());
 		return new_clauses;
 	}
+	
 	
 	/**
 	 * Method that simplifies the given set of clauses via checking for hardcoded pattern.
@@ -359,6 +371,7 @@ public class Kleene {
 		return reducedClause;
 	}
 	
+	
 	/**
 	 * Method that checks whether the given clause is in split form.
 	 * This means it can be written as c = w.w*, where w is some expression.
@@ -392,5 +405,48 @@ public class Kleene {
 		
 		// If the given clause is not in split form, return the empty clause.
 		return EmptyExp.getEmptySet();
+	}
+	
+	/**
+	 * Method checks whether one regular expression is contained in the other.
+	 * @param a, b are the given expressions.
+	 * @return true, if a is contained in b - false, otherwise.
+	 */
+	public static boolean isContained(RegExp a, RegExp b) {
+		// TODO: Currently not implemented - build up automaton.
+		// along the expression and run corresponding automaton method.
+		return false;
+	}
+	
+	/**
+	 * Further addition method allowing to check containment for clause/regexp and clause/regexp.
+	 */
+	public static boolean isContained(Clause a, RegExp b) {
+		return isContained(new RegExp(a),b);
+	}
+	
+	/**
+	 * Further addition method allowing to check containment for clause/regexp and clause/regexp.
+	 */
+	public static boolean isContained(RegExp a, Clause b) {
+		return isContained(a,new RegExp(b));
+	}
+	
+	/**
+	 * Further addition method allowing to check containment for clause/regexp and clause/regexp.
+	 */
+	public static boolean isContained(Clause a, Clause b) {
+		return isContained(new RegExp(a),new RegExp(b));
+	}
+	
+	/**
+	 * Method checks whether the given regular expression is universal.
+	 * @param a is the given expressions.
+	 * @return true, if a is universal - false, otherwise.
+	 */
+	public static boolean isUniversal(RegExp a) {
+		// Check whether a given regular expression is universal.
+		// TODO: implement!
+		return false;
 	}
 }
