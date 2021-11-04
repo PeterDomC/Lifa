@@ -18,12 +18,12 @@ public class main {
 
 	public static void main(String[] args) throws IOException {
 		
-		/*
+		
 		Test.runOperationTests();
 		Test.runLanguageTests();
 		Test.runRealWorldTests();
-		*/
 		
+		/*
 		Letter a = new Letter("a");
 		Letter b = new Letter("b");
 		Letter c = new Letter("c");
@@ -35,17 +35,21 @@ public class main {
 		BBlist.add(B);
 		BBlist.add(B);
 		Clause BB = ClauseFactory.createConExp(BBlist);
+		
 		Clause BBstar = ClauseFactory.CreateStarExp(BB);
+		Clause Astar = ClauseFactory.CreateStarExp(A);
 		
-		ArrayList<Clause> splitTestList = new ArrayList<Clause>();
-		splitTestList.add(B);
-		splitTestList.add(B);
-		splitTestList.add(BBstar);
-		Clause splitTest = ClauseFactory.createConExp(splitTestList);
-		System.out.println(splitTest.toString());
+		ArrayList<Clause> split_list = new ArrayList<Clause>();
+		split_list.addAll(BBlist);
+		split_list.add(BBstar);
+		Clause bbBB = ClauseFactory.createConExp(split_list);
 		
-		RegExp simple = Kleene.add(Epsilon.getEps(),splitTest);
-		System.out.println(simple.toString());
-		
+		RegExp one = Kleene.add(C,BB);
+		System.out.println(one.toString());
+		RegExp two = Kleene.add(one,Astar);
+		System.out.println(two.toString());
+		RegExp three = Kleene.add(two,bbBB);
+		System.out.println(three.toString());
+		*/
 	}
 }

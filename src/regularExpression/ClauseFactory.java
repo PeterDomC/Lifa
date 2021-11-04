@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * NOTE: This class is needed in order to make the clause types semantically mutually exclusive!
  */
 public class ClauseFactory {
-
+	//TODO: Make non-public class.
 	/**
 	 * Method tries to create a concatenation expression from the given input.
 	 * @param factors is the given list of factors.

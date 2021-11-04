@@ -61,34 +61,36 @@ public class Kleene {
 	 * @param clauses is the given set.
 	 * @return new_clauses, the set with removed empty expression.
 	 */
-	public static HashSet<Clause> removeZero(HashSet<Clause> clauses) {
+	private static HashSet<Clause> removeZero(HashSet<Clause> clauses) {
 		HashSet<Clause> new_clauses = new HashSet<Clause>(clauses);
 		new_clauses.remove(EmptyExp.getEmptySet());
 		return new_clauses;
 	}
 	
 	/**
+	 * Method that simplifies the given set of clauses via checking for hardcoded pattern.
+	 * @param clauses is the given set of clauses.
+	 * @return reducedClause, the reduced set of clauses after the simplifications.
 	 * 
-	 * @param clauses
-	 * @return
+	 * NOTE: Currently, the method applies two simplifications, 
+	 * namely 1+ c.c* = c* and c is contained in c*.
 	 */
 	private static HashSet<Clause> simplifyPattern(HashSet<Clause> clauses) {
 		
 		// The simplified set of clauses
 		HashSet<Clause> reducedClause = new HashSet<Clause>(clauses);
 		
-		// Obtain the inner of the star clauses.
-		HashSet<Clause> innerStarClause = new HashSet<Clause>();
+		// Simplification pattern one: eps + c.c* = c* for each clause c.
+		// Applicable if the set of clauses contains epsilon or any star expression (then we can add epsilon for free).
+		boolean containsStar = false;
 		for (Clause c : clauses) {
 			if (c.getType() == ClauseType.starExp) {
-				innerStarClause.add(((StarExp) c).getInner());
+				containsStar = true; 
+				break;
 			}
 		}
 		
-		// Simplification pattern one: eps + c.c* = c* for each clause c.
-		// Applicable if the set of clauses contains epsilon or a star expression (then we can add epsilon for free).
-		if (clauses.contains(Epsilon.getEps()) || !innerStarClause.isEmpty()) {
-			
+		if (clauses.contains(Epsilon.getEps()) || containsStar) {
 			// Iterate over all clauses and check whether they satisfy the split form c = d.d* 
 			// and if so, simplify them to c = d*.
 			boolean simplified = false;
@@ -107,22 +109,19 @@ public class Kleene {
 			if (simplified) reducedClause.remove(Epsilon.getEps());
 		}
 		
-		//TODO
-		/*
-		// Simplification: c is contained in c* for each clause c, so c can be discarded.
-		// Obtain all star expression clauses.
-		HashSet<Clause> starClauses = new HashSet<Clause>(clauses);
-		starClauses.removeIf(c -> c.getType() != ClauseType.starExp);
-		
+		// Simplification pattern two: c is contained in c* for each clause c, so c can be discarded.
 		// Obtain the inner of the star clauses.
-		HashSet<Clause> innerStarClauses = new HashSet<Clause>();
-		starClauses.forEach(c -> innerStarClauses.add(((StarExp) c).getInner()));
+		HashSet<Clause> innerStarClause = new HashSet<Clause>();
+		for (Clause c : reducedClause) {
+			if (c.getType() == ClauseType.starExp) {
+				innerStarClause.add(((StarExp) c).getInner());
+			}
+		}
 		
-		// Remove those clauses from the initial set that appear as inner of a star clause.
-		reducedClause.removeAll(innerStarClauses);
+		// Remove those clauses from the reduced clause set that appear as inner of a star clause.
+		reducedClause.removeAll(innerStarClause);
 		
-		*/
-		
+		// Return the reduced set of clauses.
 		return reducedClause;
 	}
 	
