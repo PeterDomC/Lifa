@@ -1,6 +1,7 @@
 package regularExpression;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /*
  * Class for clauses of star type that have a special form - they are star chains:
@@ -16,6 +17,15 @@ class StarChain extends StarExp {
 	 */
 	StarChain (Clause inner) {
 		super(inner);
+	}
+	
+	/**
+	 * Getter for the inner star factors of the star chain: r_1* ... r_n*.
+	 */
+	public HashSet<Clause> getInnerStarFactors() {
+		Clause inner = super.getInner();
+		ArrayList<Clause> star_factors = ((ConExp) inner).getFactors();
+		return new HashSet<Clause>(star_factors);
 	}
 	
 	/**

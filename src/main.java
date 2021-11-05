@@ -28,12 +28,11 @@ public class main {
 		
 		RegExp AS = Kleene.star(A);
 		RegExp BS = Kleene.star(B);
+		RegExp CS = Kleene.star(C);
 		RegExp ASBS = Kleene.concat(AS,BS);
 		System.out.println(ASBS.toString());
 		
-		ASBS = Kleene.star(ASBS);
-		System.out.println(ASBS.toString());
-		
+		// Larger expression.
 		RegExp res = Kleene.add(ASBS,Epsilon.getEps());
 		System.out.println(res.toString());
 		
@@ -42,6 +41,7 @@ public class main {
 		
 		res = Kleene.add(res,AS);
 		System.out.println(res.toString());
+		
 		res = Kleene.star(res);
 		System.out.println(res.toString());
 		
@@ -52,9 +52,7 @@ public class main {
 		System.out.println(res.toString());
 		
 		res = Kleene.add(res, Epsilon.getEps());
-		System.out.println(res.toString());
-		//TODO: check for split form on the other side as well!
-		// The rule can be applied from left and right.
-		 */
+		System.out.println(res.toString()); 
+		*/
 	}
 }

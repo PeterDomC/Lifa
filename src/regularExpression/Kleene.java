@@ -2,6 +2,7 @@ package regularExpression;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 
 /*
  * Class that implements the operations of the Kleene algebra over regular expressions.
@@ -98,12 +99,14 @@ public abstract class Kleene {
 	 * @return reducedClause, the reduced set of clauses after the simplifications.
 	 * 
 	 * NOTE: Currently, the method applies two simplifications, 
-	 * namely 1+ c.c* = c* and c is contained in c*.
+	 * namely 1 + c.c* = c* and c is contained in c*.
+	 * TODO: Update
 	 */
 	private static HashSet<Clause> simplifyPattern(HashSet<Clause> clauses) {
-		
-		// The simplified set of clauses
+		// TODO: Split in smaller functions.
+		// The simplified set of clauses.
 		HashSet<Clause> reducedClause = new HashSet<Clause>(clauses);
+		
 		
 		// Simplification pattern one: eps + c.c* = c* for each clause c.
 		// Applicable if the set of clauses contains epsilon or any star expression (then we can add epsilon for free).
@@ -134,6 +137,7 @@ public abstract class Kleene {
 			if (simplified) reducedClause.remove(Epsilon.getEps());
 		}
 		
+		
 		// Simplification pattern two: c is contained in c* for each clause c, so c can be discarded.
 		// Obtain the inner of the star clauses.
 		HashSet<Clause> innerStarClause = new HashSet<Clause>();
@@ -145,6 +149,37 @@ public abstract class Kleene {
 		
 		// Remove those clauses from the reduced clause set that appear as inner of a star clause.
 		reducedClause.removeAll(innerStarClause);
+		
+		
+		// Simplification pattern three: containment of star (chains).
+		// If there are two star (chain) clauses c = (r_1 + ... + r_n)* and d = (s_1 + ... s_n)*
+		// and each s_i appears as one of the r_i, then we can discard d.
+		HashSet<Clause> starChainClause = new HashSet<Clause>();
+		
+		// Get the star (chain) clauses.
+		for (Clause c : reducedClause) {
+			if (c.getType() == ClauseType.starExp) {
+				starChainClause.add(c);
+			}
+		}
+		
+		// Compare each two star (chain) clauses for containment.
+		// Those that vanish are added to deletableSC.
+		HashSet<Clause> deletableSC = new HashSet<Clause>();
+		
+		for (Clause current : starChainClause) {
+			for (Clause other : starChainClause) {
+				
+				// current and other are not allowed to be equal since then each star (chain) gets deleted.
+				if (!current.equals(other) && syntacticStarChainContains((StarExp) current, (StarExp) other)) {
+					// Add as deletable star (chain).
+					deletableSC.add(other);
+				}
+			}
+		}
+		
+		// Remove the deletable star (chains).
+		reducedClause.removeAll(deletableSC);
 		
 		// Return the reduced set of clauses.
 		return reducedClause;
@@ -159,7 +194,7 @@ public abstract class Kleene {
 	 * NOTE: Returns the empty expression if the given clause is not in split form.
 	 */
 	private static Clause getSplitForm(Clause c) {
-		
+		//TODO: this is a split form in one direction: w*.w does also work!
 		// Clause c can only be in split form if it is a concatenation expression.
 		if (c.getType() == ClauseType.conExp) {
 			
@@ -425,6 +460,7 @@ public abstract class Kleene {
 	 * @return the list of star expressions r_1*, ..., r_n*.
 	 * The list is empty, if a is not a star expression.
 	 */
+	//TODO: do we need this function?
 	private static ArrayList<Clause> getInnerOfStarChain(Clause a) {
 		
 		if (a.getType() == ClauseType.conExp) {	
@@ -441,5 +477,38 @@ public abstract class Kleene {
 		}
 		
 		return new ArrayList<Clause>();
+	}
+	
+	/**
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	private static boolean syntacticStarChainContains(StarExp a, StarExp b) {
+		
+		// Get the set of inner factors of the two star (chains).
+		HashSet<Clause> factors_a;
+		if (a instanceof StarChain) {
+			// A real star chain - get the factors with correasponding getter.
+			factors_a = ((StarChain) a).getInnerStarFactors();
+		} else {
+			// Not a real star chain - only one factor, the expression itself.
+			factors_a = new HashSet<Clause>();
+			factors_a.add(a);
+		}
+		
+		HashSet<Clause> factors_b;
+		if (b instanceof StarChain) {
+			// A real star chain - get the factors with correasponding getter.
+			factors_b = ((StarChain) b).getInnerStarFactors();
+		} else {
+			// Not a real star chain - only one factor, the expression itself.
+			factors_b = new HashSet<Clause>();
+			factors_b.add(b);
+		}
+		
+		// Comparison: true if factors_b is a subset of factors_a.
+		return factors_a.containsAll(factors_b);
 	}
 }
