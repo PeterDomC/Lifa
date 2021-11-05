@@ -62,7 +62,14 @@ class ConExp extends Clause {
 	public String toString() {
 		
 		StringBuilder builder = new StringBuilder();
+		boolean first = true;
 		for (Clause c : factors) {
+			if (!first) {
+				builder.append(".");
+			} else {
+				first = false;
+			}
+			
 			builder.append(c.toString());
 		}
 		

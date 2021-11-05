@@ -26,25 +26,35 @@ public class main {
 		Atom B = new Atom(b);
 		Atom C = new Atom(c);
 		
-		RegExp BB = Kleene.concat(B,B);
-		RegExp AB = Kleene.concat(A,B);
+		RegExp AS = Kleene.star(A);
+		RegExp BS = Kleene.star(B);
+		RegExp ASBS = Kleene.concat(AS,BS);
+		System.out.println(ASBS.toString());
 		
-		RegExp BBAB = Kleene.concat(BB,AB);
-		System.out.println(BBAB.toString());
+		ASBS = Kleene.star(ASBS);
+		System.out.println(ASBS.toString());
 		
-		RegExp res = Kleene.add(BBAB,BB);
-		System.out.println(res.toString());
-		res = Kleene.star(res);
-		System.out.println(res.toString());
-		
-		res = Kleene.add(res,B);
-		System.out.println(res.toString());
-		
-		res = Kleene.add(res,BB);
+		RegExp res = Kleene.add(ASBS,Epsilon.getEps());
 		System.out.println(res.toString());
 		
 		res = Kleene.star(res);
 		System.out.println(res.toString());
-		*/
+		
+		res = Kleene.add(res,AS);
+		System.out.println(res.toString());
+		res = Kleene.star(res);
+		System.out.println(res.toString());
+		
+		res = Kleene.concat(res,BS);
+		res = Kleene.add(res,BS);
+		res = Kleene.add(res,A);
+		res = Kleene.concat(res,B);
+		System.out.println(res.toString());
+		
+		res = Kleene.add(res, Epsilon.getEps());
+		System.out.println(res.toString());
+		//TODO: check for split form on the other side as well!
+		// The rule can be applied from left and right.
+		 */
 	}
 }

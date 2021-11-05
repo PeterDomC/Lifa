@@ -30,8 +30,16 @@ abstract class ClauseFactory {
 		if (n == 1) return factors.get(0);
 		
 		// The list of factors has at least two entries.
+		// We can remove the epsilon entries.
+		ArrayList<Clause> reduced_factors = new ArrayList<Clause>(factors);
+		reduced_factors.removeIf(c -> (c.getType() == ClauseType.epsilon));
+		
+		// If the list now consists of a single clause, we return it so that it keeps its type.
+		n = reduced_factors.size();
+		if (n == 1) return reduced_factors.get(0);
+		
 		// We can create a standard concatenation expression.
-		return new ConExp(factors);
+		return new ConExp(reduced_factors);
 	}
 	
 	/**
@@ -70,6 +78,7 @@ abstract class ClauseFactory {
 	public static Clause createStarChain(ArrayList<Clause> inner_factors) {
 		
 		Clause inner = createConExp(inner_factors);
+		
 		ClauseType inner_type = inner.getType();
 		switch (inner_type) {
 			// If the inner clause is empty or epsilon, we can return epsilon.
