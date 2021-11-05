@@ -170,10 +170,11 @@ public abstract class Kleene {
 	/**
 	 * Method for applying Kleene star to a regular expression in DNF.
 	 * This yields a new regular expression in DNF.
-	 * @param a = r_1 + ... + r_n is the given regular expressions.
+	 * @param a = r_1 + ... + r_n is the given regular expression.
 	 * @return the resulting expression (r_1 + ... + r_n)* = (r_1* ... r_n*)* modulo simplifications.
 	 * 
 	 * NOTE: The resulting expression is in DNF with one clause only.
+	 * This clause is a star chain if the given DNF contains more than one summand.
 	 * NOTE: The method simplifies the expression.
 	 * NOTE: May return a reference to a.
 	 */
@@ -191,12 +192,8 @@ public abstract class Kleene {
 		
 		// Then simplify the resulting star chain expression.
 		inner_factors = simplifyStarChain(inner_factors);
-		Clause starChain = ClauseFactory.createConExp(inner_factors);
-		starChain = ClauseFactory.createStarExp(starChain);
+		Clause starChain = ClauseFactory.createStarChain(inner_factors);
 		return new RegExp(starChain);
-		
-		// Do we need an explicity case where a is empty?
-		//TODO
 	}
 	
 	/**
@@ -496,4 +493,32 @@ public abstract class Kleene {
 		return null;
 	}
 	*/
+	
+	/**
+	 * Method that checks whether the given clause is of the form a = (r_1* r_2* ... r_n*)* = (r_1 + ... + r_n)*.
+	 */
+	private boolean isStarChain(Clause a) {
+		
+		// Clause a has to be a star expression.
+		if (a.getType() == ClauseType.starExp) {
+			Clause inner = ((StarExp) a).getInner();
+			
+			// Inner must be of type concatenation.
+			if (inner.getType() == ClauseType.conExp) {
+				
+				// Inner must have at least two factors and
+				// all factors of inner need to be star expressions.
+				ArrayList<Clause> factors = ((ConExp) inner).getFactors();
+				if (factors.size() >= 2) {
+					for (Clause c : factors) {
+						if (c.getType() != ClauseType.starExp) return false;
+					}
+					
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
 }

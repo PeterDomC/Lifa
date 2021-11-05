@@ -5,7 +5,7 @@ package regularExpression;
  * Note that these types are mutually exclusive,
  * a clause can only be of one type at a time.
  */
-public enum ClauseType {
+enum ClauseType {
 	
 	/**
 	 * Clauses can be concatenations or stars of concatenations and star expressions.

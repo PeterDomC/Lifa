@@ -13,7 +13,7 @@ import java.util.Objects;
  * or by constructing concatenation expressions solely via the factory provided by the class Kleene.
  * @Immutable
  */
-public class ConExp extends Clause {
+class ConExp extends Clause {
 	
 	private final ArrayList<Clause> factors;
 	
@@ -21,7 +21,7 @@ public class ConExp extends Clause {
 	 * Constructor for clauses of concatenation type.
 	 * The given list contains the factors.
 	 */
-	protected ConExp (ArrayList<Clause> factors) {
+	ConExp (ArrayList<Clause> factors) {
 		super(ClauseType.conExp);
 		this.factors = factors;
 	}

@@ -7,8 +7,8 @@ import java.util.ArrayList;
  * NOTE: Clauses of other types can either be called by their constructor or are singletons.
  * NOTE: This class is needed in order to make the clause types semantically mutually exclusive!
  */
-public class ClauseFactory {
-	//TODO: Make non-public class.
+abstract class ClauseFactory {
+	
 	/**
 	 * Method tries to create a concatenation expression from the given input.
 	 * @param factors is the given list of factors.
@@ -56,5 +56,36 @@ public class ClauseFactory {
 		// The inner clause is an atom or a concatenation expression.
 		// We construct a proper star expression.
 		return new StarExp(inner);
+	}
+	
+	/**
+	 * Method tries to create a star chain expression from the given list of stared factors.
+	 * @param inner_factors = r_1*,...,r_n* is a list of already stared factors.
+	 * @return The star chain expression (r_1*...r_n*)* = (r_1 + ... + r_n)*.
+	 * 
+	 * NOTE: May return other types of clauses, depending on the given list.
+	 * NOTE: We generally recommend to create clauses via the operations of the class Kleene
+	 * since applying this method without deeper knowledge can lead to subtle structure violations.
+	 */
+	public static Clause createStarChain(ArrayList<Clause> inner_factors) {
+		
+		Clause inner = createConExp(inner_factors);
+		ClauseType inner_type = inner.getType();
+		switch (inner_type) {
+			// If the inner clause is empty or epsilon, we can return epsilon.
+			// This happens if inner_factors is empty or consist only of epsilon.
+			case emptyExp:
+			case epsilon: return Epsilon.getEps();
+			
+			// If the inner is a star expression, we return it: a** = a*.
+			case starExp: return inner;
+			
+			// If the inner is an atom, we return the resulting star expression.
+			case atom: return new StarExp(inner);
+			
+			// The inner clause is a concatenation expression with at least two star factors.
+			// We construct a proper star chain.
+			default: return new StarChain(inner);
+		}
 	}
 }

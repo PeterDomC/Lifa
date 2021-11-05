@@ -5,14 +5,10 @@ import automata.Letter;
 import examples.Test;
 import regularExpression.Atom;
 import regularExpression.Clause;
-import regularExpression.ClauseFactory;
-import regularExpression.ClauseType;
-import regularExpression.ConExp;
 import regularExpression.EmptyExp;
 import regularExpression.Epsilon;
 import regularExpression.Kleene;
 import regularExpression.RegExp;
-import regularExpression.StarExp;
 
 public class main {
 
@@ -31,9 +27,7 @@ public class main {
 		Atom C = new Atom(c);
 		
 		RegExp BB = Kleene.concat(B,B);
-		//System.out.println(BB.toString());
 		RegExp AB = Kleene.concat(A,B);
-		//System.out.println(AB.toString());
 		
 		RegExp BBAB = Kleene.concat(BB,AB);
 		System.out.println(BBAB.toString());
@@ -43,7 +37,7 @@ public class main {
 		res = Kleene.star(res);
 		System.out.println(res.toString());
 		
-		res = Kleene.concat(res,B);
+		res = Kleene.add(res,B);
 		System.out.println(res.toString());
 		
 		res = Kleene.add(res,BB);
