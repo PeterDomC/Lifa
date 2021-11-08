@@ -1,4 +1,4 @@
-package regularExpression;
+package regularExpressions;
 
 import java.util.Objects;
 

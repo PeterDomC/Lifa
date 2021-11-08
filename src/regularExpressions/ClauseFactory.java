@@ -1,4 +1,4 @@
-package regularExpression;
+package regularExpressions;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * NOTE: Clauses of other types can either be called by their constructor or are singletons.
  * NOTE: This class is needed in order to make the clause types semantically mutually exclusive!
  */
-abstract class ClauseFactory {
+public abstract class ClauseFactory {
 	
 	/**
 	 * Method tries to create a concatenation expression from the given input.

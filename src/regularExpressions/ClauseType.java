@@ -1,11 +1,11 @@
-package regularExpression;
+package regularExpressions;
 
 /*
  * Different types of clauses in regular expressions.
  * Note that these types are mutually exclusive,
  * a clause can only be of one type at a time.
  */
-enum ClauseType {
+public enum ClauseType {
 	
 	/**
 	 * Clauses can be concatenations or stars of concatenations and star expressions.

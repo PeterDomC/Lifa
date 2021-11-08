@@ -5,22 +5,22 @@ import automata.Autom;
 import automata.Letter;
 import automatonPrinter.AutomPrinter;
 import examples.Test;
-import regularExpression.Atom;
-import regularExpression.Clause;
-import regularExpression.EmptyExp;
-import regularExpression.Epsilon;
-import regularExpression.Kleene;
-import regularExpression.RegExp;
+import regularExpressionEngine.Kleene;
+import regularExpressions.Atom;
+import regularExpressions.Clause;
+import regularExpressions.EmptyExp;
+import regularExpressions.Epsilon;
+import regularExpressions.RegExp;
 
 public class main {
 
 	public static void main(String[] args) throws IOException {
-		
+		/*
 		Test.runOperationTests();
 		Test.runLanguageTests();
 		Test.runRealWorldTests();
+		*/
 		
-		/*
 		Atom a = new Atom("a");
 		Atom b = new Atom("b");
 		Atom c = new Atom("c");
@@ -29,17 +29,15 @@ public class main {
 		RegExp bs = Kleene.star(b);
 		RegExp cs = Kleene.star(c);
 		
-		RegExp out = Kleene.concat(as,bs);
-		out = Kleene.concat(out,cs);
-		out = Kleene.add(out,Kleene.concat(a,bs));
-		out = Kleene.add(out,Kleene.concat(a,b));
+		RegExp abc = Kleene.add(a,Kleene.add(b,c));
+		RegExp abs = Kleene.star(Kleene.add(a,b));
+		System.out.println(abs.toString());
 		
+		RegExp out = Kleene.add(abs,Kleene.star(abc));
 		System.out.println(out.toString());
 		
-		
-		Autom A = out.toAutom();
-		AutomPrinter.createVisual(A,"outy");
-		*/
+		//Autom A = out.toAutom();
+		//AutomPrinter.createVisual(A,"outy");
 		/*
 		RegExp AS = Kleene.star(A);
 		RegExp BS = Kleene.star(B);

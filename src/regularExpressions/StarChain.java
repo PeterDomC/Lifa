@@ -1,4 +1,4 @@
-package regularExpression;
+package regularExpressions;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,7 +10,7 @@ import java.util.HashSet;
  * This significantly simplifies the output when writing a regular expression.
  * @Immutable
  */
-class StarChain extends StarExp {
+public class StarChain extends StarExp {
 	
 	/**
 	 * Constructor for star chain expressions.
@@ -27,6 +27,21 @@ class StarChain extends StarExp {
 		ArrayList<Clause> star_factors = ((ConExp) inner).getFactors();
 		return new HashSet<Clause>(star_factors);
 	}
+	
+	/**
+	 * Getter for the inner summands r_1, ..., r_n as a set of clauses with n elements.
+	 */
+	@Override
+	public HashSet<Clause> getInnerAsSet() {
+		Clause inner = super.getInner();
+		HashSet<Clause> summands = new HashSet<Clause>();
+		ArrayList<Clause> star_factors = ((ConExp) inner).getFactors();
+		for (Clause c : star_factors) summands.add(((StarExp) c).getInner());
+		
+		return summands;
+	}
+	
+	//TODO: Override toAutom - tailored to star chains.
 	
 	/**
 	 * Generate a string that represents the star chain expression.

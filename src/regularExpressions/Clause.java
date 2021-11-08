@@ -1,4 +1,4 @@
-package regularExpression;
+package regularExpressions;
 
 import automata.Autom;
 

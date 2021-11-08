@@ -1,4 +1,4 @@
-package regularExpression;
+package regularExpressions;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -17,7 +17,7 @@ import automataAlgorithms.Operations;
  * NOTE: Concatenation expressions are always assumed to have at least two factors.
  * @Immutable
  */
-class ConExp extends Clause {
+public class ConExp extends Clause {
 	
 	private final ArrayList<Clause> factors;
 	

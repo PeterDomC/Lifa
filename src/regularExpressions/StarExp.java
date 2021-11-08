@@ -1,13 +1,10 @@
-package regularExpression;
+package regularExpressions;
 
+import java.util.HashSet;
 import java.util.Objects;
 
 import automata.Autom;
-import automata.Letter;
-import automata.State;
-import automata.Transition;
 import automataAlgorithms.Operations;
-import automatonPrinter.AutomPrinter;
 
 /*
  * Class for clauses of star type: R = A*.
@@ -19,7 +16,7 @@ import automatonPrinter.AutomPrinter;
  * or by constructing star expressions solely via the factory provided by the class Kleene.
  * @Immutable
  */
-class StarExp extends Clause {
+public class StarExp extends Clause {
 	
 	private final Clause inner;
 	
@@ -36,6 +33,15 @@ class StarExp extends Clause {
 	 */
 	public Clause getInner() {
 		return this.inner;
+	}
+	
+	/**
+	 * Getter for the inner expression - as a set with one element.
+	 */
+	public HashSet<Clause> getInnerAsSet() {
+		HashSet<Clause> inner_clauses = new HashSet<Clause>();
+		inner_clauses.add(inner);
+		return inner_clauses;
 	}
 	
 	/**
