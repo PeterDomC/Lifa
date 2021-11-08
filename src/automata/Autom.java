@@ -260,6 +260,9 @@ public class Autom{
     		conn.add(t.getTarget());
     	}
     	
+    	// Do not forget to add the initial state, it is not isolated.
+    	conn.add(getInit());
+    	
     	// Subtract the states that are incident to a transition from the set of all states
     	HashSet<State> isol = new HashSet<State>(Stateset);
     	isol.removeAll(conn);

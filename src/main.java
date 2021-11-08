@@ -1,7 +1,9 @@
 import java.io.IOException;
 import java.util.ArrayList;
 
+import automata.Autom;
 import automata.Letter;
+import automatonPrinter.AutomPrinter;
 import examples.Test;
 import regularExpression.Atom;
 import regularExpression.Clause;
@@ -19,13 +21,26 @@ public class main {
 		Test.runRealWorldTests();
 		
 		/*
-		Letter a = new Letter("a");
-		Letter b = new Letter("b");
-		Letter c = new Letter("c");
-		Atom A = new Atom(a);
-		Atom B = new Atom(b);
-		Atom C = new Atom(c);
+		Atom a = new Atom("a");
+		Atom b = new Atom("b");
+		Atom c = new Atom("c");
 		
+		RegExp as = Kleene.star(a);
+		RegExp bs = Kleene.star(b);
+		RegExp cs = Kleene.star(c);
+		
+		RegExp out = Kleene.concat(as,bs);
+		out = Kleene.concat(out,cs);
+		out = Kleene.add(out,Kleene.concat(a,bs));
+		out = Kleene.add(out,Kleene.concat(a,b));
+		
+		System.out.println(out.toString());
+		
+		
+		Autom A = out.toAutom();
+		AutomPrinter.createVisual(A,"outy");
+		*/
+		/*
 		RegExp AS = Kleene.star(A);
 		RegExp BS = Kleene.star(B);
 		RegExp CS = Kleene.star(C);

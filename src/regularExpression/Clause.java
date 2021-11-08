@@ -1,5 +1,7 @@
 package regularExpression;
 
+import automata.Autom;
+
 /*
  * Class for the clauses of a regular expression.
  * Clauses of a certain type extend this class:
@@ -27,4 +29,10 @@ public abstract class Clause {
 	public ClauseType getType() {
 		return this.type;
 	}
+
+	/**
+	 * Method that translates the clause at hand into an automaton
+	 * the language of which consists of the clause.
+	 */
+	public abstract Autom toAutom();
 }

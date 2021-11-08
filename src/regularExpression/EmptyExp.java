@@ -1,5 +1,7 @@
 package regularExpression;
 
+import automata.Autom;
+
 /*
  * Class for modeling a clause that represents the empty set.
  * Note that this is a singleton pattern.
@@ -26,6 +28,17 @@ public class EmptyExp extends Clause {
 		}
 		
 		return emptySet;
+	}
+	
+	/**
+	 * Create an automaton representing the empty expression.
+	 * The language of the automaton is empty.
+	 */
+	@Override
+	public Autom toAutom() {
+		
+		// Return the empty automaton.
+		return new Autom();
 	}
 	
 	/**

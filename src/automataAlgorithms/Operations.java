@@ -235,8 +235,11 @@ public class Operations {
 			}
 		}
 		
-		// Final states of Concat are the final states of B
+		// Final states of Concat contain the final states of B (in each case)
+		// as well as the final states of A if L(B) contains epsilon.
 		Concat.addFinal(B.getFinal());
+		if (B.isFinal(B.getInit())) Concat.addFinal(A.getFinal());
+		
 		return Concat;
 	}
 	

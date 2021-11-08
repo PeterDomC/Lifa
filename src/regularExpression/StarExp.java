@@ -1,7 +1,13 @@
 package regularExpression;
 
-import java.util.ArrayList;
 import java.util.Objects;
+
+import automata.Autom;
+import automata.Letter;
+import automata.State;
+import automata.Transition;
+import automataAlgorithms.Operations;
+import automatonPrinter.AutomPrinter;
 
 /*
  * Class for clauses of star type: R = A*.
@@ -30,6 +36,18 @@ class StarExp extends Clause {
 	 */
 	public Clause getInner() {
 		return this.inner;
+	}
+	
+	/**
+	 * Create an automaton A representing the star expression.
+	 * This means the language of A is the expression.
+	 */
+	@Override
+	public Autom toAutom() {
+		// Take the automaton representation of inner and apply kleene star to it.
+		Autom A = Operations.kleene(inner.toAutom());
+		// Eliminate unnecessary states.
+		return Operations.reduce(A);
 	}
 	
 	/**

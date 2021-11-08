@@ -3,6 +3,9 @@ package regularExpression;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import automata.Autom;
+import automataAlgorithms.Operations;
+
 /*
  * Class for clauses of concatenation type: R = r_1 ... r_n.
  * 
@@ -11,6 +14,7 @@ import java.util.Objects;
  * Hence, the factors r_i cannot be concatenation expressions themselves.
  * This is not checked by the constructor due to performance - this has to be ensured by the user
  * or by constructing concatenation expressions solely via the factory provided by the class Kleene.
+ * NOTE: Concatenation expressions are always assumed to have at least two factors.
  * @Immutable
  */
 class ConExp extends Clause {
@@ -31,6 +35,31 @@ class ConExp extends Clause {
 	 */
 	public ArrayList<Clause> getFactors() {
 		return this.factors;
+	}
+	
+	/**
+	 * Create an automaton A representing the concatenation expression.
+	 * This means the language of A is the expression.
+	 */
+	@Override
+	public Autom toAutom() {
+		// Take the automaton representation of the factors and concatenate them successively.
+		// Note that a concatenation expression has at least two factors.
+		Autom A = new Autom();
+		boolean first = true;
+		for (Clause c : factors) {
+			if (!first) {
+				// Concatenate with further factors.
+				A = Operations.concat(A,c.toAutom());
+			} else {
+				// First factor.
+				A = factors.get(0).toAutom();
+				first = false;
+			}
+		}
+		
+		// Eliminate unnecessary states.
+		return Operations.reduce(A);
 	}
 	
 	/**

@@ -3,6 +3,9 @@ package regularExpression;
 import java.util.HashSet;
 import java.util.Objects;
 
+import automata.Autom;
+import automataAlgorithms.Operations;
+
 /*
  * Base class for regular expressions.
  * 
@@ -37,6 +40,21 @@ public class RegExp {
 	 */
 	public HashSet<Clause> getSummands() {
 		return this.summands;
+	}
+	
+	/**
+	 * Create an automaton A representing the regular expression.
+	 * This means the language of A is the expression.
+	 */
+	public Autom toAutom() {
+		// Take the automaton representation of each summand and unify them successively.
+		Autom A = new Autom();
+		for (Clause c : summands) {
+			A = Operations.union(A,c.toAutom());
+		}
+		
+		// Eliminate unnecessary states.
+		return Operations.reduce(A);
 	}
 	
 	/**

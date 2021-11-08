@@ -2,7 +2,10 @@ package regularExpression;
 
 import java.util.Objects;
 
+import automata.Autom;
 import automata.Letter;
+import automata.State;
+import automata.Transition;
 
 /*
  * Class for modeling a clause that consists of a single letter - an atom.
@@ -33,6 +36,27 @@ public class Atom extends Clause {
      */
 	public String getSymb() {
 		return this.symb;
+	}
+	
+	/**
+	 * Create an automaton A representing the atom.
+	 * The language of A contains only this atom.
+	 */
+	@Override
+	public Autom toAutom() {
+		
+		// The automaton consists of one transition that is labeled with the atom.
+		// The source is the initial state, the target is final.
+		State a0 = new State(symb + "0");
+		State a1 = new State(symb + "1");
+		Transition t0 = new Transition(a0,a1, new Letter(symb));
+		
+		Autom A = new Autom();
+		A.addTransition(t0);
+		A.setInit(a0);
+		A.addFinal(a1);
+		
+		return A;
 	}
 	
 	/**
