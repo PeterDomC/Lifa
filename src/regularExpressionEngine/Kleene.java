@@ -3,6 +3,7 @@ package regularExpressionEngine;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import automataAlgorithms.Language;
 import regularExpressions.Clause;
 import regularExpressions.ClauseFactory;
 import regularExpressions.ClauseType;
@@ -10,7 +11,6 @@ import regularExpressions.ConExp;
 import regularExpressions.EmptyExp;
 import regularExpressions.Epsilon;
 import regularExpressions.RegExp;
-import regularExpressions.StarChain;
 import regularExpressions.StarExp;
 
 /*
@@ -61,13 +61,12 @@ public abstract class Kleene {
 	}
 	
 	/**
-	 * TODO: Refactor
 	 * Method for concatenating two regular expressions in disjunctive normalform.
 	 * This yields a new regular expression in DNF.
 	 * @param a = r_1 + ... + r_n, b = s_1 + ... + s_k are the given regular expressions.
 	 * @return the resulting expression r_1.s_1 + r_2.s_1 + ... + r_n.s_n modulo simplifications.
 	 * 
-	 * NOTE: The method simplifies the resulting DNF by calling the method simplify.
+	 * NOTE: The method simplifies the resulting DNF by calling the method simplifySum.
 	 * NOTE: Does not return a reference to a or b.
 	 */
 	public static RegExp concat(RegExp a, RegExp b) {
@@ -153,9 +152,7 @@ public abstract class Kleene {
 	 * @return true, if a is contained in b - false, otherwise.
 	 */
 	public static boolean isContained(RegExp a, RegExp b) {
-		// TODO: Currently not implemented - build up automaton.
-		// along the expression and run corresponding automaton method.
-		return false;
+		return Language.isContained(a.toAutom(),b.toAutom());
 	}
 
 	/**
@@ -185,9 +182,7 @@ public abstract class Kleene {
 	 * @return true, if a is universal - false, otherwise.
 	 */
 	public static boolean isUniversal(RegExp a) {
-		// Check whether a given regular expression is universal.
-		// TODO: implement!
-		return false;
+		return Language.isUniversal(a.toAutom());
 	}
 	
 	/**
@@ -430,6 +425,40 @@ public abstract class Kleene {
 	}
 
 	/**
+	 * Method that successively checks whether summands can be discarded since they are contained in other summands.
+	 * @param clauses is the given set of clauses.
+	 * @return reducedClauses, the set with reduced amount of clauses.
+	 * 
+	 * NOTE: The method uses semantic containment: if r_1 is contained in r_2 + ... + r_n,
+	 * the method removes r_1 from the set of summands and goes on with r_2.
+	 * NOTE: This is not the optimal way to achieve a minimal number of summands.
+	 * Ideally, one would order the summands according to the set of other summands that they contain.
+	 * This results in an acyclic graph among the summands.
+	 * Then one can apply an algorithm for finding a topological sorting to identify the "largest" summands.
+	 * This will probably be implemented later.
+	 */
+	private static HashSet<Clause> simplifySemantic(HashSet<Clause> clauses) {
+		
+		// Set of reduced clauses.
+		HashSet<Clause> reducedClauses = new HashSet<Clause>(clauses);
+		
+		for (Clause c : clauses) {
+			
+			// Construct the expression consisting of the reduced clauses except c.
+			HashSet<Clause> inc_check_summands = new HashSet<Clause>(reducedClauses);
+			inc_check_summands.remove(c);
+			RegExp inc_check = new RegExp(inc_check_summands);
+			
+			if (isContained(c,inc_check)) {
+				// If c is contained in this expression, we can remove it.
+				reducedClauses.remove(c);
+			}
+		}
+		
+		return reducedClauses;
+	}
+	
+	/**
 	 * Method for concatenating two clauses.
 	 * @param r,s are the given clauses.
 	 * @return r.s modulo simplifications.
@@ -549,10 +578,4 @@ public abstract class Kleene {
 		
 		return new ArrayList<Clause>();
 	}
-	
-	private static HashSet<Clause> simplifySemantic(HashSet<Clause> simpl) {
-		// TODO Auto-generated method stub
-		return simpl;
-	}
-	
 }

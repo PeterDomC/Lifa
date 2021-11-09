@@ -29,15 +29,23 @@ public class main {
 		RegExp bs = Kleene.star(b);
 		RegExp cs = Kleene.star(c);
 		
-		RegExp abc = Kleene.add(a,Kleene.add(b,c));
-		RegExp abs = Kleene.star(Kleene.add(a,b));
-		System.out.println(abs.toString());
+		RegExp out = Kleene.add(Kleene.concat(Kleene.star(Kleene.add(a,b)),Kleene.add(a,b)),Epsilon.getEps());
+		RegExp out2 = Kleene.concat(Kleene.star(Kleene.add(a,b)), Kleene.concat(a,a));
 		
-		RegExp out = Kleene.add(abs,Kleene.star(abc));
+		System.out.println(out.toString());
+		System.out.println(out2.toString());
+		
+		out = Kleene.add(out,out2);
 		System.out.println(out.toString());
 		
-		//Autom A = out.toAutom();
-		//AutomPrinter.createVisual(A,"outy");
+		/*
+		RegExp out = Kleene.concat(as,bs);
+		out = Kleene.star(out);
+		System.out.println(out.toString());
+		
+		Autom A = out.toAutom();
+		AutomPrinter.createVisual(A,"outy");
+		*/
 		/*
 		RegExp AS = Kleene.star(A);
 		RegExp BS = Kleene.star(B);

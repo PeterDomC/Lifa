@@ -41,8 +41,6 @@ public class StarChain extends StarExp {
 		return summands;
 	}
 	
-	//TODO: Override toAutom - tailored to star chains.
-	
 	/**
 	 * Generate a string that represents the star chain expression.
 	 */

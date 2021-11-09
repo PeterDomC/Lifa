@@ -139,7 +139,7 @@ public class Language {
 	 * This language is empty if and only if A x det(B) cannot reach a state of the form (q,Q),
 	 * where q is a final state of A and Q is a non-final state of det(B).
 	 * We search for such a state in a breadth-first manner.
-	 * NOTE: Constructing the complete automaton A x compl(B) is costly - we avoid this step!
+	 * NOTE: Constructing the complete automaton A x compl(B) is costly - we try to avoid this step!
 	 */
 	public static boolean isContained(Autom A, Autom B) {
 		
@@ -235,7 +235,4 @@ public class Language {
 	public static boolean isEquivalent(Autom A, Autom B) {
 		return (isContained(A,B) && isContained(B,A));
 	}
-	
-	
-	// TODO: write depth-first searches for the problems
 }
