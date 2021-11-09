@@ -16,11 +16,12 @@ public class main {
 
 	public static void main(String[] args) throws IOException {
 		
+		/*
 		Test.runOperationTests();
 		Test.runLanguageTests();
 		Test.runRealWorldTests();
+		*/
 		
-		/*
 		Atom a = new Atom("a");
 		Atom b = new Atom("b");
 		Atom c = new Atom("c");
@@ -37,7 +38,7 @@ public class main {
 		
 		out = Kleene.concat(out,Epsilon.getEps());
 		System.out.println(out.toString());
-		*/
+		
 		/*
 		RegExp out = Kleene.concat(as,bs);
 		out = Kleene.star(out);
