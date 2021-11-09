@@ -15,12 +15,12 @@ import regularExpressions.RegExp;
 public class main {
 
 	public static void main(String[] args) throws IOException {
-		/*
+		
 		Test.runOperationTests();
 		Test.runLanguageTests();
 		Test.runRealWorldTests();
-		*/
 		
+		/*
 		Atom a = new Atom("a");
 		Atom b = new Atom("b");
 		Atom c = new Atom("c");
@@ -29,15 +29,15 @@ public class main {
 		RegExp bs = Kleene.star(b);
 		RegExp cs = Kleene.star(c);
 		
-		RegExp out = Kleene.add(Kleene.concat(Kleene.star(Kleene.add(a,b)),Kleene.add(a,b)),Epsilon.getEps());
-		RegExp out2 = Kleene.concat(Kleene.star(Kleene.add(a,b)), Kleene.concat(a,a));
-		
-		System.out.println(out.toString());
-		System.out.println(out2.toString());
-		
-		out = Kleene.add(out,out2);
+		RegExp out = Kleene.star(Kleene.add(a,b));
 		System.out.println(out.toString());
 		
+		out = Kleene.concat(out,as);
+		System.out.println(out.toString());
+		
+		out = Kleene.concat(out,Epsilon.getEps());
+		System.out.println(out.toString());
+		*/
 		/*
 		RegExp out = Kleene.concat(as,bs);
 		out = Kleene.star(out);

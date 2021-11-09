@@ -17,6 +17,7 @@ public abstract class ClauseFactory {
 	 * NOTE: May return other types of clauses, depending on the list of factors.
 	 * NOTE: We generally recommend to create clauses via the operations of the class Kleene
 	 * since applying this method without deeper knowledge can lead to subtle structure violations.
+	 * NOTE: This method already applies basic simplifications like multiplication with 0 and epsilon.
 	 */
 	public static Clause createConExp(ArrayList<Clause> factors) {
 		
@@ -50,6 +51,7 @@ public abstract class ClauseFactory {
 	 * NOTE: May return other types of clauses, depending on the given clause.
 	 * NOTE: We generally recommend to create clauses via the operations of the class Kleene
 	 * since applying this method without deeper knowledge can lead to subtle structure violations.
+	 * NOTE: This method already applies basic simplifications like r** = r*, 0* = eps, and eps* = eps.
 	 */
 	public static Clause createStarExp(Clause inner) {
 		

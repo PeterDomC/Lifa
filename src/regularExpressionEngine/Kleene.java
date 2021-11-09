@@ -111,6 +111,7 @@ public abstract class Kleene {
 	}
 
 	/**
+	 * TODO: Refactor
 	 * Method for applying Kleene star to a regular expression in DNF.
 	 * This yields a new regular expression in DNF.
 	 * @param a = r_1 + ... + r_n is the given regular expression.
@@ -217,7 +218,7 @@ public abstract class Kleene {
 		simpl = simplifyPattern(simpl);
 		
 		// Third simplification.
-		simpl = simplifySemantic(simpl);
+		simpl = simplifySemanticContains(simpl);
 		
 		// Return simplified clauses.
 		return simpl;
@@ -437,7 +438,7 @@ public abstract class Kleene {
 	 * Then one can apply an algorithm for finding a topological sorting to identify the "largest" summands.
 	 * This will probably be implemented later.
 	 */
-	private static HashSet<Clause> simplifySemantic(HashSet<Clause> clauses) {
+	private static HashSet<Clause> simplifySemanticContains(HashSet<Clause> clauses) {
 		
 		// Set of reduced clauses.
 		HashSet<Clause> reducedClauses = new HashSet<Clause>(clauses);
@@ -464,30 +465,21 @@ public abstract class Kleene {
 	 * @return r.s modulo simplifications.
 	 * 
 	 * NOTE: The method constructs a new concatenation expression r.s only if needed.
-	 * It first tries to simplify the expression r.s in a three step procedure:
-	 * 1st: It checks for a multiplication with zero (the empty expression).
-	 * 2nd: It checks for a multiplication with one (epsilon).
-	 * 3rd: It checks whether a factor vanishes due to monotonicity among star expressions.
+	 * It first tries to simplify the expression r.s via the star pattern: 
+	 * if r = R* and s = S* and R is contained in S, then r.s = R*.S* = S* = s,
+	 * if r = R* and s = S* and S is contained in R, then r.s = R*.S* = R* = r.
+	 * Other, easier simplifications - like multiplication with zero or epsilon
+	 * are considered in the construction via ClauseFactory.createConExp.
 	 * NOTE: May return a reference to r or s.
 	 */
 	private static Clause clauseConcat(Clause r, Clause s) {
 		
-		// Simple multiplication cases.
+		// Simplification via star pattern.
 		ClauseType type_r = r.getType();
 		ClauseType type_s = s.getType();
 		
-		// Multiplication with the empty expression (zero).
-		// If r or s is empty, we return the empty expression.
-		if (type_r == ClauseType.emptyExp || type_s == ClauseType.emptyExp) return EmptyExp.getEmptySet();
-		
-		// One of the factors (or both) is epsilon - multiplication with one.
-		if (type_r == ClauseType.epsilon) return s;
-		if (type_s == ClauseType.epsilon) return r;
-		
-		// Non-obvious simplifications.
-		// TODO: outsource!
 		// If r = R* is a star expression and s = S* is a star expression and we have
-		// R is contained in S (S is contained in R) then we get r.s = s (r.s = r). 
+		// R is contained in S (S is contained in R) then we get r.s = s (r.s = r).
 		if (type_r == ClauseType.starExp && type_s == ClauseType.starExp) {
 			
 			// Clause r = R* and s = S*.
@@ -505,7 +497,8 @@ public abstract class Kleene {
 		}
 		
 		// No simplification applicable.
-		// Build new concatenation expression.
+		// Construct new concatenation expression - take all factors of r and all factors of s.
+		// Note that concatenation expressions are flat!
 		ArrayList<Clause> factors = new ArrayList<Clause>();
 		if (type_r == ClauseType.conExp) {
 			// If r contains more than one factor, we add them all to the factors of the new expression.
@@ -527,6 +520,7 @@ public abstract class Kleene {
 	}
 	
 	/**
+	 * TODO: Refactor
 	 * Method for applying Kleene star to a single clause.
 	 * @param r is the given clause.
 	 * @return r*, the stared clause.
