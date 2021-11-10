@@ -36,6 +36,7 @@ public abstract class Kleene {
 		summands.addAll(b.getSummands());
 		
 		summands = simplifySum(summands);
+		
 		return new RegExp(summands);
 	}
 	

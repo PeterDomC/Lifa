@@ -7,6 +7,7 @@ import java.util.Queue;
 import automata.Autom;
 import automata.Letter;
 import automata.State;
+import automatonPrinter.AutomPrinter;
 
 /*
  * Class for the language of a finite automaton.
@@ -35,7 +36,13 @@ public class Language {
 		HashSet<Letter> Sigma = A.getAlphabet();
 		Postmap postA = new Postmap(A);
 		
-		// Begin the breadth first search with the initial state
+		// Begin the breadth first search with the initial state.
+		State init = A.getInit();
+		
+		// If it is final, we can return false.
+		if (A.isFinal(init)) return false;
+		
+		// Otherwise, we start exploring from the initial state.
 		workQ.add(A.getInit());
 		
 		while(!workQ.isEmpty()) {
