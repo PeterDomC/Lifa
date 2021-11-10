@@ -147,7 +147,7 @@ public abstract class Kleene {
 	public static RegExp star(Clause a) {
 		return star(new RegExp(a));
 	}
-
+	
 	/**
 	 * Method checks whether one regular expression is contained in the other.
 	 * @param a, b are the given expressions.
@@ -156,14 +156,14 @@ public abstract class Kleene {
 	public static boolean isContained(RegExp a, RegExp b) {
 		return Language.isContained(a.toAutom(),b.toAutom());
 	}
-
+	
 	/**
 	 * Further addition method allowing to check containment for clause/regexp and clause/regexp.
 	 */
 	public static boolean isContained(Clause a, RegExp b) {
 		return isContained(new RegExp(a),b);
 	}
-
+	
 	/**
 	 * Further addition method allowing to check containment for clause/regexp and clause/regexp.
 	 */

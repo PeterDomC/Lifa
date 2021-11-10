@@ -24,10 +24,13 @@ public class RegExpEq {
 	private HashMap<State,Integer> index;
 	
 	/**
-	 * matrix * (X_1, ..., X_n)^T + vector = (X_1, ..., X_n)^T.
-	 * @param A
+	 * Constructor: it takes an automaton A and translates it into linear equations over regular expressions.
+	 * The system is (X_1, ..., X_n)^T = matrix * (X_1, ..., X_n)^T + vector.
+	 * @param A is the given automaton.
 	 */
 	public RegExpEq(Autom A) {
+		
+		// TODO: Call reduce and cut isolated states.
 		
 		// Construction of index.
 		// Assign a particular order to the states of the given automaton.
@@ -100,7 +103,7 @@ public class RegExpEq {
 	 * and therefore describe a value of it.
 	 */
 	private void add(int row, int col, RegExp summand) {
-		this.matrix[row][col] = Kleene.add(this.matrix[row][col],summand);
+		matrix[row][col] = Kleene.add(matrix[row][col],summand);
 	}
 	
 	/**
@@ -119,7 +122,7 @@ public class RegExpEq {
 	 * and therefore describe a proper dimension of it.
 	 */
 	private void add(int row, RegExp summand) {
-		this.vector[row] = Kleene.add(this.vector[row],summand);
+		vector[row] = Kleene.add(vector[row],summand);
 	}
 	
 	/**
@@ -129,16 +132,39 @@ public class RegExpEq {
 		add(row,new RegExp(summand));
 	}
 	
+	/**
+	 * Method that applies Arden's rule to an equation (a row of matrix and vector).
+	 * @param row identifies the equation.
+	 * 
+	 * NOTE: Arden's rule removes self references by turning L = U.L u V into L = U*.V. 
+	 */
 	public void arden (int row) {
-		// TODO: apply arden's lemma in the given row.
+		//TODO
 	}
 	
 	public void plugIn (int inrow, int outrow) {
 		// TODO: plug inrow into outrow.
 	}
 	
+	/**
+	 * Method that multiplies an equation (a row of matrix and vector) 
+	 * with a given regular expression from the left.
+	 * @param factor is the given regular expression.
+	 * @param row determines which row is multiplied.
+	 * 
+	 * NOTE: It is assumed that row is within the borders of vector and matrix
+	 * and therefore describe a proper row of both.
+	 */
 	private void scalarMult(RegExp factor, int row) {
-		// TODO: multiply a complete row with a certain factor.
+		
+		// First multiply the row of the vector.
+		vector[row] = Kleene.concat(factor,vector[row]);
+		
+		// Multiply each entry of the corresponding row of the matrix.
+		int n = matrix.length;
+		for (int i = 0; i < n; i++) {
+			matrix[row][i] = Kleene.concat(factor,matrix[row][i]);
+		}
 	}
 	
 	/**
