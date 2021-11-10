@@ -4,7 +4,7 @@ import automata.*;
 /*
  * A collection of automata examples to test the implementation of Lifa
  */
-public class ExampleCollection {
+public abstract class ExampleCollection {
 
 	/**
 	 * First simple example from the readme file.
@@ -484,6 +484,44 @@ public class ExampleCollection {
 		A.addFinal(p4);
 		A.addFinal(p5);
 		A.setInit(p0);
+		
+		return A;
+	}
+	
+	public static Autom arden_1() {
+		Letter a = new Letter("a");
+		Letter b = new Letter("b");
+		Letter c = new Letter("c");
+		
+		State q0 = new State("q0");
+		State q1 = new State("q1");
+		State q2 = new State("q2");
+		State q3 = new State("q3");
+		
+		Transition t1 = new Transition(q0,q1,a);
+		Transition t2 = new Transition(q0,q2,a);
+		Transition t3 = new Transition(q0,q2,b);
+		Transition t4 = new Transition(q2,q1,a);
+		Transition t5 = new Transition(q1,q1,c);
+		Transition t6 = new Transition(q1,q3,a);
+		Transition t7 = new Transition(q3,q3,a);
+		Transition t8 = new Transition(q3,q2,b);
+		Transition t9 = new Transition(q2,q3,c);
+		
+		Autom A = new Autom();
+		
+		A.addTransition(t1);
+		A.addTransition(t2);
+		A.addTransition(t3);
+		A.addTransition(t4);
+		A.addTransition(t5);
+		A.addTransition(t6);
+		A.addTransition(t7);
+		A.addTransition(t8);
+		A.addTransition(t9);
+		
+		A.addFinal(q2);
+		A.setInit(q0);
 		
 		return A;
 	}

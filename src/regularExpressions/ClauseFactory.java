@@ -31,14 +31,18 @@ public abstract class ClauseFactory {
 		if (n == 1) return factors.get(0);
 		
 		// The list of factors has at least two entries.
-		// We can remove the epsilon entries.
+		// We remove the epsilon entries due to multiplication with 1.
 		ArrayList<Clause> reduced_factors = new ArrayList<Clause>(factors);
 		reduced_factors.removeIf(c -> (c.getType() == ClauseType.epsilon));
+		n = reduced_factors.size();
+		
+		// If the list is empty now - all entries were epsilon.
+		if (n == 0) return Epsilon.getEps();
 		
 		// If the list now consists of a single clause, we return it so that it keeps its type.
-		n = reduced_factors.size();
 		if (n == 1) return reduced_factors.get(0);
 		
+		// The list still has at least two entries.
 		// We can create a standard concatenation expression.
 		return new ConExp(reduced_factors);
 	}

@@ -2,6 +2,7 @@ package regularExpressionEngine;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
 
 import automata.Autom;
 import automata.Letter;
@@ -14,10 +15,10 @@ import regularExpressions.Epsilon;
 import regularExpressions.RegExp;
 
 /*
- * Class for handling automata as linear equations over regular expressions.
+ * Class for handling automata as linear equation systems over regular expressions.
  * Contains basic methods that are needed to transform an automaton into a regular expression.
  */
-public class RegExpEq {
+public class RegSystem {
 
 	private RegExp[][] matrix;
 	private RegExp[] vector;
@@ -28,7 +29,7 @@ public class RegExpEq {
 	 * The system is (X_1, ..., X_n)^T = matrix * (X_1, ..., X_n)^T + vector.
 	 * @param A is the given automaton.
 	 */
-	public RegExpEq(Autom A) {
+	public RegSystem(Autom A) {
 		
 		// TODO: Call reduce and cut isolated states.
 		
@@ -66,6 +67,15 @@ public class RegExpEq {
 			// If the source is final, we add epsilon to correpsonding entry of the vector.
 			if (A.isFinal(t.getSource())) add(source, Epsilon.getEps());
 		}
+	}
+	
+	/**
+	 * TODO
+	 * Method that returns the regular expression.
+	 * @return
+	 */
+	public RegExp solve() {
+		return null;
 	}
 	
 	/**
@@ -136,14 +146,22 @@ public class RegExpEq {
 	 * Method that applies Arden's rule to an equation (a row of matrix and vector).
 	 * @param row identifies the equation.
 	 * 
-	 * NOTE: Arden's rule removes self references by turning L = U.L u V into L = U*.V. 
+	 * NOTE: Arden's rule removes self references by turning L = U.L u V into L = U*.V.
+	 * In our case, this means that X_q = R_q.X_q + (R_1.X_1 + ... + R_n.X_n) can be turned
+	 * into the equation X_q = R_q*.(R_1.X_1 + ... + R_n.X_n) without reference to X_q.
+	 * This amounts to setting the value for X_q to the empty expression and then 
+	 * multiplying the equation by R_q* from the left.
+	 * TODO: set private
 	 */
 	public void arden (int row) {
-		//TODO
-	}
-	
-	public void plugIn (int inrow, int outrow) {
-		// TODO: plug inrow into outrow.
+		// Get value for X_row = U.
+		RegExp U = matrix[row][row];
+		
+		// Set new value to the empty expression - removes the self reference.
+		matrix[row][row] = new RegExp(EmptyExp.getEmptySet());
+		
+		// Multiply other entries in the equation by U*.
+		scalarMult(Kleene.star(U),row);
 	}
 	
 	/**
@@ -166,27 +184,68 @@ public class RegExpEq {
 			matrix[row][i] = Kleene.concat(factor,matrix[row][i]);
 		}
 	}
-	
+
 	/**
-	 * DEBUG method that prints the matrix.
+	 * Plug row j into the row i.
+	 * This means if X_i = R_0 + R_1.X_1 + ... + R_n.X_n and X_j = S_0 + S_1.X_1 + ... + S_n.X_n,
+	 * plugging j into i yields the equation: X_i = (R_0 + R_j.S_0) + (R_1 + R_j.S_1).X_1 + ... + (R_n + R_j.S_n).X_n.
+	 * @param j is the given row that we plug into
+	 * @param i, the outer row.
+	 * 
+	 * NOTE: It is assumed that i and j respect the borders of vector and matrix
+	 * and therefore describe proper rows of both.
+	 * TODO: make private
 	 */
-	public void printMatrix() {
+	public void plugIn (int j, int i) {
+		
+		// The factor that we need throughout the computation: R_j.
+		RegExp factor = matrix[i][j];
+		
+		// First compute the new expression in the i-th entry of the vector.
+		vector[i] = Kleene.add(vector[i], Kleene.concat(factor, vector[j]));
+		
+		// Now compute the new expressions in the i-th row of the matrix.
 		int n = matrix.length;
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				System.out.print(matrix[i][j].toString() + " ");
-			}
-			System.out.println("");
+		for (int l = 0; l < n; l++) {
+			// New factor in the i-th rowto variable X_l.
+			if (l != j) matrix[i][l] = Kleene.add(matrix[i][l], Kleene.concat(factor, matrix[j][l]));
 		}
+		
+		// The reference in the i-th row to the j-th variable disappears.
+		matrix[i][j] = new RegExp(EmptyExp.getEmptySet());
 	}
 	
 	/**
-	 * DEBUG method that prints the vector.
+	 * DEBUG method that prints the equation system.
+	 * TODO: Maybe improve printing
 	 */
-	public void printVector() {
-		int n = vector.length;
+	public void print() {
+		int n = matrix.length;
 		for (int i = 0; i < n; i++) {
-			System.out.println(vector[i].toString());
+			System.out.print("X_" + getStateByIndex(i).getName() + " = ");
+			
+			for (int j = 0; j < n; j++) {
+				System.out.print("(" + matrix[i][j].toString() + ")" + ".X_" + getStateByIndex(j).getName() + " + ");
+			}
+			
+			System.out.print(vector[i] + "\n");
 		}
+		
+		System.out.print("\n");
+	}
+	
+	/**
+	 * Method that finds the state for a given integer in the index map.
+	 * @param i is the given integer.
+	 * 
+	 * NOTE: It is assumed that i encodes a proper index of a state.
+	 * Otherwise, the method returns null.
+	 */
+	private State getStateByIndex(int i) {
+		for (Entry<State,Integer> entry : index.entrySet()) {
+			if (entry.getValue().equals(i)) return entry.getKey();
+	    }
+		
+		return null;
 	}
 }
