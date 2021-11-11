@@ -28,7 +28,7 @@ public class main {
 		RegSystem AEQ = new RegSystem(A);
 		AutomPrinter.createVisual(A,"arden1");
 		
-		RegExp Areg = AEQ.solve();
+		RegExp Areg = AEQ.solve(true);
 		System.out.println(Areg.toString());
 		
 	}

@@ -232,23 +232,23 @@ public class Autom{
     }
     
     /**
-     * Checks if the automaton has a final state
+     * Checks if the automaton has a final state.
      */
     public boolean hasFinal() {
     	return !Final.isEmpty();
     }
     
     /**
-     * Checks if the automaton has a unique initial state
+     * Checks if the automaton has a unique initial state.
      */
     public boolean hasInit() {
     	return (init != null);
     }
     
     /**
-     * Returns the set of isolated states (states not incident to a transition)
-     * Returns an empty set if no such state exists
-     * Does never return null
+     * Returns the set of isolated states (states not incident to a transition).
+     * Returns an empty set if no such state exists.
+     * Does never return null.
      */
     public HashSet<State> getIsolated() {
     	

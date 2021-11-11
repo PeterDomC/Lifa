@@ -8,6 +8,7 @@ import automata.Autom;
 import automata.Letter;
 import automata.State;
 import automata.Transition;
+import automataAlgorithms.Operations;
 import regularExpressions.Atom;
 import regularExpressions.Clause;
 import regularExpressions.EmptyExp;
@@ -31,18 +32,19 @@ public class RegSystem {
 	 */
 	public RegSystem(Autom A) {
 		
-		// TODO: Call reduce and cut isolated states.
+		// Delete unnecessary states.
+		Autom B = Operations.reduce(A);
 		
 		// Construction of index.
 		// Assign a particular order to the states of the given automaton.
 		this.index = new HashMap<State,Integer>();
 		
 		// Index 0 is reserved for the initial state.
-		State init = A.getInit();
+		State init = B.getInit();
 		this.index.put(init,0);
 		
 		// Other states are assigned in the order dictated by the iterator, starting from 1.
-		HashSet<State> states = new HashSet<State>(A.getStates());
+		HashSet<State> states = new HashSet<State>(B.getStates());
 		states.remove(init);
 		int i = 1;
 		for (State q : states) {
@@ -57,7 +59,7 @@ public class RegSystem {
 		
 		// Go over each transition (p,a,q) and add a.X_q to the equation X_p.
 		// This means we add the expression 'a' to the entry (p,q) of the matrix.
-		HashSet<Transition> trans = A.getTransitions();
+		HashSet<Transition> trans = B.getTransitions();
 		for (Transition t : trans) {
 			int source = index.get(t.getSource());
 			int target = index.get(t.getTarget());
@@ -65,43 +67,57 @@ public class RegSystem {
 			
 			add(source,target,new Atom(label));
 			// If the source is final, we add epsilon to correpsonding entry of the vector.
-			if (A.isFinal(t.getSource())) add(source, Epsilon.getEps());
+			if (B.isFinal(t.getSource())) add(source, Epsilon.getEps());
 		}
 	}
 	
 	/**
-	 * TODO
-	 * Method that returns the regular expression.
-	 * @return
+	 * Method that solves the equation system at hand and
+	 * that returns the regular expression which describes the language of the underlying automaton.
+	 * @param showSteps, a boolean that specifies whether intermediate steps are shown or not.
+	 * @return the regular expression for the language of the automaton.
 	 * 
 	 * NOTE: This method performs a variable elimination step by step.
+	 * First, it applies Arden's Lemma to an equation to discard the self-reference
+	 * then it plugs the equation into the other equations to delete the variable from the system.
+	 * This process is repeated like in a Gauß elimination until no variable is left.
 	 */
-	public RegExp solve() {
+	public RegExp solve(boolean showSteps) {
 
 		int n = matrix.length;
-		System.out.println("The equation system is given by:");
-		print();
+		if (showSteps) {
+			System.out.println("The equation system is given by:");
+			print();
+		}
 		
 		// Variable elimination.
 		// Begin with the last variable X_{n-1} and continue with X_{n-2} and so on.
 		for (int i = n - 1; i >= 0; i--) {
 			
 			// Apply Arden's lemma to the equation for X_i.
-			System.out.println("Apply Arden's lemma on X_" + getStateByIndex(i).getName());
+			if (showSteps) System.out.println("Apply Arden's lemma on X_" + getStateByIndex(i).getName());
 			arden(i);
 			
 			// Plug the i-th equation in all equations of X_j that are smaller than i.
-			for (int j = i-1; j >= 0; j--) {
+			for (int j = i - 1; j >= 0; j--) {
 				plugIn(i,j);
-				System.out.println("Plug X_" + getStateByIndex(i).getName() + " into X_" + getStateByIndex(j).getName());
+				if (showSteps) System.out.println("Plug X_" + getStateByIndex(i).getName() + " into X_" + getStateByIndex(j).getName());
 			}
 			
-			print();
+			if (showSteps) print();
 		}
 		
 		// The regular expression for the automaton is the equation of X_0.
 		// It is stored in the corresponding entry of the vector.
 		return vector[0];
+	}
+	
+	/**
+	 * Method that solves the equation system but does not show the intermediate steps.
+	 * @return the regular expression for the language of the automaton.
+	 */
+	public RegExp solve() {
+		return solve(false);
 	}
 	
 	/**
@@ -241,10 +257,9 @@ public class RegSystem {
 	}
 	
 	/**
-	 * Method that prints the equation system
-	 * TODO: String builder.
+	 * Method that prints the currently stored equation system.
 	 */
-	public void print() {
+	private void print() {
 		int n = matrix.length;
 		for (int i = 0; i < n; i++) {
 			System.out.print("X_" + getStateByIndex(i).getName() + " = ");
