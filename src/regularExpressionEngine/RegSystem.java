@@ -73,9 +73,35 @@ public class RegSystem {
 	 * TODO
 	 * Method that returns the regular expression.
 	 * @return
+	 * 
+	 * NOTE: This method performs a variable elimination step by step.
 	 */
 	public RegExp solve() {
-		return null;
+
+		int n = matrix.length;
+		System.out.println("The equation system is given by:");
+		print();
+		
+		// Variable elimination.
+		// Begin with the last variable X_{n-1} and continue with X_{n-2} and so on.
+		for (int i = n - 1; i >= 0; i--) {
+			
+			// Apply Arden's lemma to the equation for X_i.
+			System.out.println("Apply Arden's lemma on X_" + getStateByIndex(i).getName());
+			arden(i);
+			
+			// Plug the i-th equation in all equations of X_j that are smaller than i.
+			for (int j = i-1; j >= 0; j--) {
+				plugIn(i,j);
+				System.out.println("Plug X_" + getStateByIndex(i).getName() + " into X_" + getStateByIndex(j).getName());
+			}
+			
+			print();
+		}
+		
+		// The regular expression for the automaton is the equation of X_0.
+		// It is stored in the corresponding entry of the vector.
+		return vector[0];
 	}
 	
 	/**
@@ -151,9 +177,8 @@ public class RegSystem {
 	 * into the equation X_q = R_q*.(R_1.X_1 + ... + R_n.X_n) without reference to X_q.
 	 * This amounts to setting the value for X_q to the empty expression and then 
 	 * multiplying the equation by R_q* from the left.
-	 * TODO: set private
 	 */
-	public void arden (int row) {
+	private void arden (int row) {
 		// Get value for X_row = U.
 		RegExp U = matrix[row][row];
 		
@@ -192,11 +217,11 @@ public class RegSystem {
 	 * @param j is the given row that we plug into
 	 * @param i, the outer row.
 	 * 
+	 * NOTE: The method computes the new factors R_l + R_j.S_l for X_l in row i.
 	 * NOTE: It is assumed that i and j respect the borders of vector and matrix
 	 * and therefore describe proper rows of both.
-	 * TODO: make private
 	 */
-	public void plugIn (int j, int i) {
+	private void plugIn (int j, int i) {
 		
 		// The factor that we need throughout the computation: R_j.
 		RegExp factor = matrix[i][j];
@@ -216,8 +241,8 @@ public class RegSystem {
 	}
 	
 	/**
-	 * DEBUG method that prints the equation system.
-	 * TODO: Maybe improve printing
+	 * Method that prints the equation system
+	 * TODO: String builder.
 	 */
 	public void print() {
 		int n = matrix.length;

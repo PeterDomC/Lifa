@@ -26,11 +26,10 @@ public class main {
 		
 		Autom A = ExampleCollection.arden_1();
 		RegSystem AEQ = new RegSystem(A);
-		AEQ.print();
 		AutomPrinter.createVisual(A,"arden1");
 		
-		AEQ.plugIn(1,0);
-		AEQ.print();
+		RegExp Areg = AEQ.solve();
+		System.out.println(Areg.toString());
 		
 	}
 }
