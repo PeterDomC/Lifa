@@ -18,11 +18,12 @@ public class main {
 	
 	public static void main(String[] args) throws IOException {
 		
-		/*
+		
 		Test.runOperationTests();
 		Test.runLanguageTests();
 		Test.runRealWorldTests();
-		*/
+		
+		
 		
 		Autom A = ExampleCollection.arden_1();
 		RegSystem AEQ = new RegSystem(A);
@@ -30,6 +31,7 @@ public class main {
 		
 		RegExp Areg = AEQ.solve(true);
 		System.out.println(Areg.toString());
+		
 		
 	}
 }
