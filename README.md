@@ -264,6 +264,7 @@ Autom A = abstar.toAutom();
 ```
 
 The automaton that Lifa creates accepts the language (a.b)* and looks as follows:
+
 ![plot](pics/abstar.gif)
 
 For turning an automaton into a regular expression, Lifa applies [Brzozowski's method](https://michaellevet.wordpress.com/2015/04/22/automata-theory-brzozowski-algebraic-method/).
