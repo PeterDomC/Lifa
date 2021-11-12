@@ -253,7 +253,7 @@ EmptyExp.getEmptySet();
 ```
 
 <h2>
-  Translating Automata into Regular Expressions and vice versa.
+  Translating Automata into Regular Expressions and vice versa
 </h2>
 
 Lifa features algorithms for turning regular expressions into automata and automata into regular expressions.
