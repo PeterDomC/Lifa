@@ -221,3 +221,62 @@ The corresponding NFA looks as follows:
 
 For more information on the input format that our parser can handle, we refer to the grammar that describes the format.
 It is the file 'Automaton.g4' that is located in the folder 'src/automatonParser'.
+
+<h2>
+  Regular Expressions
+</h2>
+
+Lifa can handle regular expressions and operate on them.
+Regular expressions are either atoms (letters), epsilon (the empty word), or the empty set (zero).
+Moreover, they can be build with operations of the Kleene algebra - concatenation (.), Kleene star (\*), and union (+) - out of other regular expressions.
+When constructing a regular expression in Lifa, we start by creating the required atoms via the corresponding constructor. 
+Then, we employ the required operations via the class 'Kleene'.
+In the following, we give an example:
+```
+Atom a = new Atom("a");
+Atom b = new Atom("b");
+RegExp ab = Kleene.concat(a,b);
+RegExp abstar = Kleene.star(ab);
+RegExp abstar_eps = Kleene.add(abstar,Epsilon.getEps());
+System.out.println(abstar_eps.toString());
+```
+
+The last line of code prints the regular expression: it is (a.b)* .
+Note that this may be unexpected since we effectively construct (a.b)* + eps.
+However, epsilon is not needed since it is already included in (a.b)* and Lifa simplifies the expression accordingly.
+Internally, Lifa simplifies some more cases and tries to construct a simple regular expression.
+
+Note that espilon and zero do not have classical constructors like atoms do, but we can access them by using
+```
+Epsilon.getEps();
+EmptyExp.getEmptySet();
+```
+
+<h2>
+  Translating Automata into Regular Expressions and vice versa.
+</h2>
+
+Lifa features algorithms for turning regular expressions into automata and automata into regular expressions.
+To apply the former one, we take a regular expression and call the method 'toAutom()'.
+We showcase the method with the above example:
+```
+Autom A = abstar.toAutom();
+```
+
+The automaton that Lifa creates accepts the language (a.b)* and looks as follows:
+![plot](pics/abstar.gif)
+
+For turning an automaton into a regular expression, Lifa applies [Brzozowski's method](https://michaellevet.wordpress.com/2015/04/22/automata-theory-brzozowski-algebraic-method/).
+It takes an automaton and translates it into a linear equation system over regular expressions.
+The equation system is then solved by applying Arden's Lemma and Gaussian elimination.
+To call it in Lifa, we first create a linear equation system and then call a method that solves it.
+We apply it to the above automaton A:
+```
+RegSystem ALEQ = new RegSystem(A);
+RegExp abstar_brz = ALEQ.solve();
+System.out.println(abstar_brz.toString());
+```
+
+The last line of code prints the expression (a.b)* which is what we were expecting.
+Note that Lifa tries to simplify intermediate regular expressions.
+Nevertheless, they can get larger than calculating them by hand.
